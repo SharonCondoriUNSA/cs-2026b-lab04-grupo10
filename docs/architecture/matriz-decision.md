@@ -4,7 +4,7 @@
 
 - **A. Monolito en Capas (n-tier):** Descomposición del sistema en capas tradicionales (Presentación, Lógica de Negocio y Acceso a Datos) desplegadas en un único servidor. Ofrece alta simplicidad inicial, pero es propenso al acoplamiento entre capas a medida que evoluciona el sistema.
 
-- **B. Microservicios:** Descomposición del sistema en servicios independientes por dominio (Solicitudes, Rutas, Puntos/Canjes, Reportes), cada uno con su propia base de datos. Brinda aislamiento total y alta escalabilidad, pero genera una complejidad operativa excesiva para un equipo pequeño de 3 personas.
+- **B. Microservicios:** Descomposición del sistema en servicios independientes por dominio (Solicitudes, Rutas, Puntos/Canjes, Reportes), cada uno con su propia base de datos. Brinda aislamiento total y alta escalabilidad, pero genera una complejidad operativa excesiva para un equipo pequeño de 2 personas.
 
 - **C. Monolito Modular (Elegido):** Un solo despliegue físico organizado internamente en módulos de dominio con límites explícitos e interfaces bien definidas. Mantiene la simplicidad operativa de un solo servidor garantizando alta modificabilidad.
 
@@ -15,7 +15,7 @@
 | **1. Modificabilidad** | 25 % | **QA-01 (Atributo Crítico):** Requisito del Caso 10 para incorporar nuevos distritos de Arequipa o reglas de puntos en ≤ 2 días-persona sin alterar otros módulos. |
 | **2. Tiempo de entrega** | 20 % | **R-01:** Restricción estricta de tener el MVP listo y desplegado en producción en máximo 1 mes. |
 | **3. Costo de infraestructura** | 15 % | **R-03:** Presupuesto bajo; infraestructura basada en un solo VPS económico. |
-| **4. Simplicidad DevOps** | 15 % | **R-02:** El equipo de 3 integrantes debe enfocarse en la lógica de negocio sin sobrecarga de gestión de servidores. |
+| **4. Simplicidad DevOps** | 15 % | **R-02:** El equipo de 2 integrantes debe enfocarse en la lógica de negocio sin sobrecarga de gestión de servidores. |
 | **5. Disponibilidad y tolerancia a fallos** | 10 % | **QA-02:** Registro seguro de solicitudes de recojo aun ante caídas temporales de servicios externos o red móvil. |
 | **6. Rendimiento y latencia** | 10 % | **QA-03:** Consultas fluidas del mapa de rutas en horas pico de recojo (p95 ≤ 2 segundos). |
 | **7. Usabilidad móvil** | 5 % | Interfaz ágil e integración directa con las aplicaciones para recicladores en ruta y vecinos. |
