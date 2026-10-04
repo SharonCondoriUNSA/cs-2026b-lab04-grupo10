@@ -1,0 +1,85 @@
+@startuml
+
+title <b>EcoRecicla AQP</b>\nAlternativa descartada: Monolito en Capas
+
+skinparam backgroundColor #FAFAFA
+skinparam shadowing false
+skinparam roundcorner 15
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+
+skinparam ArrowColor #455A64
+skinparam ArrowThickness 1.3
+
+skinparam actor {
+    BackgroundColor #FFF3CD
+    BorderColor #D6A700
+    FontColor #333333
+}
+
+skinparam component {
+    BackgroundColor #FFFFFF
+    BorderColor #546E7A
+    FontColor #263238
+}
+
+skinparam database {
+    BackgroundColor #E8EAF6
+    BorderColor #5C6BC0
+    FontColor #283593
+}
+
+skinparam cloud {
+    BackgroundColor #E1F5FE
+    BorderColor #039BE5
+    FontColor #01579B
+}
+
+actor "Vecino" as Vecino
+actor "Reciclador" as Reciclador
+actor "Municipalidad" as Municipalidad
+
+rectangle "Capa de Presentación" as Presentacion #E3F2FD {
+    component "PWA / API REST" as API #BBDEFB
+}
+
+rectangle "Capa de Lógica de Negocio" as Negocio #E8F5E9 {
+
+    component "Gestión de\nSolicitudes y Recojos" as Solicitudes #C8E6C9
+
+    component "Gestión de\nRutas y Cobertura" as Rutas #C8E6C9
+
+    component "Gestión de\nPuntos y Beneficios" as Puntos #C8E6C9
+
+    component "Gestión de\nReportes" as Reportes #C8E6C9
+}
+
+rectangle "Capa de Acceso a Datos" as Datos #FFF8E1 {
+    component "Repositorios" as Repositorios #FFECB3
+}
+
+database "PostgreSQL" as DB
+
+cloud "API de Mapas /\nGeolocalización" as Mapas
+cloud "WhatsApp\nBusiness API" as WhatsApp
+
+Vecino --> API
+Reciclador --> API
+Municipalidad --> API
+
+API --> Solicitudes
+API --> Rutas
+API --> Puntos
+API --> Reportes
+
+Solicitudes --> Repositorios
+Rutas --> Repositorios
+Puntos --> Repositorios
+Reportes --> Repositorios
+
+Repositorios --> DB
+
+Solicitudes --> WhatsApp
+Rutas --> Mapas
+
+@enduml
