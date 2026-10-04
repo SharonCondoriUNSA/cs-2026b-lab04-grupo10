@@ -29,7 +29,7 @@
 | :--- | :---: | :---: | :---: | :--- |
 | **1. Modificabilidad** (25 %) | 2 | 5 | 4 | Capas tiende a acoplarse; microservicios aísla totalmente; monolito modular aísla con límites explícitos. |
 | **2. Tiempo de entrega** (20 %) | 5 | 2 | 4 | Capas es el más rápido inicialmente; microservicios requiere configurar comunicación de red; Monolito Modular permite avance modular paralelo. |
-| **3. Costo de infraestructura** (15 %) | 5 | 2 | 5 | Un solo VPS económico para capas y monolito modular; microservicios requiere múltiples instancias/contenedores. |
+| **3. Costo de infraestructura** (15 %) | 5 | 2 | 5 | Infraestructura sencilla y económica para Capas y Monolito Modular; Microservicios requiere múltiples instancias o contenedores. |
 | **4. Simplicidad DevOps** (15 %) | 5 | 1 | 4 | Capas y monolito Modular usan un solo pipeline de despliegue, microservicios aumenta la complejidad al gestionar varios servicios y puede requerir herramientas adicionales.|
 | **5. Disponibilidad** (10 %) | 2 | 4 | 3 | microservicios aísla fallos de proceso; monolito Modular requiere colas o almacenamiento local para mitigar caídas. |
 | **6. Rendimiento / Latencia** (10 %) | 4 | 3 | 4 | Monolito modular y capas ejecutan llamadas en memoria; microservicios agrega latencia de red inter-servicio. |
