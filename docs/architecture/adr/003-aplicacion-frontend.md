@@ -14,7 +14,7 @@ El equipo tiene restricción de plazo (1 mes, **R-01**) y 2 desarrolladores (**R
 
 ## Alternativas consideradas
 
-1. **Aplicaciones nativas independientes (Android / iOS):** Excelente rendimiento, pero requiere mantener múltiples códigos base y excede el plazo de 1 mes y la capacidad del equipo (**R-01**, **R-02**).
+1. **Aplicaciones nativas independientes (Android / iOS):** Excelente rendimiento, pero requiere mantener múltiples códigos base y excede el plazo de 1 mes y la capacidad del equipo de 2 personas (**R-01**, **R-02**).
 
 2. **Progressive Web App (PWA) única e instalable:** Un solo código base web con soporte de Service Workers y almacenamiento local (IndexedDB) para operación sin conexión o con red inestable (**QA-02**).
 
@@ -30,7 +30,7 @@ Permitirá a los recicladores y vecinos registrar solicitudes de manera offline 
 
 - Código único para web y móvil que acelera la entrega (**R-01**, **R-02**).
 - No requiere pagos de licencias en tiendas de aplicaciones (**R-03**).
-- Asegura la disponibilidad de registro de solicitudes ante caídas de red (**QA-02**).
+- Favorece la disponibilidad de registro de solicitudes ante caídas de red (**QA-02**).
 
 ### Negativas / riesgos
 

@@ -14,7 +14,7 @@ Además, el atributo de calidad crítico del sistema es la **Modificabilidad (QA
 
 1. **Monolito en Capas (n-tier):** Construcción rápida inicial, pero propenso al acoplamiento entre capas a medida que evoluciona el sistema.
 
-2. **Microservicios:** Aislamiento total de servicios, pero genera una complejidad operativa inmanejable para un equipo de 3 desarrolladores.
+2. **Microservicios:** Favorece un mayor aislamiento entre servicios, pero genera una complejidad operativa elevada para un equipo de 2 desarrolladores.
 
 3. **Monolito Modular:** Despliegue único dividido en módulos independientes por dominio con contratos e interfaces explícitas.
 

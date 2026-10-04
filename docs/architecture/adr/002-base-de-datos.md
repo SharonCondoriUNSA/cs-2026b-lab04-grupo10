@@ -12,7 +12,7 @@ La solución debe ser económica (**R-03**) y mantener la modificabilidad e inde
 
 ## Alternativas consideradas
 
-1. **MongoDB (Base de datos NoSQL documental):** Flexible para documentos JSON, pero carece de soporte nativo para consultas relacionales complejas y consistencia estricta en transacciones de puntos.
+1. **MongoDB (Base de datos NoSQL documental):** Ofrece un esquema flexible para documentos JSON, pero la arquitectura de EcoRecicla AQP prioriza un modelo relacional con transacciones estructuradas (ACID) para garantizar la consistencia en el canje de puntos.
 
 2. **Bases de datos independientes por módulo (Múltiples instancias SQL):** Brinda aislamiento estricto, pero incrementa los costos y el consumo de memoria RAM en un VPS económico (**R-03**).
 
