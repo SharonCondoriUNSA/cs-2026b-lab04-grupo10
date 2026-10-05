@@ -15,13 +15,6 @@ El atributo de calidad crítico identificado es la **modificabilidad**, debido a
 | Paola Adamari Mayta Quispe | Diagramas arquitectónicos, despliegue y bitácora de IA |
 | Joselin Sharon Condori Catunta | Drivers arquitectónicos, matriz de decisión y ADR |
 
-- Solicitudes y Recojo
-- Rutas y Cobertura
-- Puntos y Beneficios
-- Reportes de Toneladas
-
-![Arquitectura de EcoRecicla AQP](docs/architecture/diagramas/img/arquitectura.png)
-
 ## 3. Arquitectura seleccionada
 
 Luego de evaluar las alternativas **Monolito en Capas**, **Microservicios** y **Monolito Modular**, se seleccionó **Monolito Modular**.
