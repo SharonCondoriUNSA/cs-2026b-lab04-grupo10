@@ -82,4 +82,12 @@ Repositorios --> DB
 Solicitudes --> WhatsApp
 Rutas --> Mapas
 
+note right of Negocio
+  <b>Alternativa Descartada</b>
+  Puntaje en Matriz de Decisión: 3.80 / 5.00
+
+  A pesar de su bajo costo y rapidez inicial,
+  presenta riesgo de acoplamiento a mediano plazo,
+  afectando la modificabilidad (QA-01).
+end note
 @enduml
