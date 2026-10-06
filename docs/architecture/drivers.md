@@ -10,15 +10,6 @@
 | RF-04 | Acumular y consultar puntos canjeables por recojos verificados | Vecino | Alta |
 | RF-05 | Generar reportes consolidados de toneladas recicladas por distrito | Municipalidad | Media |
 
-## 2. Atributos de calidad (ordenados por prioridad)
-
-- **Modificabilidad** — Es el atributo crítico porque el sistema debe permitir incorporar nuevos distritos o nuevas reglas de canje de puntos sin modificar los demás módulos.
-
-- **Disponibilidad** — Las solicitudes de recojo deben registrarse y no perderse ante fallas temporales de servicios externos.
-
-- **Rendimiento** — Las consultas de rutas deben responder rápidamente durante las horas pico de recojo.
-
-- **Capacidad de interacción (Usabilidad)** — La interfaz debe ser ágil y accesible para recicladores que utilizan dispositivos móviles durante sus rutas.
 
 ## 2. Atributos de Calidad (QA) 
 - **QA-01 (Modificabilidad - Crítico):** Capacidad de integrar nuevos distritos de Arequipa o modificar reglas de canje en ≤ 2 días-persona sin alterar otros módulos. 
