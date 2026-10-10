@@ -1,0 +1,90 @@
+@startuml clases-solicitudes
+title EcoRecicla AQP - Solicitar el recojo de reciclables (E1)
+skinparam classAttributeIconSize 0
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam classBackgroundColor #EEF8F2
+skinparam classBorderColor #24634B
+skinparam nodesep 35
+skinparam ranksep 45
+hide empty members
+
+' Supuestos: vecino identificado; peso > 0; catálogo local a Solicitudes.
+' Cobertura se consulta solo por su contrato público, sin entidades compartidas.
+' Mapas es opcional y no bloquea el registro. No se guardan datos de perfil.
+class Vecino {
+  - id: UUID
+  + obtenerId(): UUID
+}
+class SolicitudRecojo {
+  - id: UUID
+  - fechaRegistro: DateTime
+  - estado: EstadoSolicitud
+  - ubicacionValidadaPorMapa: Boolean
+  + validarDatos(): Boolean
+  + calcularPesoEstimadoKg(): Decimal
+  + registrarPendiente(): void
+  + marcarUbicacionValidada(): void
+}
+class DetalleReciclable {
+  - pesoEstimadoKg: Decimal
+  + validar(): Boolean
+}
+class MaterialReciclable {
+  - id: UUID
+  - nombre: String
+  - aceptado: Boolean
+  + esAceptado(): Boolean
+}
+class PuntoRecojo {
+  - codigoDistrito: String
+  - latitud: Decimal
+  - longitud: Decimal
+  + coordenadasValidas(): Boolean
+}
+enum EstadoSolicitud {
+  PENDIENTE
+}
+class ServicioSolicitudes <<aplicacion>> {
+  + solicitarRecojo(vecino: Vecino, punto: PuntoRecojo, detalles: List<DetalleReciclable>): SolicitudRecojo
+}
+interface RepositorioSolicitudes <<puerto persistencia>> {
+  + guardar(solicitud: SolicitudRecojo): void
+}
+interface CoberturaRecojo <<contrato publico Rutas/Cobertura>> {
+  + atiendeDistrito(codigoDistrito: String): Boolean
+}
+interface ServicioMapas <<puerto externo>> {
+  + validarUbicacion(latitud: Decimal, longitud: Decimal): Boolean
+}
+class AdaptadorMapas <<adaptador HTTPS>> {
+  - tiempoEsperaMs: Integer
+  + validarUbicacion(latitud: Decimal, longitud: Decimal): Boolean
+}
+
+Vecino "1" -- "0..*" SolicitudRecojo : solicita
+SolicitudRecojo "1" *-- "1..*" DetalleReciclable : contiene
+SolicitudRecojo "1" *-- "1" PuntoRecojo : ubica el recojo
+DetalleReciclable "0..*" --> "1" MaterialReciclable : identifica
+SolicitudRecojo ..> EstadoSolicitud : tipo de estado
+ServicioSolicitudes ..> Vecino : identifica
+ServicioSolicitudes ..> PuntoRecojo : valida coordenadas
+ServicioSolicitudes ..> DetalleReciclable : valida pesos y materiales
+ServicioSolicitudes ..> SolicitudRecojo : crea y valida
+ServicioSolicitudes ..> RepositorioSolicitudes : guarda
+ServicioSolicitudes ..> CoberturaRecojo : consulta contrato
+ServicioSolicitudes ..> ServicioMapas : comprueba opcionalmente
+ServicioMapas <|.. AdaptadorMapas
+
+note bottom of ServicioSolicitudes
+  Valida detalles, coordenadas y cobertura antes de guardar.
+  Datos inválidos o sin cobertura: error sin persistencia.
+  Mapas sin respuesta o sin validar: conservar PENDIENTE,
+  informar revisión de ubicación; nunca perder el registro.
+end note
+note bottom of SolicitudRecojo
+  Solo E1: registro en PENDIENTE.
+  Detalles y punto pertenecen exclusivamente a la solicitud.
+  La persistencia pertenece al esquema de Solicitudes.
+end note
+@enduml
