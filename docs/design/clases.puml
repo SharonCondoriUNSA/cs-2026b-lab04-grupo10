@@ -1,5 +1,5 @@
 @startuml clases-solicitudes
-title EcoRecicla AQP - Solicitar el recojo de reciclables (E1 y E2)
+title EcoRecicla AQP - Solicitud de recojo (E1-E3)
 skinparam classAttributeIconSize 0
 skinparam shadowing false
 skinparam defaultFontName Arial
@@ -21,10 +21,19 @@ class SolicitudRecojo {
   - fechaRegistro: DateTime
   - estado: EstadoSolicitud
   - ubicacionValidadaPorMapa: Boolean
+  - recicladorId: UUID [0..1]
+  - fechaRecojo: DateTime [0..1]
+  - pesoRealKg: Decimal [0..1]
+  - acreditacionId: UUID [0..1]
   + validarDatos(): Boolean
   + calcularPesoEstimadoKg(): Decimal
   + registrarPendiente(): void
   + marcarUbicacionValidada(): void
+  + asignarReciclador(recicladorId: UUID): void
+  + registrarRecojo(fechaRecojo: DateTime): void
+  + registrarPesaje(pesoRealKg: Decimal): void
+  + confirmarPuntosAcreditados(acreditacionId: UUID): void
+  + cerrar(): void
 }
 class DetalleReciclable {
   - pesoEstimadoKg: Decimal
@@ -44,6 +53,10 @@ class PuntoRecojo {
 }
 enum EstadoSolicitud {
   PENDIENTE
+  ASIGNADA
+  RECOGIDA
+  PESADA
+  PUNTOS_ACREDITADOS
 }
 class ServicioSolicitudes <<aplicacion>> {
   + solicitarRecojo(vecino: Vecino, punto: PuntoRecojo, detalles: List<DetalleReciclable>): SolicitudRecojo
@@ -95,8 +108,9 @@ note bottom of ServicioSolicitudes
   informar revisión de ubicación; nunca perder el registro.
 end note
 note bottom of SolicitudRecojo
-  E1 y E2: registro en PENDIENTE.
+  E1 y E2 registran PENDIENTE; E3 define el ciclo completo.
   Detalles y punto pertenecen exclusivamente a la solicitud.
   La persistencia pertenece al esquema de Solicitudes.
+  Puntos/Beneficios acredita; Solicitudes solo confirma su referencia.
 end note
 @enduml
