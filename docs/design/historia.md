@@ -46,6 +46,8 @@ RepositorioSolicitudes es un puerto de persistencia y CoberturaRecojo es el cont
 - [Imagen de la secuencia](img/secuencia-solicitar-recojo.png)
 - [Máquina de estados (E3)](estados-solicitud.mmd)
 - [Imagen de estados](img/estados-solicitud.png)
+- [Actividades: ruta diaria (E4)](actividades-ruta-diaria.puml)
+- [Imagen de actividades](img/actividades-ruta-diaria.png)
 
 ## Ampliación para E2
 
@@ -71,3 +73,15 @@ Las guardas precisan el diseño; no son reglas textuales de la guía. Cada opera
 El peso real se registra después del recojo y no sobrescribe el peso estimado del detalle. Puntos/Beneficios calcula y acredita los puntos; Solicitudes solo registra la referencia confirmada, sin compartir tablas ni recalcular beneficios. `cerrar()` termina este flujo tras la acreditación: no borra la solicitud ni agrega otro valor a EstadoSolicitud. No se modelan cancelación, reintentos ni reasignación, porque la guía no precisa sus reglas.
 
 Hay cinco estados de negocio, seis transiciones con guardas, inicio y final. Todos los estados tienen salida. Para una implementación futura se derivan seis comprobaciones de avance válido, al menos una negativa por cada guarda y pruebas de llamadas fuera de orden. Aquí se verifica el modelo, no se ejecutan pruebas de una aplicación.
+
+## E4 - Ruta diaria del reciclador
+
+La última columna de la tabla 7 indica «Ruta diaria del reciclador». El diagrama de actividades muestra tres particiones: Reciclador, Vecino y Sistema EcoRecicla AQP. El sistema representa el monolito modular; cada colaboración con Rutas/Cobertura, Puntos/Beneficios y Reportes usa sus contratos públicos, sin cambiar el ADR-001.
+
+El recorrido comienza con los recojos ya asignados. Si no hay paradas, se informa y termina. En cada parada se comprueba la disponibilidad de entrega. Si no se entregan materiales, se registra una incidencia y se conserva ASIGNADA para revisión; no se inventa un estado Cancelada. Si se entregan, el reciclador registra fecha y peso real. La PWA conserva el registro local según QA-02 y ADR-003; sin conexión queda pendiente, y al sincronizar se aplican las mismas validaciones antes de confirmar estados del servidor.
+
+Un recojo válido pasa a RECOGIDA y un peso positivo a PESADA, coherentes con E3. La acreditación de puntos y la comunicación del pesaje a Reportes se ejecutan en ramas paralelas delimitadas por fork/join. Un fallo de acreditación conserva PESADA; un fallo de comunicación a Reportes conserva el pesaje y deja su comunicación pendiente. Marcar un registro local como sincronizado confirma que el servidor recibió los datos del recojo, sin implicar que todos los trabajos posteriores estén completos.
+
+Son supuestos del modelo el pesaje en el punto de recojo, las incidencias de entrega, el tratamiento de registros rechazados y el mecanismo de pendientes; no se afirma una implementación. No se define aquí la optimización de rutas, la fórmula de puntos ni el sistema de reportes. Las actividades de comunicación y revisión no son mensajes UML sujetos a C1; el diagrama de clases conserva las operaciones de cambio de estado.
+
+**Estado de E4:** borrador técnico verificado; revisión con la compañera pendiente. El usuario confirmó que todavía no se realizó esa revisión y pidió continuar con el borrador. Para completar el requisito de la guía queda revisar el proceso con la compañera y registrar un cambio concreto surgido de esa revisión. No se registra una validación humana como realizada ni se atribuyen a ella los ajustes técnicos del asistente.

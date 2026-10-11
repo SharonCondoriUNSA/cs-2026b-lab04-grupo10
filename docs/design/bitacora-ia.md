@@ -127,3 +127,19 @@ Se verificó el modelo y su renderización; no hay implementación, pruebas func
 **Git:** rama lab05-e3-estados creada desde E2 c4f01eb. Se preparan solo las rutas de diseño de E3 y los ajustes de consistencia, se revisa el diff y se ejecuta git diff --cached --check. Se conserva fuera del commit el cambio de despliegue.py; AgroConecta permanece intacto. Commit local `E3: estados`, sin push, PR, integración ni E4-E8.
 
 **Revisión posterior del archivo aportado por el usuario:** se encontró img/estados-solicitud.png y la eliminación del SVG anterior. Se revisó visualmente el PNG (1592 x 3276): contiene título, cinco estados, inicio, final, las seis operaciones y guardas y las dos notas, sin recortes y con texto legible. Se conserva el reemplazo realizado por el usuario, se actualiza el enlace de historia.md y se incorpora al commit local E3. Los registros previos de exportación SVG describen el proceso anterior, no el formato final entregado. No se verificó cómo obtuvo el usuario el PNG ni se afirma que fue descargado automáticamente por Codex.
+
+## E4 - Actividades de la ruta diaria (2026-10-10)
+
+**Herramienta:** Codex, esta conversación. **Instrucción recibida:** «Ahora el E4». Se tomó el foco «Ruta diaria del reciclador» de la tabla 7, los requisitos E4 de la guía leídos durante E3, los drivers RF-02 a RF-05 y QA-02, ADR-001 y el ciclo de estados E3. El ejemplo de actividades AgroConecta solo se leyó como referencia de sintaxis.
+
+**Propuesta:** tres particiones, consulta de ruta y recorrido de paradas con while, decisiones de disponibilidad, entrega, conexión, validación de recojo, peso y acreditación; fork/join para acreditación y comunicación a Reportes. Sin conexión se conserva el registro en PWA sin anticipar estados del servidor; se documenta su procesamiento al sincronizar. Ante errores se conserva el estado válido previo, sin añadir estados a E3.
+
+**Revisión y cambios efectivos del asistente:** se aclaró que un fallo de comunicación a Reportes deja un pendiente sin perder el pesaje. Se ordenaron las particiones para situar al Vecino junto al Reciclador y se ajustó el ancho de texto para facilitar lectura. Estos ajustes son del asistente, no de una revisión humana.
+
+**Verificaciones:** comprobación PlantUML -checkonly y renderización PNG local con el entorno ya documentado. Revisión visual de actividades, decisiones, bucle y barras de fork/join. Correspondencia de los cambios de estado con E3 y de los contratos entre módulos con ADR-001. No se desarrollan E5-E8 ni se modifica Lab04.
+
+**Revisión humana E4:** pendiente. Se solicitó al usuario que actúe como vecino o reciclador, revise el flujo y señale un cambio concreto, incluyendo el lugar/momento del pesaje. No se inventa una respuesta, identidad de compañero ni validación del proceso real.
+
+**Aclaración recibida del usuario:** «Todavía no hemos realizado la revisión con mi compañera. Deja ese apartado como pendiente y continúa con el borrador, sin registrar una validación humana como realizada». Se mantiene E4 como borrador técnico verificado y se deja pendiente la revisión con la compañera y el cambio que resulte de ella. Esta aclaración no valida el proceso ni confirma el supuesto de pesaje en el punto de recojo.
+
+**Git:** rama lab05-e4-actividades creada desde E3 522f3b6. Se conserva el cambio de despliegue.py; AgroConecta no se modifica ni se prepara para commit. La preparación y revisión se limitan a las rutas de actividades, su PNG, historia y bitácora. No se hace push, PR ni integración.
