@@ -77,3 +77,33 @@ No se encontraron ni se simularon propuestas de DNI, herencia incorrecta o asoci
 ## Límites y pendiente
 
 Se verificó el modelo y su renderización; no hay implementación, pruebas funcionales ni integración real con mapas o persistencia. Los supuestos de negocio requieren validación del equipo. La actualización de main queda pendiente por el cambio preexistente; no se hace stash, push, PR, integración, etiqueta ni E2-E8.
+
+## E2 - Secuencia del flujo crítico (2026-10-10)
+
+**Herramienta:** Codex, esta conversación. **Instrucción recibida:** «okey gracias ahora hagamos E2». Se consultaron de nuevo los requisitos E2 de la página 16 y la historia y clases actuales. El registro E1 anterior describe su alcance en el momento de realizarlo; esta sección documenta la continuación autorizada.
+
+**Propuesta:** secuencia de solicitud con actor, PWA, controlador, servicio, punto, detalle, material, contratos de cobertura y mapas, solicitud, repositorio y puerto de aviso interno (12 líneas de vida). Incluye validación por detalle con `loop`, alternativas de datos inválidos, falta de cobertura y mapas sin respuesta, retornos y aviso asíncrono tras persistir. El aviso dentro de la aplicación es un supuesto añadido para E2, sin teléfonos ni cambios al ADR-001.
+
+**Correcciones efectivas:** se añadieron PWA.solicitarRecojo, SolicitudController.registrarSolicitud y NotificadorSolicitud.confirmarRegistro al diagrama de clases con sus dependencias para satisfacer C1. Se regeneró su PNG. Se actualizó el alcance introductorio de historia.md porque la secuencia ya existe. No se añadieron estados ni funcionalidades E3-E8.
+
+**Verificación C1:** todas las llamadas de operación tienen receptor y operación declarada en clases.puml. El primer comprobador por expresión regular contabilizaba solo cuatro llamadas porque omitía las líneas indentadas; se corrigió su patrón para aceptar espacios iniciales y comprobar todas las llamadas, sin cambiar la secuencia por ese defecto del comprobador. Los retornos, mensajes de presentación al actor y la nota de construcción no son llamadas de operaciones. La llamada a mapas se corresponde tanto con el puerto como con la operación del adaptador.
+
+| Receptor | Operaciones usadas en la secuencia |
+|---|---|
+| PWA | solicitarRecojo |
+| SolicitudController | registrarSolicitud |
+| ServicioSolicitudes | solicitarRecojo |
+| PuntoRecojo | coordenadasValidas |
+| DetalleReciclable | validar |
+| MaterialReciclable | esAceptado |
+| CoberturaRecojo | atiendeDistrito |
+| ServicioMapas / AdaptadorMapas | validarUbicacion |
+| SolicitudRecojo | validarDatos, marcarUbicacionValidada, registrarPendiente |
+| RepositorioSolicitudes | guardar |
+| NotificadorSolicitud | confirmarRegistro |
+
+**Otras verificaciones:** PlantUML local `-checkonly -charset UTF-8` y renderización PNG de clases y secuencia con el JAR y Java ya documentados; revisión visual de ambos PNG sin texto cortado. Se revisaron las ramas de error para confirmar que no persisten y CA-04 para confirmar que el fallo de mapas no descarta el registro. No se ejecutaron pruebas de una aplicación, pues son modelos UML.
+
+**Git:** rama nueva lab05-e2-secuencia basada en el commit E1 b8a2d2f. El cambio preexistente de despliegue.py se conserva fuera del índice. Los ejemplos de AgroConecta solo se leyeron. Se revisaron el diff y las rutas preparadas y se ejecutó `git diff --cached --check`; se agregó cada archivo por su ruta. El commit inicial utilizó el mensaje de la guía `E2: secuencia`, sin push, PR ni integración en esa continuación.
+
+**Solicitud posterior del usuario:** se autorizó cambiar el mensaje y subir la rama al repositorio. El mensaje elegido es `feat: E2 Lab05 - secuencia de solicitud de recojo de reciclables`. Esta indicación sustituye el mensaje exacto de la guía. Se mantiene fuera del commit el cambio de despliegue.py y no se abre PR ni se integra la rama.

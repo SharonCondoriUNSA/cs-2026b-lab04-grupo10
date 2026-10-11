@@ -2,7 +2,7 @@
 
 ## Fuente y alcance
 
-La tabla 7 de la guía del Lab05, página 16, indica para el caso 10 EcoRecicla AQP la historia de la columna E2: **Solicitar el recojo de reciclables**. Se desarrolla únicamente E1, tomando RF-01 y el monolito modular del ADR-001 del Lab04. La columna E2 identifica la historia, no se desarrolla aquí el ejercicio de secuencia.
+**Referencia:** Caso 10 EcoRecicla AQP, «Solicitar el recojo de reciclables» (tabla 7 de la guía del Lab05, página 16). La historia se mantiene como base de E1 y E2, coherente con RF-01 y el ADR-001 del Lab04.
 
 ## HU-01
 
@@ -42,3 +42,11 @@ RepositorioSolicitudes es un puerto de persistencia y CoberturaRecojo es el cont
 - [Diagrama fuente](clases.puml)
 - [Imagen renderizada](img/clases-solicitudes.png)
 - [Registro de IA y verificaciones](bitacora-ia.md)
+- [Secuencia del flujo de solicitud (E2)](secuencia-solicitar-recojo.puml)
+- [Imagen de la secuencia](img/secuencia-solicitar-recojo.png)
+
+## Ampliación para E2
+
+PWA y SolicitudController reciben y delegan la petición. NotificadorSolicitud expone un aviso interno asíncrono de confirmación de registro, asociado a la sesión identificada del vecino. El servicio lo solicita después de confirmar la persistencia; el aviso no sustituye la respuesta directa de éxito ni exige datos de contacto. Estos elementos pertenecen al flujo de solicitud, sin modificar las decisiones del Lab04.
+
+La secuencia cubre CA-01 a CA-04: valida cada detalle en un `loop`, separa con `alt` los errores de datos y de cobertura, y conserva el registro cuando mapas falla. Los errores de datos o cobertura no alcanzan `guardar()`. El aviso `confirmarRegistro()` usa `->>` y no bloquea la respuesta. Se asume persistencia disponible; no se modelan fallos de base de datos, autenticación ni entrega garantizada del aviso. La construcción de SolicitudRecojo se documenta en una nota y no se representa como llamada de negocio.
