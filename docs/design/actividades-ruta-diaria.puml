@@ -1,0 +1,81 @@
+@startuml actividades-ruta-diaria
+title EcoRecicla AQP - Ruta diaria del reciclador (E4)
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam ActivityBackgroundColor #EEF8F2
+skinparam ActivityBorderColor #24634B
+skinparam ArrowColor #455A64
+skinparam wrapWidth 180
+
+|Reciclador|
+|Vecino|
+|Sistema EcoRecicla AQP|
+|Reciclador|
+start
+:Solicitar la ruta del día;
+|Sistema EcoRecicla AQP|
+:Consultar Rutas/Cobertura por contrato público\ny mostrar recojos asignados (ASIGNADA);
+if (¿Hay recojos asignados?) then (sí)
+  |Reciclador|
+  while (¿Quedan paradas por visitar?) is (sí)
+    :Seleccionar la siguiente parada\ny acudir al punto de recojo;
+    |Vecino|
+    if (¿Vecino disponible para entregar los reciclables?) then (sí)
+      :Entregar los materiales solicitados;
+      |Reciclador|
+      :Confirmar recojo y fecha;\nmedir e ingresar el peso real;
+      |Sistema EcoRecicla AQP|
+      :Guardar el registro localmente en la PWA;
+      if (¿Hay conexión con el servidor?) then (sí)
+        :Sincronizar el registro identificado\ny validar asignación y fecha del recojo;
+        if (¿Recojo válido para esta solicitud?) then (sí)
+          :registrarRecojo(fechaRecojo);\npersistir RECOGIDA;
+          if (¿Peso real mayor que cero?) then (sí)
+            :registrarPesaje(pesoRealKg);\npersistir PESADA;
+            fork
+              :Solicitar acreditación a Puntos/Beneficios\npor su contrato público;
+              if (¿Acreditación confirmada?) then (sí)
+                :confirmarPuntosAcreditados(acreditacionId);\npersistir PUNTOS_ACREDITADOS y cerrar();
+              else (no)
+                :Conservar PESADA;\nregistrar acreditación pendiente;
+              endif
+            fork again
+              :Comunicar pesaje validado a Reportes\npor contrato público, sin duplicar el registro;
+              note right
+                Si falla la comunicación, conservar el pesaje
+                y dejar pendiente su comunicación a Reportes.
+              end note
+            end fork
+            :Marcar el registro local como sincronizado;
+          else (no)
+            :Conservar RECOGIDA;\ninformar peso inválido y pesaje pendiente;
+          endif
+        else (no)
+          :Conservar estado del servidor;\nretener el registro local para revisión;
+        endif
+      else (no)
+        :Mantener registro local pendiente;\nsincronizar al recuperar la conexión;
+        note right
+          El registro pendiente se procesa con las mismas
+          validaciones al sincronizar. No se acreditan puntos
+          ni se confirman estados del servidor sin respuesta.
+        end note
+      endif
+    else (no)
+      |Reciclador|
+      :Registrar incidencia\n«Entrega no disponible»;
+      |Sistema EcoRecicla AQP|
+      :Guardar la incidencia localmente en la PWA;\nmantener la solicitud ASIGNADA\npara su posterior reprogramación;
+      |Reciclador|
+      :Continuar con la siguiente parada;
+    endif
+    |Reciclador|
+  endwhile (no)
+  :Finalizar recorrido del día;
+  |Sistema EcoRecicla AQP|
+  :Mostrar recojos confirmados y registros pendientes;
+else (no)
+  :Informar que no hay recojos asignados para el día;
+endif
+stop
+@enduml
