@@ -138,8 +138,18 @@ Se verificó el modelo y su renderización; no hay implementación, pruebas func
 
 **Verificaciones:** comprobación PlantUML -checkonly y renderización PNG local con el entorno ya documentado. Revisión visual de actividades, decisiones, bucle y barras de fork/join. Correspondencia de los cambios de estado con E3 y de los contratos entre módulos con ADR-001. No se desarrollan E5-E8 ni se modifica Lab04.
 
-**Revisión humana E4:** pendiente. Se solicitó al usuario que actúe como vecino o reciclador, revise el flujo y señale un cambio concreto, incluyendo el lugar/momento del pesaje. No se inventa una respuesta, identidad de compañero ni validación del proceso real.
+**Revisión humana E4 (estado al 2026-10-10):** pendiente en ese momento. Se solicitó al usuario que actúe como vecino o reciclador, revise el flujo y señale un cambio concreto, incluyendo el lugar/momento del pesaje. La actualización comunicada el 2026-10-11 se registra al final de esta sección.
 
 **Aclaración recibida del usuario:** «Todavía no hemos realizado la revisión con mi compañera. Deja ese apartado como pendiente y continúa con el borrador, sin registrar una validación humana como realizada». Se mantiene E4 como borrador técnico verificado y se deja pendiente la revisión con la compañera y el cambio que resulte de ella. Esta aclaración no valida el proceso ni confirma el supuesto de pesaje en el punto de recojo.
 
 **Git:** rama lab05-e4-actividades creada desde E3 522f3b6. Se conserva el cambio de despliegue.py; AgroConecta no se modifica ni se prepara para commit. La preparación y revisión se limitan a las rutas de actividades, su PNG, historia y bitácora. No se hace push, PR ni integración.
+
+**Actualización solicitada el 2026-10-11:** el usuario informó que su compañera revisó E4 y proporcionó el resultado y el bloque de validación siguiente para incorporarlos. Este registro se basa en lo comunicado por el usuario; el asistente no presenció la simulación. La rama de entrega no disponible ya existía; se precisaron sus etiquetas para identificar la ausencia del vecino, nombrar la incidencia, indicar almacenamiento en la PWA y posterior reprogramación conservando ASIGNADA. Se regeneró el PNG, se comprobó la sintaxis y se revisó visualmente. No se encontraron contradicciones con clases y estados: la rama no invoca registrarRecojo ni cambia a RECOGIDA. El detalle de reprogramación queda fuera del modelo actual. Se conservan las notas históricas anteriores como registro del estado previo, no como pendientes actuales.
+
+### Validación del proceso con el usuario
+
+Se revisó el diagrama de actividades simulando el recorrido del reciclador durante una jornada de recojo.
+
+Resultado de la revisión: Se identificó la necesidad de contemplar el caso en que el vecino no se encuentre disponible en el punto de recojo.
+
+Ajuste incorporado: Se documentó la rama de decisión para registrar la incidencia «Entrega no disponible», almacenar el registro localmente en la PWA y mantener la solicitud en estado ASIGNADA para su posterior reprogramación.

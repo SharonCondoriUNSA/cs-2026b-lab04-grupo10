@@ -20,7 +20,7 @@ if (¿Hay recojos asignados?) then (sí)
   while (¿Quedan paradas por visitar?) is (sí)
     :Seleccionar la siguiente parada\ny acudir al punto de recojo;
     |Vecino|
-    if (¿Puede entregar los reciclables?) then (sí)
+    if (¿Vecino disponible para entregar los reciclables?) then (sí)
       :Entregar los materiales solicitados;
       |Reciclador|
       :Confirmar recojo y fecha;\nmedir e ingresar el peso real;
@@ -63,9 +63,11 @@ if (¿Hay recojos asignados?) then (sí)
       endif
     else (no)
       |Reciclador|
-      :Anotar entrega no disponible;\ncontinuar con la siguiente parada;
+      :Registrar incidencia\n«Entrega no disponible»;
       |Sistema EcoRecicla AQP|
-      :Conservar ASIGNADA;\nguardar incidencia local para revisión;
+      :Guardar la incidencia localmente en la PWA;\nmantener la solicitud ASIGNADA\npara su posterior reprogramación;
+      |Reciclador|
+      :Continuar con la siguiente parada;
     endif
     |Reciclador|
   endwhile (no)
