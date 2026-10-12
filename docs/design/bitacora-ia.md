@@ -153,3 +153,19 @@ Se revisó el diagrama de actividades simulando el recorrido del reciclador dura
 Resultado de la revisión: Se identificó la necesidad de contemplar el caso en que el vecino no se encuentre disponible en el punto de recojo.
 
 Ajuste incorporado: Se documentó la rama de decisión para registrar la incidencia «Entrega no disponible», almacenar el registro localmente en la PWA y mantener la solicitud en estado ASIGNADA para su posterior reprogramación.
+
+# E6 - Round-trip con IA e ingeniería directa/inversa (2026-10-12)
+**Herramienta:** Gemini Notebook (asistente de IA). **Instrucción recibida:** Generación del esqueleto en Python a partir del diagrama de clases (`clases.puml`) y análisis de diferencias Round-Trip.
+
+### Prompt IA utilizado
+> "Actúa como desarrollador senior de Python. A partir del diagrama de clases PlantUML de Solicitudes (`docs/design/clases.puml`), genera el esqueleto de código en Python 3.10+ en `src/solicitudes/dominio.py` utilizando dataclasses, enums y clases base abstractas (ABC). Respeta las firmas de métodos, las excepciones NotImplementedError para adaptadores y aplica las convenciones PEP 8."
+
+### Verificación y diferencias encontradas (Round-Trip)
+Se realizó la comparación entre el diagrama UML de diseño y el código Python generado, registrando las hallazgos en `docs/design/round-trip.md`:
+- **Nombres:** Conversión de `camelCase` a `snake_case` siguiendo PEP 8 (regla C5).
+- **Composición:** Mantenida mediante `List[DetalleReciclable]` en Python.
+- **Multiplicidades:** Reforzadas mediante validaciones explícitas dentro de `validar_datos()`.
+
+### Verificaciones realizadas y Git
+- **Sintaxis Python:** comprobada mediante compilación sin errores.
+- **Git:** cambios preparados en la rama `lab05-e6-roundtrip` basada en `main`.
