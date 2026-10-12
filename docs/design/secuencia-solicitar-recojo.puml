@@ -1,0 +1,82 @@
+@startuml secuencia-solicitar-recojo
+title EcoRecicla AQP - Solicitar el recojo de reciclables (E2)
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam sequenceMessageAlign center
+skinparam maxMessageSize 65
+autonumber
+actor Vecino as V
+participant PWA as UI
+participant SolicitudController as C
+participant ServicioSolicitudes as S
+participant PuntoRecojo as U
+participant DetalleReciclable as D
+participant MaterialReciclable as M
+participant CoberturaRecojo as B
+participant "ServicioMapas\n(AdaptadorMapas)" as G
+participant SolicitudRecojo as P
+participant RepositorioSolicitudes as R
+participant NotificadorSolicitud as N
+
+V -> UI : solicitarRecojo(vecino, punto, detalles)
+UI -> C : registrarSolicitud(vecino, punto, detalles)
+C -> S : solicitarRecojo(vecino, punto, detalles)
+S -> U : coordenadasValidas()
+U --> S : coordenadasValidas
+loop por cada detalle ingresado (cero iteraciones si vacío)
+  S -> D : validar()
+  D -> M : esAceptado()
+  M --> D : materialAceptado
+  D --> S : peso > 0 y materialAceptado
+end
+alt detalles vacíos, algún detalle inválido o coordenadas inválidas (CA-02)
+  S --> C : error de validación indicando el dato inválido
+  C --> UI : 422 Datos inválidos
+  UI --> V : Mostrar el dato que debe corregirse
+else datos válidos
+  S -> B : atiendeDistrito(punto.codigoDistrito)
+  B --> S : tieneCobertura
+  alt distrito sin cobertura (CA-03)
+    S --> C : error de cobertura
+    C --> UI : 422 Distrito sin cobertura
+    UI --> V : Informar que el distrito no está atendido
+  else distrito con cobertura
+    note over S,P
+      El servicio construye la solicitud con UUID y fecha.
+      Los detalles y el punto pasan a ser datos propios del registro.
+      La construcción no es una operación de negocio.
+    end note
+    S -> P : validarDatos()
+    P --> S : true (datos ya verificados)
+    S -> G : validarUbicacion(punto.latitud, punto.longitud)
+    alt mapas valida el punto
+      G --> S : true
+      S -> P : marcarUbicacionValidada()
+      P --> S : completado
+    else mapas no valida el punto
+      G --> S : false
+      note over S,P : Mantener ubicación no validada e informar revisión
+    else mapas no responde (CA-04)
+      note over S,G : Vence tiempoEsperaMs del adaptador; no hay retorno del proveedor
+      note over S,P : Continuar con las coordenadas ingresadas; comprobación pendiente
+    end
+    S -> P : registrarPendiente()
+    P --> S : completado (PENDIENTE)
+    S -> R : guardar(solicitud)
+    R --> S : persistencia confirmada
+    S ->> N : confirmarRegistro(solicitud.id)
+    note right of N
+      Aviso interno asíncrono asociado a la sesión del vecino.
+      Sin teléfono ni servicio externo adicional.
+      No bloquea la respuesta; fallo del aviso no revierte el registro.
+    end note
+    S --> C : solicitud PENDIENTE
+    C --> UI : 201 Creada: id y ubicacionValidadaPorMapa
+    UI --> V : Confirmar id; si mapa no validó, informar comprobación pendiente
+  end
+end
+note over S,R
+  Ninguna rama de error de datos o cobertura llama a guardar().
+  Éxito CA-01 y fallo externo CA-04 solo se confirman tras persistir.
+end note
+@enduml

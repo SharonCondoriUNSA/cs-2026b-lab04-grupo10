@@ -1,5 +1,5 @@
 @startuml clases-solicitudes
-title EcoRecicla AQP - Solicitar el recojo de reciclables (E1)
+title EcoRecicla AQP - Solicitar el recojo de reciclables (E1 y E2)
 skinparam classAttributeIconSize 0
 skinparam shadowing false
 skinparam defaultFontName Arial
@@ -48,6 +48,15 @@ enum EstadoSolicitud {
 class ServicioSolicitudes <<aplicacion>> {
   + solicitarRecojo(vecino: Vecino, punto: PuntoRecojo, detalles: List<DetalleReciclable>): SolicitudRecojo
 }
+class PWA <<presentacion>> {
+  + solicitarRecojo(vecino: Vecino, punto: PuntoRecojo, detalles: List<DetalleReciclable>): void
+}
+class SolicitudController <<controlador>> {
+  + registrarSolicitud(vecino: Vecino, punto: PuntoRecojo, detalles: List<DetalleReciclable>): SolicitudRecojo
+}
+interface NotificadorSolicitud <<puerto aviso interno>> {
+  + confirmarRegistro(solicitudId: UUID): void
+}
 interface RepositorioSolicitudes <<puerto persistencia>> {
   + guardar(solicitud: SolicitudRecojo): void
 }
@@ -74,6 +83,9 @@ ServicioSolicitudes ..> SolicitudRecojo : crea y valida
 ServicioSolicitudes ..> RepositorioSolicitudes : guarda
 ServicioSolicitudes ..> CoberturaRecojo : consulta contrato
 ServicioSolicitudes ..> ServicioMapas : comprueba opcionalmente
+PWA ..> SolicitudController : envia solicitud
+SolicitudController ..> ServicioSolicitudes : delega
+ServicioSolicitudes ..> NotificadorSolicitud : avisa tras persistir
 ServicioMapas <|.. AdaptadorMapas
 
 note bottom of ServicioSolicitudes
@@ -83,7 +95,7 @@ note bottom of ServicioSolicitudes
   informar revisión de ubicación; nunca perder el registro.
 end note
 note bottom of SolicitudRecojo
-  Solo E1: registro en PENDIENTE.
+  E1 y E2: registro en PENDIENTE.
   Detalles y punto pertenecen exclusivamente a la solicitud.
   La persistencia pertenece al esquema de Solicitudes.
 end note
