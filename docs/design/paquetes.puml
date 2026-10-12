@@ -1,0 +1,37 @@
+@startuml paquetes
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+
+title EcoRecicla AQP — Paquetes del monolito modular (vista de desarrollo)
+
+package "ecorecicla" {
+    package "solicitudes" as SOL
+    package "rutas_cobertura" as RUT
+    package "puntos_beneficios" as PUN
+    package "reportes" as REP
+    package "notificaciones" as NOT
+    package "compartido" as COM
+}
+
+' Dependencias de Solicitudes hacia contratos públicos y puertos
+SOL ..> RUT : consulta contrato publico\nCoberturaRecojo
+SOL ..> PUN : invoca\nconfirmarPuntosAcreditados()
+SOL ..> NOT : envia aviso asincrono\nNotificadorSolicitud
+SOL ..> COM : utiliza tipos compartidos
+
+' Dependencias de otros módulos
+REP ..> SOL : consulta métricas y toneladas
+RUT ..> COM : utiliza tipos compartidos
+PUN ..> COM : utiliza tipos compartidos
+NOT ..> COM : utiliza tipos compartidos
+REP ..> COM : utiliza tipos compartidos
+
+note bottom of SOL
+  Regla C4 (ADR-001):
+  Sin dependencias cíclicas.
+  Los módulos consumen únicamente los
+  contratos públicos e interfaces expuestas.
+end note
+
+@enduml
