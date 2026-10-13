@@ -39,7 +39,7 @@ Los módulos principales son:
 Las principales decisiones del proyecto se encuentran documentadas mediante ADR:
 
 - [ADR-001 — Adopción del Monolito Modular](docs/architecture/adr/001-estilo-arquitectonico.md)
-- [ADR-002 — PostgreSQL con esquemas aislados por módulo](docs/architecture/adr/002-base-datos.md)
+- [ADR-002 — PostgreSQL con esquemas aislados por módulo](docs/architecture/adr/002-base-de-datos.md)
 - [ADR-003 — Progressive Web App (PWA)](docs/architecture/adr/003-aplicacion-frontend.md)
 
 ---
@@ -66,18 +66,45 @@ En esta sección se consolidan los artefactos de diseño orientado a objetos y m
 
 ### Diagrama de Estados de la Solicitud
 
-![Diagrama de Estados de la Solicitud](docs/design/img/estados.png)
+```mermaid
+stateDiagram-v2
+    direction TB
+    state "Pendiente" as PENDIENTE
+    state "Asignada" as ASIGNADA
+    state "Recogida" as RECOGIDA
+    state "Pesada" as PESADA
+    state "PuntosAcreditados" as PUNTOS_ACREDITADOS
+
+    [*] --> PENDIENTE: registrarPendiente() [datosValidos y coberturaConfirmada]
+    PENDIENTE --> ASIGNADA: asignarReciclador(recicladorId) [recicladorId valido]
+    ASIGNADA --> RECOGIDA: registrarRecojo(fechaRecojo) [recojo confirmado y fecha valida]
+    RECOGIDA --> PESADA: registrarPesaje(pesoRealKg) [pesoRealKg > 0]
+    PESADA --> PUNTOS_ACREDITADOS: confirmarPuntosAcreditados(acreditacionId) [acreditacion confirmada por Puntos/Beneficios]
+    PUNTOS_ACREDITADOS --> [*]: cerrar() [acreditacionId registrada]
+
+    note right of PENDIENTE
+        Mapas puede seguir pendiente sin impedir el registro.
+        Datos invalidos o sin cobertura no crean la solicitud.
+    end note
+    note right of PESADA
+        Peso real, distinto del peso estimado de E1.
+        Puntos/Beneficios calcula y acredita los puntos.
+        Solicitudes solo registra la confirmacion.
+    end note
+```
+
+![Diagrama de Estados de la Solicitud](docs/design/img/estados-solicitud.png)
 
 ### Índice de Entregables de Diseño y Diagramas (E1 al E7)
 
 | Entregable | Artefacto / Diagramas de Diseño | Enlaces a Archivos |
 |---|---|---|
-| **E1** | Historia de Usuario y Diagrama de Clases | [`docs/design/historia.md`](docs/design/historia.md) \| [`docs/design/clases.puml`](docs/design/clases.puml) \| [`docs/design/img/clases.png`](docs/design/img/clases.png) |
-| **E2** | Diagrama de Secuencia (Solicitar Recojo) | [`docs/design/secuencia-solicitar-recojo.puml`](docs/design/secuencia-solicitar-recojo.puml) \| [`docs/design/img/secuencia.png`](docs/design/img/secuencia.png) |
-| **E3** | Máquina de Estados (Ciclo de Vida) | [`docs/design/estados-solicitud.mmd`](docs/design/estados-solicitud.mmd) \| [`docs/design/img/estados.png`](docs/design/img/estados.png) |
-| **E4** | Diagrama de Actividades (Recorrido del Reciclador) | [`docs/design/actividades-ruta-diaria.puml`](docs/design/actividades-ruta-diaria.puml) \| [`docs/design/img/actividades.png`](docs/design/img/actividades.png) |
+| **E1** | Historia de Usuario y Diagrama de Clases | [`docs/design/historia.md`](docs/design/historia.md) \| [`docs/design/clases.puml`](docs/design/clases.puml) \| [`docs/design/img/clases-solicitudes.png`](docs/design/img/clases-solicitudes.png) |
+| **E2** | Diagrama de Secuencia (Solicitar Recojo) | [`docs/design/secuencia-solicitar-recojo.puml`](docs/design/secuencia-solicitar-recojo.puml) \| [`docs/design/img/secuencia-solicitar-recojo.png`](docs/design/img/secuencia-solicitar-recojo.png) |
+| **E3** | Máquina de Estados (Ciclo de Vida) | [`docs/design/estados-solicitud.mmd`](docs/design/estados-solicitud.mmd) \| [`docs/design/img/estados-solicitud.png`](docs/design/img/estados-solicitud.png) |
+| **E4** | Diagrama de Actividades (Recorrido del Reciclador) | [`docs/design/actividades-ruta-diaria.puml`](docs/design/actividades-ruta-diaria.puml) \| [`docs/design/img/actividades-ruta-diaria.png`](docs/design/img/actividades-ruta-diaria.png) |
 | **E5** | Diagrama de Paquetes (Regla C4 - Sin Ciclos) | [`docs/design/paquetes.puml`](docs/design/paquetes.puml) \| [`docs/design/img/paquetes.png`](docs/design/img/paquetes.png) |
-| **E6** | Esqueleto Python y Análisis Round-Trip | [`src/solicitudes/dominio.py`](src/solicitudes/dominio.py) \| [`docs/design/round-trip.md`](docs/design/round-trip.md) |
+| **E6** | Esqueleto Python y Análisis Round-Trip | [`src/solicitudes/dominio.py`](src/solicitudes/dominio.py) \| [`docs/design/round-trip.md`](docs/design/round-trip.md) \| [Diagrama inverso](docs/design/classes_solicitudes.puml) \| [Imagen inversa](docs/design/img/classes_solicitudes.png) |
 | **E7** | Auditoría de Consistencia C1–C5 | [`docs/design/consistencia.md`](docs/design/consistencia.md) |
 
 ---

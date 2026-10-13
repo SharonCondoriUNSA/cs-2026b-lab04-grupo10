@@ -1,0 +1,89 @@
+@startuml classes_solicitudes
+set namespaceSeparator none
+class "AdaptadorMapas" as dominio.AdaptadorMapas {
+  tiempo_espera_ms : int
+  {abstract}validar_ubicacion(latitud: Decimal, longitud: Decimal) -> bool
+}
+class "CoberturaRecojo" as dominio.CoberturaRecojo {
+  {abstract}atiende_distrito(codigo_distrito: str) -> bool
+}
+class "DetalleReciclable" as dominio.DetalleReciclable {
+  material
+  peso_estimado_kg : Decimal
+  validar() -> bool
+}
+class "EstadoSolicitud" as dominio.EstadoSolicitud {
+  name
+}
+class "MaterialReciclable" as dominio.MaterialReciclable {
+  aceptado : bool
+  id : UUID
+  nombre : str
+  es_aceptado() -> bool
+}
+class "NotificadorSolicitud" as dominio.NotificadorSolicitud {
+  {abstract}confirmar_registro(solicitud_id: UUID) -> None
+}
+class "PWA" as dominio.PWA {
+  {abstract}solicitar_recojo(vecino: Vecino, punto: PuntoRecojo, detalles: List[DetalleReciclable]) -> None
+}
+class "PuntoRecojo" as dominio.PuntoRecojo {
+  codigo_distrito : str
+  latitud : Decimal
+  longitud : Decimal
+  coordenadas_validas() -> bool
+}
+class "RepositorioSolicitudes" as dominio.RepositorioSolicitudes {
+  {abstract}guardar(solicitud: SolicitudRecojo) -> None
+}
+class "ServicioMapas" as dominio.ServicioMapas {
+  {abstract}validar_ubicacion(latitud: Decimal, longitud: Decimal) -> bool
+}
+class "ServicioSolicitudes" as dominio.ServicioSolicitudes {
+  cobertura
+  mapas : Optional[ServicioMapas]
+  notificador
+  repositorio
+  solicitar_recojo(vecino: Vecino, punto: PuntoRecojo, detalles: List[DetalleReciclable]) -> SolicitudRecojo
+}
+class "SolicitudController" as dominio.SolicitudController {
+  servicio
+  registrar_solicitud(vecino: Vecino, punto: PuntoRecojo, detalles: List[DetalleReciclable]) -> SolicitudRecojo
+}
+class "SolicitudRecojo" as dominio.SolicitudRecojo {
+  acreditacion_id : Optional[UUID]
+  detalles : List[DetalleReciclable]
+  estado
+  fecha_recojo : Optional[datetime]
+  fecha_registro : datetime
+  id : UUID
+  peso_real_kg : Optional[Decimal]
+  punto
+  reciclador_id : Optional[UUID]
+  ubicacion_validada_por_mapa : bool
+  vecino
+  asignar_reciclador(reciclador_id: UUID) -> None
+  calcular_peso_estimado_kg() -> Decimal
+  cerrar() -> None
+  confirmar_puntos_acreditados(acreditacion_id: UUID) -> None
+  marcar_ubicacion_validada() -> None
+  registrar_pendiente() -> None
+  registrar_pesaje(peso_real_kg: Decimal) -> None
+  registrar_recojo(fecha_recojo: datetime) -> None
+  validar_datos() -> bool
+}
+class "Vecino" as dominio.Vecino {
+  id : UUID
+  obtener_id() -> UUID
+}
+dominio.AdaptadorMapas --|> dominio.ServicioMapas
+dominio.SolicitudRecojo --> dominio.EstadoSolicitud : estado
+dominio.DetalleReciclable --> dominio.MaterialReciclable : material
+dominio.SolicitudRecojo --> dominio.PuntoRecojo : punto
+dominio.SolicitudRecojo --> dominio.Vecino : vecino
+dominio.CoberturaRecojo --o dominio.ServicioSolicitudes : cobertura
+dominio.NotificadorSolicitud --o dominio.ServicioSolicitudes : notificador
+dominio.RepositorioSolicitudes --o dominio.ServicioSolicitudes : repositorio
+dominio.ServicioMapas --o dominio.ServicioSolicitudes : mapas
+dominio.ServicioSolicitudes --o dominio.SolicitudController : servicio
+@enduml
