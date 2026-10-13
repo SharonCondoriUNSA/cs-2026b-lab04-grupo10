@@ -153,3 +153,22 @@ Se revisó el diagrama de actividades simulando el recorrido del reciclador dura
 Resultado de la revisión: Se identificó la necesidad de contemplar el caso en que el vecino no se encuentre disponible en el punto de recojo.
 
 Ajuste incorporado: Se documentó la rama de decisión para registrar la incidencia «Entrega no disponible», almacenar el registro localmente en la PWA y mantener la solicitud en estado ASIGNADA para su posterior reprogramación.
+
+## E8 - Consolidación del README final y Tag v0.5-diseno (2026-10-12)
+
+**Herramienta:** Gemini Notebook (asistente de IA).  
+**Instrucción recibida:** Asistencia en la estructuración e integración de la nueva sección "Diseño UML (Lab 05)" en el README principal del repositorio, organización del índice de diagramas y preparación de la versión final de entrega `v0.5-diseno`.
+
+**Contexto y Objetivos de la Interacción**
+- Consolidar la documentación de diseño orientado a objetos del Laboratorio 05 en el `README.md` heredado del Laboratorio 04 sin perder la información previa del proyecto.
+- Establecer un índice estructurado que vincule de forma clara cada entregable (E1 al E7) con su código fuente (`.puml`, `.mmd`, `.py`) y su respectiva representación visual (`.png`).
+- Garantizar la actualización de las secciones generales de bitácoras de IA y reflexión grupal con los aprendizajes en inconsistencias C1–C5 y análisis Round-Trip.
+
+
+**Prompt IA utilizado**
+> "Ayúdame a estructurar la sección 'Diseño UML (Lab 05)' para el README principal de EcoRecicla AQP, guiándome como debería ir esta nueva sección en el readme.md y propónme ideas para lograr organizarlo de la mejor manera ."
+
+**Verificaciones Realizadas y Estrategia Git**
+- **Validación de Enlaces Relativos:** Se verificó manualmente que todas las rutas a `docs/design/...` y `src/solicitudes/dominio.py` apunten a ubicaciones válidas dentro de la estructura de carpetas.
+- **Alineación con Reglas C1–C5:** Se revisó que la tabla en el README referencie la auditoría de consistencia (E7) y el análisis de Round-Trip (E6).
+- **Flujo de Trabajo y Tag:** Cambios empaquetados en la rama `lab05-e8-readme` para su integración mediante Pull Request a `main`, previa ejecución del etiquetado final `v0.5-diseno`.
