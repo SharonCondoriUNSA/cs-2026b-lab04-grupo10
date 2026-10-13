@@ -161,11 +161,23 @@ Ajuste incorporado: Se documentó la rama de decisión para registrar la inciden
 > "Actúa como desarrollador senior de Python. A partir del diagrama de clases PlantUML de Solicitudes (`docs/design/clases.puml`), genera el esqueleto de código en Python 3.10+ en `src/solicitudes/dominio.py` utilizando dataclasses, enums y clases base abstractas (ABC). Respeta las firmas de métodos, las excepciones NotImplementedError para adaptadores y aplica las convenciones PEP 8."
 
 ### Verificación y diferencias encontradas (Round-Trip)
-Se realizó la comparación entre el diagrama UML de diseño y el código Python generado, registrando las hallazgos en `docs/design/round-trip.md`:
+La propuesta inicial comparó el diseño con el código generado. La ejecución real de pyreverse se registra en la revisión del 2026-10-13 y en `docs/design/round-trip.md`:
 - **Nombres:** Conversión de `camelCase` a `snake_case` siguiendo PEP 8 (regla C5).
-- **Composición:** Mantenida mediante `List[DetalleReciclable]` en Python.
+- **Composición:** Representada como colección, la propiedad exclusiva no se garantiza solo con `List[DetalleReciclable]`.
 - **Multiplicidades:** Reforzadas mediante validaciones explícitas dentro de `validar_datos()`.
 
 ### Verificaciones realizadas y Git
 - **Sintaxis Python:** comprobada mediante compilación sin errores.
 - **Git:** cambios preparados en la rama `lab05-e6-roundtrip` basada en `main`.
+
+### Ayuda en revisión y explicación de E6 (2026-10-13)
+
+**Herramienta:** Codex.
+
+**Solicitud de apoyo (resumen):** Corregir los puntos detectados en E6 conservando la estructura del código de la compañera y dejar los cambios para revisión, sin subirlos todavía.
+
+**Revisión y ajustes:** Se completaron las clases y operaciones faltantes, se restituyeron Decimal y se validaron las transiciones y el peso positivo. Los fallos de mapas conservan el registro y el aviso se despacha separadamente. PWA y el adaptador se mantienen como esqueletos.
+
+**Verificación:** Instalación autorizada de pylint 4.1.3 fuera del repositorio, ejecución real de pyreverse, archivo classes_solicitudes.puml generado, sintaxis PlantUML comprobada e imagen revisada. Las siete pruebas locales de tests/test_solicitudes.py pasaron. round-trip.md incorpora las diferencias observadas en la salida real, sin afirmar una integración con APIs externas.
+
+**Decisión:** Mantener el diseño original para las reglas de negocio y documentar las limitaciones de ingeniería inversa. El hilo de aviso es demostrativo, no ofrece entrega garantizada. Tras la revisión, el usuario autorizó subir las correcciones de E6 y pidió excluir el archivo de pruebas. Las pruebas ejecutadas se conservan solo localmente.
