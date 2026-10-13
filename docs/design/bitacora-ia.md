@@ -211,3 +211,18 @@ La propuesta inicial comparó el diseño con el código generado. La ejecución 
 **Verificación:** Instalación autorizada de pylint 4.1.3 fuera del repositorio, ejecución real de pyreverse, archivo classes_solicitudes.puml generado, sintaxis PlantUML comprobada e imagen revisada. Las siete pruebas locales de tests/test_solicitudes.py pasaron. round-trip.md incorpora las diferencias observadas en la salida real, sin afirmar una integración con APIs externas.
 
 **Decisión:** Mantener el diseño original para las reglas de negocio y documentar las limitaciones de ingeniería inversa. El hilo de aviso es demostrativo, no ofrece entrega garantizada. Tras la revisión, el usuario autorizó subir las correcciones de E6 y pidió excluir el archivo de pruebas. Las pruebas ejecutadas se conservan solo localmente.
+
+## E7 - Auditoría de consistencia C1-C5 y revisión crítica de IA (2026-10-12)
+**Herramienta:** Gemini Notebook (asistente de IA). **Instrucción recibida:** Ejecución de la auditoría de consistencia entre diagramas UML y código (Reglas C1-C5) e identificación de falsos positivos.
+
+### Prompt IA utilizado
+> *"Hola, estoy realizando la auditoría de consistencia de arquitectura para EcoRecicla AQP evaluando las reglas C1 a C5\. ¿Podrías ayudarme a revisar de forma cruzada nuestros diagramas (* *clases.puml* *,* *secuencia-solicitar-recojo.puml* *,* *estados-solicitud.mmd* *,* *actividades-ruta-diaria.puml* *,* *paquetes.puml* *) con el código en* *src/solicitudes/dominio.py* *? Me gustaría que analicemos juntos si hay discrepancias entre mensajes y operaciones, transiciones de estado, multiplicidades, la regla C4 de paquetes sin ciclos y los nombres del dominio. Ayúdame a estructurar la tabla de hallazgos guiandome y revisemos si detectamos algún posible falso positivo frente al ADR-001 para argumentarlo."*
+
+### Verificación de hallazgos y Falso Positivo
+Se analizaron los resultados de la IA en `docs/design/consistencia.md`:
+- **Hallazgos válidos:** Comprobación de la firma de coordenadas ya correcta (C1) y correspondencia de las transiciones con operaciones (C2), no se modificó la secuencia.
+- **Falso positivo detectado:** La IA señaló una supuesta falta de asociación entre `SolicitudRecojo` y el paquete `puntos_beneficios`. Se **rechazó el hallazgo** al demostrarse que el módulo de solicitudes solo expone un método receptor de confirmación, evitando el acoplamiento directo entre módulos (ADR-001).
+
+### Verificaciones realizadas y Git
+- **Coherencia documental:** Verificación de equivalencia de nombres entre la historia, los diagramas y el código en Python.
+- **Git:** cambios preparados en la rama `lab05-e7-consistencia` basada en `main`.
