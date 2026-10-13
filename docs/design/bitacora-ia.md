@@ -229,7 +229,7 @@ Se analizaron los resultados de la IA en `docs/design/consistencia.md`:
 
 ## E8 - Consolidación del README final y Tag v0.5-diseno (2026-10-12)
 
-**Herramienta:** Gemini Notebook (asistente de IA).  
+**Herramienta:** Gemini Notebook (asistente de IA).
 **Instrucción recibida:** Asistencia en la estructuración e integración de la nueva sección "Diseño UML (Lab 05)" en el README principal del repositorio, organización del índice de diagramas y preparación de la versión final de entrega `v0.5-diseno`.
 
 **Contexto y Objetivos de la Interacción**
