@@ -66,33 +66,6 @@ En esta sección se consolidan los artefactos de diseño orientado a objetos y m
 
 ### Diagrama de Estados de la Solicitud
 
-```mermaid
-stateDiagram-v2
-    direction TB
-    state "Pendiente" as PENDIENTE
-    state "Asignada" as ASIGNADA
-    state "Recogida" as RECOGIDA
-    state "Pesada" as PESADA
-    state "PuntosAcreditados" as PUNTOS_ACREDITADOS
-
-    [*] --> PENDIENTE: registrarPendiente() [datosValidos y coberturaConfirmada]
-    PENDIENTE --> ASIGNADA: asignarReciclador(recicladorId) [recicladorId valido]
-    ASIGNADA --> RECOGIDA: registrarRecojo(fechaRecojo) [recojo confirmado y fecha valida]
-    RECOGIDA --> PESADA: registrarPesaje(pesoRealKg) [pesoRealKg > 0]
-    PESADA --> PUNTOS_ACREDITADOS: confirmarPuntosAcreditados(acreditacionId) [acreditacion confirmada por Puntos/Beneficios]
-    PUNTOS_ACREDITADOS --> [*]: cerrar() [acreditacionId registrada]
-
-    note right of PENDIENTE
-        Mapas puede seguir pendiente sin impedir el registro.
-        Datos invalidos o sin cobertura no crean la solicitud.
-    end note
-    note right of PESADA
-        Peso real, distinto del peso estimado de E1.
-        Puntos/Beneficios calcula y acredita los puntos.
-        Solicitudes solo registra la confirmacion.
-    end note
-```
-
 ![Diagrama de Estados de la Solicitud](docs/design/img/estados-solicitud.png)
 
 ### Índice de Entregables de Diseño y Diagramas (E1 al E7)
