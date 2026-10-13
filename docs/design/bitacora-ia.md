@@ -226,7 +226,3 @@ Se analizaron los resultados de la IA en `docs/design/consistencia.md`:
 ### Verificaciones realizadas y Git
 - **Coherencia documental:** Verificación de equivalencia de nombres entre la historia, los diagramas y el código en Python.
 - **Git:** cambios preparados en la rama `lab05-e7-consistencia` basada en `main`.
-
-### Ayuda en revisión y explicación de E7 (2026-10-13)
-
-Herramienta: Codex. Solicitud de apoyo: corregir E7 conservando la tabla y el prompt originales. Se incorporan E5 y E6 corregidos y sus registros sin duplicar. Se rechaza la corrección de firma no reproducida y se ubica el falso positivo en estados y actividades. Se comprueban mensajes, operaciones, estados, multiplicidades, dependencias y nombres, indicando sus límites. La conclusión distingue coherencia de modelos de una implementación completa. No se inventan consultas anteriores ni revisiones humanas nuevas. La bitácora reúne los registros reales E1-E7, incluidos sus resultados y decisiones.
