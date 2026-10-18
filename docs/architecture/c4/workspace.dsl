@@ -78,6 +78,23 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
         puntosMod -> bd "Persiste puntos y canjes en su esquema" "SQL / TCP (port 5432)"
         solicitudesMod -> mapas "Valida opcionalmente coordenadas mediante ServicioMapas" "HTTPS / REST JSON"
         notifMod -> whatsapp "Despacha avisos de confirmacion de recojo" "HTTPS / REST API"
+
+        # E5: dimensionamiento propuesto para el MVP, no infraestructura contratada.
+        produccion = deploymentEnvironment "Producción" {
+            deploymentNode "Dispositivo del usuario" "Equipo existente del vecino, reciclador o personal municipal, sin servidor adicional." "Android o Windows / navegador compatible con PWA" {
+                deploymentNode "Navegador web" "Ejecuta la PWA y conserva registros temporales sin conexion." "JavaScript / Service Worker / IndexedDB" {
+                    containerInstance pwa
+                }
+            }
+            deploymentNode "VPS unico - MVP" "Propuesta inicial compartida para API y base de datos. Capacidad por confirmar mediante mediciones, sin proveedor contratado." "Ubuntu Server 24.04 LTS / 2 vCPU / 4 GB RAM / 40 GB SSD" {
+                deploymentNode "Entorno de aplicacion" "Un proceso de la API del monolito modular, sin separar los modulos en servicios." "Python / entorno virtual" {
+                    containerInstance api
+                }
+                deploymentNode "Servicio de base de datos" "Una instancia local, con esquemas aislados por modulo, accesible por la API." "PostgreSQL / servicio Linux" {
+                    containerInstance bd
+                }
+            }
+        }
     }
 
     views {
@@ -121,6 +138,14 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
             solicitudesMod -> mapas "Comprueba opcionalmente coordenadas, si falla continua con ubicacion pendiente de revision"
             solicitudesMod -> bd "Guarda la solicitud PENDIENTE y espera confirmacion de persistencia"
             solicitudesMod -> notifMod "Solicita confirmarRegistro como aviso interno asincrono, sin bloquear la respuesta"
+            autoLayout lr
+        }
+
+        # E5: despliegue del MVP en un solo VPS
+        deployment ecorecicla produccion "VistaDespliegue" "Despliegue propuesto en Producción para el MVP de EcoRecicla AQP." {
+            title "Despliegue - EcoRecicla AQP (Produccion)"
+            description "PWA en el dispositivo del usuario, API y PostgreSQL en un unico VPS. Dimensionamiento inicial sujeto a medicion y cotizacion, acorde con la prioridad de bajo costo de R-03."
+            include *
             autoLayout lr
         }
 
