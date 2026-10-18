@@ -112,6 +112,18 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
 
         # ESTILOS VISUALES Y FORMAS
         # ------------------------------------------
+        # VISTA DINAMICA: escenario de registro con datos y cobertura validos (E4)
+        dynamic api "VistaDinamica" "Flujo critico de solicitar el recojo de reciclables, con comprobacion opcional de mapas." {
+            title "Vista Dinamica - Solicitar el recojo de reciclables"
+            description "Tras validar datos, consulta cobertura, comprueba opcionalmente coordenadas, guarda PENDIENTE y solicita un aviso interno asincrono. Un fallo de mapas no impide guardar, el aviso no bloquea la confirmacion."
+            pwa -> solicitudesMod "Envia los datos de la solicitud, que Solicitudes valida"
+            solicitudesMod -> rutasMod "Consulta cobertura distrital mediante CoberturaRecojo"
+            solicitudesMod -> mapas "Comprueba opcionalmente coordenadas, si falla continua con ubicacion pendiente de revision"
+            solicitudesMod -> bd "Guarda la solicitud PENDIENTE y espera confirmacion de persistencia"
+            solicitudesMod -> notifMod "Solicita confirmarRegistro como aviso interno asincrono, sin bloquear la respuesta"
+            autoLayout lr
+        }
+
         styles {
             element "Component" {
                 shape Component

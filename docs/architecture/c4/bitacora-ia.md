@@ -60,3 +60,21 @@
 - **Solicitud de apoyo:** Revisar y corregir E3 conservando los elementos útiles del trabajo de la compañera.
 - **Correcciones:** Se recuperan las declaraciones de componentes y la vista de E3 sobre el modelo corregido de E2, eliminando los bloques pegados que invalidaban la sintaxis. Se conservan las descripciones de los cinco componentes existentes y se añade Compartido para representar los seis paquetes del Lab05. Notificaciones se identifica como auxiliar de Solicitudes, no como un quinto módulo de dominio. Reportes consume FuentePesajes mediante contrato público, sin lectura directa de entidades ni esquemas ajenos. Se mantienen CoberturaRecojo, AcreditadorPuntos y NotificadorSolicitud. La validación opcional de coordenadas se conecta desde Solicitudes a mapas, como en clases.puml, y el aviso se conecta desde Notificaciones a WhatsApp. Se conservan los ajustes de tecnologías y sistemas externos de E1 y E2.
 - **Verificaciones:** El archivo original falló en la línea 15 por un bloque workspace incrustado. El modelo corregido pasó Structurizr CLI v2025.11.09 con Java 23, código de salida 0. Se comprobaron seis componentes, las nueve dependencias internas de paquetes.puml y la ausencia de ciclos mediante recorrido del grafo. Las tres vistas comparten el mismo modelo y mantienen título y descripción. Los registros originales se conservan como antecedentes, esta revisión corrige la afirmación previa de correspondencia exacta con solo cinco paquetes.
+
+
+## Registro 4: Formulación y Auditoría del Modelo C4 Vista Dinámica (E4)
+- **Fecha:** 17/10/2026
+- **Herramienta:** Gemini / AI Assistant
+- **Propósito de la consulta:** Elaborar la vista `dynamic` del flujo crítico de solicitud de recojo en Structurizr DSL a partir del diagrama de secuencia del Lab 05, y redactar el análisis comparativo para `comparacion.md`.
+- **Prompt estructurado por el equipo:** 
+  > "Actúa como un arquitecto de software. Define en Structurizr DSL la vista dinámica (dynamic) para el flujo crítico de 'Solicitar recojo de reciclables' alineada al diagrama de secuencia del Lab 05. Guiame en la redacción de la comparación solicitada"
+- **Evaluación crítica y correcciones aplicadas:**
+  - Se confirmó que cada paso expresado en la vista dinámica utiliza relaciones preexistentes dentro del modelo C4.
+  - Se auditó que la comparación diferencie claramente el público objetivo (desarrolladores vs. arquitectos/líderes) y el nivel de abstracción.
+- **Decisión de diseño y Git:** Integrado en `docs/architecture/c4/workspace.dsl` y `docs/architecture/c4/comparacion.md` para el commit `E4: vista dinamica C4`.
+
+## Revisión de E4 (18/10/2026)
+- **Herramienta:** Codex.
+- **Solicitud de apoyo:** Corregir E4 para preparar su revisión mediante Pull Request.
+- **Correcciones:** Se conserva la idea del flujo y se incorpora sobre el modelo corregido de E3, eliminando los fragmentos duplicados. La vista dinámica se limita al contenedor API para poder representar sus componentes. Se incluyen cinco pasos, envío de datos, consulta de cobertura, comprobación opcional de mapas, persistencia en PENDIENTE y solicitud de aviso interno asíncrono. Se retira la cola Redis y no se agrega un envío por WhatsApp a este escenario, siguiendo secuencia-solicitar-recojo.puml. El modelo general conserva WhatsApp como integración arquitectónica, sin atribuirlo al aviso interno de esta secuencia. La comparación precisa el escenario válido y las ramas y detalles UML omitidos.
+- **Verificaciones:** La revisión del original confirmó un error en la línea 15 por un workspace incrustado. Durante la corrección, Structurizr indicó que una vista dinámica con alcance de sistema no admite componentes, se cambió el alcance a API. El modelo final pasó `validate -workspace docs/architecture/c4/workspace.dsl` con Structurizr CLI v2025.11.09 y Java 23, código de salida 0. Se comprobaron cinco pasos y su correspondencia con cinco relaciones estáticas existentes. La comparación contiene cuatro líneas de explicación. La persistencia precede al aviso y el fallo de mapas no impide el registro, conforme al Lab05. No se renderizó un PNG en esta revisión, las exportaciones e imágenes corresponden a E6.
