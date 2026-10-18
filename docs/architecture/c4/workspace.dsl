@@ -15,19 +15,45 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
         whatsapp = softwareSystem "API de Notificaciones WhatsApp" "Servicio externo para el envio asincrono de mensajes y alertas de confirmacion." "Externo"
 
         # ==========================================
-        # 3. SISTEMA PRINCIPAL (Nivel 1 - Contexto)
+        # 3. SISTEMA PRINCIPAL Y CONTENEDORES (Nivel 2)
         # ==========================================
-        ecorecicla = softwareSystem "EcoRecicla AQP" "Plataforma municipal para la gestion integral de recojo, pesaje y acreditacion de reciclaje."
+        ecorecicla = softwareSystem "EcoRecicla AQP" "Plataforma municipal para la gestion integral de recojo, pesaje y acreditacion de reciclaje." {
+
+            pwa = container "Aplicacion Web Progresiva (PWA)" "Interfaz de usuario accesible desde navegadores moviles y de escritorio con soporte offline parcial." "JavaScript / Service Worker / IndexedDB" "Web Browser"
+
+            api = container "API REST Monolito Modular" "Ejecuta la logica de negocio, validaciones de dominio y orquestacion de modulos." "Python / API REST" "Backend"
+
+
+            bd = container "Base de Datos Relacional" "Almacena la informacion persistente de usuarios, solicitudes, rutas y puntos." "PostgreSQL" "Database"
+
+        }
 
         # ==========================================
-        # 4. RELACIONES NIVEL 1 (Verbos de Intención)
+        # 4. RELACIONES (Nivel 1 y Nivel 2 con Protocolos)
         # ==========================================
+        # Relaciones de alto nivel del Sistema
+        ecorecicla -> mapas "Valida coordenadas geograficas de los puntos de recojo"
+        ecorecicla -> whatsapp "Envia avisos y notificaciones de confirmacion de recojo"
         vecino -> ecorecicla "Registra solicitudes de recojo de reciclables y consulta sus puntos"
         reciclador -> ecorecicla "Consulta rutas asignadas, atiende recojos y registra pesajes in situ"
         admin -> ecorecicla "Consulta reportes de pesaje e indicadores de reciclaje municipal"
-        
-        ecorecicla -> mapas "Valida coordenadas geograficas de los puntos de recojo"
-        ecorecicla -> whatsapp "Envia avisos y notificaciones de confirmacion de recojo"
+
+        # Interaccion de Usuarios con Frontend
+        vecino -> pwa "Registra solicitudes y consulta puntos" "HTTPS / TLS"
+        reciclador -> pwa "Consulta rutas, registra atenciones y pesajes" "HTTPS / TLS"
+        admin -> pwa "Consulta reportes e indicadores municipales" "HTTPS / TLS"
+
+        # Comunicacion Frontend -> Backend
+        pwa -> api "Consume endpoints REST para solicitudes, rutas y autenticacion" "HTTPS / JSON"
+
+        # Comunicacion Backend -> Infraestructura Interna
+        api -> bd "Lee y escribe datos del dominio con integridad transaccional" "SQL / TCP (port 5432)"
+
+        # Comunicacion Backend -> Sistemas Externos
+        api -> mapas "Valida coordenadas geograficas de los puntos de recojo" "HTTPS / REST JSON"
+
+        api -> whatsapp "Despacha avisos de confirmacion de recojo" "HTTPS / REST API"
+
     }
 
     views {
@@ -41,7 +67,19 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
             autoLayout lr
         }
 
-        # ESTILOS VISUALES
+        # ------------------------------------------
+        # VISTA NIVEL 2: Contenedores (E2)
+        # ------------------------------------------
+        container ecorecicla "VistaContenedores" "Diagrama de Contenedores del Sistema EcoRecicla AQP (Nivel 2 C4)." {
+            title "Diagrama de Contenedores - EcoRecicla AQP"
+            description "Muestra las aplicaciones, servicios y almacenes de datos que integran la plataforma y sus protocolos de comunicacion."
+            include *
+            autoLayout lr
+        }
+
+        # ------------------------------------------
+        # ESTILOS VISUALES Y FORMAS
+        # ------------------------------------------
         styles {
             element "User" {
                 shape Person
@@ -66,6 +104,23 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
                 background #999999
                 color #ffffff
             }
+            element "Web Browser" {
+                shape WebBrowser
+                background #438dd5
+                color #ffffff
+            }
+            element "Backend" {
+                shape Component
+                background #85bbf0
+                color #000000
+            }
+
+            element "Database" {
+                shape Cylinder
+                background #438dd5
+                color #ffffff
+            }
+
         }
     }
 }

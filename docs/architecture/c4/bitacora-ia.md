@@ -14,8 +14,30 @@
   - Se añadieron explícitamente las propiedades `title` y `description` dentro de la vista `systemContext` para garantizar el cumplimiento de la lista de verificación del laboratorio.
   - Se verificó que ninguna caja del Nivel 1 expusiera tecnologías internas (Python, PostgreSQL, React).
 - **Decisión de diseño y Git:** Propuesta refinada y aprobada por el equipo tras pasar la validación estricta de Structurizr DSL. Integrada en `docs/architecture/c4/workspace.dsl` para el commit `E1: contexto C4`.
+
+
+## Registro 2: Formulación y Auditoría del Modelo C4 Nivel 2 (E2 - Contenedores)
+- **Fecha:** 17/10/2026
+- **Herramienta:** Gemini / AI Assistant
+- **Propósito de la consulta:** Elaborar la definición de contenedores y protocolos de comunicación para la vista `container` a partir del ADR-001 (Monolito Modular).
+- **Prompt estructurado por el equipo:** 
+  > "Actúa como un arquitecto de software. A partir del ADR-001, define 5 contenedores para EcoRecicla AQP en Structurizr DSL: PWA React, API REST Python, Worker Celery, PostgreSQL 16 y Redis 7. Asigna etiquetas C4 (Web Browser, Database, Queue) y explicita los protocolos de comunicación en las relaciones (HTTPS/JSON, SQL/TCP, RESP/TCP). Agrega la vista container con título y descripción."
+- **Evaluación crítica y correcciones aplicadas:**
+  - Se auditó que ningún contenedor utilizara nombres de infraestructura genérica como "Docker", "servidor" o "nube".
+  - Se confirmó que cada contenedor especifique su tecnología exacta entre comillas dobles (React, Python 3.12/FastAPI, Celery, PostgreSQL 16, Redis 7).
+  - Se explicitation los protocolos técnicos en cada relación del Nivel 2 (`HTTPS / JSON`, `SQL / TCP (port 5432)`, `RESP / TCP (port 6379)`).
+  - Se aplicaron formas específicas en los estilos (`WebBrowser`, `Cylinder`, `Pipe`) para comunicar visualmente el tipo de contenedor.
+- **Decisión de diseño y Git:** Integrado en `docs/architecture/c4/workspace.dsl` para el commit `E2: contenedores C4`.
+
 ## Revisión de E1 (18/10/2026)
 - **Herramienta:** Codex.
 - **Solicitud de apoyo:** Revisar E1 respecto de la guía y los antecedentes de los Laboratorios 04 y 05, y corregir únicamente los errores encontrados.
 - **Resultado y decisión:** Se conservan la estructura del inventario, el prompt original y los estilos del contexto. Se retira el proveedor externo de pagos, porque Puntos y Beneficios es un módulo interno. Se eliminan Celery y Redis del inventario por no estar respaldados por los ADR. Se corrigen las fuentes de la PWA, PostgreSQL y WhatsApp, y se omite la versión de PostgreSQL no acordada. El servicio de mapas valida coordenadas, la cobertura distrital corresponde al módulo Rutas y Cobertura. La indicación original de tres servicios externos se ajusta a los dos respaldados por el diseño previo.
 - **Verificación:** Structurizr CLI v2025.11.09 ejecutó `validate -workspace docs/architecture/c4/workspace.dsl` con Java 23 y terminó sin errores, código de salida 0. El contexto conserva tres personas, el sistema principal, dos sistemas con etiqueta `Externo`, relaciones con intención, título y descripción. El registro anterior se conserva como antecedente de la propuesta inicial.
+
+
+## Revisión de E2 (18/10/2026)
+- **Herramienta:** Codex.
+- **Solicitud de apoyo:** Corregir los errores de E2 conservando el trabajo de la compañera y mostrar los archivos modificados.
+- **Correcciones:** Se recuperó el bloque completo del modelo y se retiró el fragmento duplicado que impedía interpretar el archivo. Se incorporaron el inventario y las correcciones de contexto de E1. Se conservan tres contenedores, PWA, API REST y PostgreSQL, con sus descripciones, protocolos y estilos. Se retiran el proveedor externo de pagos, Celery, Redis, los frameworks y las versiones sin respaldo en los antecedentes. La API se comunica con WhatsApp, sin introducir un worker independiente. Se declaran primero las relaciones de contexto para evitar duplicarlas con las relaciones implícitas de Structurizr.
+- **Verificaciones:** La primera ejecución confirmó el error de sintaxis en la línea 15 del archivo original. Después de recuperar el modelo se detectó una relación duplicada hacia mapas y se corrigió el orden de declaración. La versión final pasó `validate -workspace docs/architecture/c4/workspace.dsl` con Structurizr CLI v2025.11.09 y Java 23, código de salida 0. Se comprobaron las dos vistas, los tres contenedores, las etiquetas `Web Browser` y `Database` y los protocolos. No se modela una cola porque los ADR no la establecen. Los registros originales se conservan como antecedentes, sus tecnologías propuestas se sustituyen por las documentadas en esta revisión.
