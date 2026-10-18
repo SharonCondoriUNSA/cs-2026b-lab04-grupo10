@@ -1,0 +1,19 @@
+@startuml contexto-manual
+!include <C4/C4_Context>
+LAYOUT_LEFT_RIGHT()
+title EcoRecicla AQP - Contexto C4 escrito a mano
+
+Person(vecino, "Vecino / Ciudadano", "Residente de Arequipa que solicita el recojo de residuos reciclables y acumula puntos de beneficio.")
+Person(reciclador, "Reciclador / Operador", "Personal operativo que atiende las rutas de recojo, registra pesajes y gestiona atenciones.")
+Person(admin, "Administrador Municipal", "Personal encargado de consultar reportes e indicadores de reciclaje municipal.")
+System(ecorecicla, "EcoRecicla AQP", "Plataforma municipal para la gestion integral de recojo, pesaje y acreditacion de reciclaje.")
+System_Ext(mapas, "Servicio de Mapas y Geolocalizacion", "Servicio externo utilizado para validar coordenadas geograficas de los puntos de recojo.")
+System_Ext(whatsapp, "API de Notificaciones WhatsApp", "Servicio externo para el envio asincrono de mensajes y alertas de confirmacion.")
+
+Rel(vecino, ecorecicla, "Registra solicitudes de recojo de reciclables y consulta sus puntos")
+Rel(reciclador, ecorecicla, "Consulta rutas asignadas, atiende recojos y registra pesajes in situ")
+Rel(admin, ecorecicla, "Consulta reportes de pesaje e indicadores de reciclaje municipal")
+Rel(ecorecicla, mapas, "Valida coordenadas geograficas de los puntos de recojo")
+Rel(ecorecicla, whatsapp, "Envia avisos y notificaciones de confirmacion de recojo")
+SHOW_LEGEND()
+@enduml

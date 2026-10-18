@@ -98,6 +98,9 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
     }
 
     views {
+        properties {
+            "c4plantuml.tags" "true"
+        }
         # ------------------------------------------
         # VISTA NIVEL 1: Contexto del Sistema (E1)
         # ------------------------------------------

@@ -1,0 +1,53 @@
+@startuml
+title <size:24>Vista Dinamica - Solicitar el recojo de reciclables</size>\n<size:24>Tras validar datos, consulta cobertura, comprueba opcionalmente coordenadas, guarda PENDIENTE y solicita un aviso interno asincrono. Un fallo de mapas no impide guardar, el aviso no bloquea la confirmacion.</size>
+
+set separator none
+left to right direction
+
+<style>
+  root {
+    BackgroundColor: #ffffff
+    FontColor: #444444
+  }
+</style>
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+!include <C4/C4_Component>
+
+AddElementTag("Software System,Externo", $bgColor="#999999", $borderColor="#6b6b6b", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Web Browser", $bgColor="#438dd5", $borderColor="#2e6295", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Component", $bgColor="#85bbf0", $borderColor="#5d82a8", $fontColor="#000000", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Database", $bgColor="#438dd5", $borderColor="#2e6295", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+
+AddRelTag("Relationship", $textColor="#444444", $lineColor="#444444", $lineStyle = DashedLine())
+
+AddBoundaryTag("Backend", $bgColor="#ffffff", $borderColor="#5d82a8", $fontColor="#5d82a8", $shadowing="", $borderStyle="solid")
+
+System(ServiciodeMapasyGeolocalizacion, "Servicio de Mapas y Geolocalizacion", $descr="Servicio externo utilizado para validar coordenadas geograficas de los puntos de recojo.", $tags="Software System,Externo", $link="")
+
+System_Boundary("EcoReciclaAQP_boundary", "EcoRecicla AQP", $tags="Software System") {
+  Container_Boundary("EcoReciclaAQP.APIRESTMonolitoModular_boundary", "API REST Monolito Modular", $tags="Backend") {
+    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloRutasyCobertura, "Modulo Rutas y Cobertura", $techn="Python", $descr="Gestiona las zonas de cobertura distrital y las rutas asignadas a recicladores.", $tags="Component", $link="")
+    Component(EcoReciclaAQP.APIRESTMonolitoModular.NotificacionesauxiliardeSolicitudes, "Notificaciones (auxiliar de Solicitudes)", $techn="Python", $descr="Servicio auxiliar para la composicion y despacho asincrono de avisos.", $tags="Component", $link="")
+    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, "Modulo Solicitudes", $techn="Python", $descr="Gestiona el registro, validacion y ciclo de vida de las solicitudes de recojo.", $tags="Component", $link="")
+  }
+
+  ContainerDb(EcoReciclaAQP.BasedeDatosRelacional, "Base de Datos Relacional", $techn="PostgreSQL", $descr="Almacena la informacion persistente de usuarios, solicitudes, rutas y puntos.", $tags="Database", $link="")
+  Container(EcoReciclaAQP.AplicacionWebProgresivaPWA, "Aplicacion Web Progresiva (PWA)", $techn="JavaScript / Service Worker / IndexedDB", $descr="Interfaz de usuario accesible desde navegadores moviles y de escritorio con soporte offline parcial.", $tags="Web Browser", $link="")
+}
+
+System(ServiciodeMapasyGeolocalizacion, "Servicio de Mapas y Geolocalizacion", $descr="Servicio externo utilizado para validar coordenadas geograficas de los puntos de recojo.", $tags="Software System,Externo", $link="")
+Container(EcoReciclaAQP.AplicacionWebProgresivaPWA, "Aplicacion Web Progresiva (PWA)", $techn="JavaScript / Service Worker / IndexedDB", $descr="Interfaz de usuario accesible desde navegadores moviles y de escritorio con soporte offline parcial.", $tags="Web Browser", $link="")
+ContainerDb(EcoReciclaAQP.BasedeDatosRelacional, "Base de Datos Relacional", $techn="PostgreSQL", $descr="Almacena la informacion persistente de usuarios, solicitudes, rutas y puntos.", $tags="Database", $link="")
+
+Rel(EcoReciclaAQP.AplicacionWebProgresivaPWA, EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, "1: Envia los datos de la solicitud, que Solicitudes valida", $techn="HTTPS / REST JSON", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, EcoReciclaAQP.APIRESTMonolitoModular.ModuloRutasyCobertura, "2: Consulta cobertura distrital mediante CoberturaRecojo", $techn="Contrato publico / llamada interna", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, ServiciodeMapasyGeolocalizacion, "3: Comprueba opcionalmente coordenadas, si falla continua con ubicacion pendiente de revision", $techn="HTTPS / REST JSON", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, EcoReciclaAQP.BasedeDatosRelacional, "4: Guarda la solicitud PENDIENTE y espera confirmacion de persistencia", $techn="SQL / TCP (port 5432)", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, EcoReciclaAQP.APIRESTMonolitoModular.NotificacionesauxiliardeSolicitudes, "5: Solicita confirmarRegistro como aviso interno asincrono, sin bloquear la respuesta", $techn="Puerto interno / llamada interna", $tags="Relationship", $link="")
+
+SHOW_LEGEND(true)
+hide stereotypes
+@enduml

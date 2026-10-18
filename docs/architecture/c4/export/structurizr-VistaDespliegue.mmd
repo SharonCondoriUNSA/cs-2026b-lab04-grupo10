@@ -1,0 +1,41 @@
+graph LR
+  linkStyle default fill:#ffffff
+
+  subgraph diagram ["Despliegue - EcoRecicla AQP (Produccion)"]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    subgraph 44 ["Dispositivo del usuario"]
+      style 44 fill:#ffffff,stroke:#444444,color:#444444
+
+      subgraph 45 ["Navegador web"]
+        style 45 fill:#ffffff,stroke:#444444,color:#444444
+
+        46["<div style='font-weight: bold'>Aplicacion Web Progresiva (PWA)</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript / Service Worker / IndexedDB]</div><div style='font-size: 80%; margin-top:10px'>Interfaz de usuario accesible<br />desde navegadores moviles y<br />de escritorio con soporte<br />offline parcial.</div>"]
+        style 46 fill:#438dd5,stroke:#2e6295,color:#ffffff
+      end
+
+    end
+
+    subgraph 47 ["VPS unico - MVP"]
+      style 47 fill:#ffffff,stroke:#444444,color:#444444
+
+      subgraph 48 ["Entorno de aplicacion"]
+        style 48 fill:#ffffff,stroke:#444444,color:#444444
+
+        49["<div style='font-weight: bold'>API REST Monolito Modular</div><div style='font-size: 70%; margin-top: 0px'>[Container: Python / API REST]</div><div style='font-size: 80%; margin-top:10px'>Ejecuta la logica de negocio,<br />validaciones de dominio y<br />orquestacion de modulos.</div>"]
+        style 49 fill:#85bbf0,stroke:#5d82a8,color:#000000
+      end
+
+      subgraph 51 ["Servicio de base de datos"]
+        style 51 fill:#ffffff,stroke:#444444,color:#444444
+
+        52[("<div style='font-weight: bold'>Base de Datos Relacional</div><div style='font-size: 70%; margin-top: 0px'>[Container: PostgreSQL]</div><div style='font-size: 80%; margin-top:10px'>Almacena la informacion<br />persistente de usuarios,<br />solicitudes, rutas y puntos.</div>")]
+        style 52 fill:#438dd5,stroke:#2e6295,color:#ffffff
+      end
+
+    end
+
+    46-. "<div>Consume endpoints REST para<br />solicitudes, rutas y<br />autenticacion</div><div style='font-size: 70%'>[HTTPS / JSON]</div>" .->49
+    49-. "<div>Lee y escribe datos del<br />dominio con integridad<br />transaccional</div><div style='font-size: 70%'>[SQL / TCP (port 5432)]</div>" .->52
+
+  end

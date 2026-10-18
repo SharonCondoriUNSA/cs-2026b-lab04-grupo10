@@ -1,0 +1,52 @@
+@startuml
+title <size:24>Diagrama de Contenedores - EcoRecicla AQP</size>\n<size:24>Muestra las aplicaciones, servicios y almacenes de datos que integran la plataforma y sus protocolos de comunicacion.</size>
+
+set separator none
+left to right direction
+
+<style>
+  root {
+    BackgroundColor: #ffffff
+    FontColor: #444444
+  }
+</style>
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+
+AddElementTag("Software System,Externo", $bgColor="#999999", $borderColor="#6b6b6b", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Operator", $bgColor="#1168cb", $borderColor="#0b488e", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Admin", $bgColor="#228b22", $borderColor="#176117", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Web Browser", $bgColor="#438dd5", $borderColor="#2e6295", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Backend", $bgColor="#85bbf0", $borderColor="#5d82a8", $fontColor="#000000", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("User", $bgColor="#08427b", $borderColor="#052e56", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Database", $bgColor="#438dd5", $borderColor="#2e6295", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+
+AddRelTag("Relationship", $textColor="#444444", $lineColor="#444444", $lineStyle = DashedLine())
+
+AddBoundaryTag("Software System", $bgColor="#ffffff", $borderColor="#0b488e", $fontColor="#0b488e", $shadowing="", $borderStyle="solid")
+
+Person(VecinoCiudadano, "Vecino / Ciudadano", $descr="Residente de Arequipa que solicita el recojo de residuos reciclables y acumula puntos de beneficio.", $tags="User", $link="")
+Person(RecicladorOperador, "Reciclador / Operador", $descr="Personal operativo que atiende las rutas de recojo, registra pesajes y gestiona atenciones.", $tags="Operator", $link="")
+Person(AdministradorMunicipal, "Administrador Municipal", $descr="Personal encargado de consultar reportes e indicadores de reciclaje municipal.", $tags="Admin", $link="")
+System(ServiciodeMapasyGeolocalizacion, "Servicio de Mapas y Geolocalizacion", $descr="Servicio externo utilizado para validar coordenadas geograficas de los puntos de recojo.", $tags="Software System,Externo", $link="")
+System(APIdeNotificacionesWhatsApp, "API de Notificaciones WhatsApp", $descr="Servicio externo para el envio asincrono de mensajes y alertas de confirmacion.", $tags="Software System,Externo", $link="")
+
+System_Boundary("EcoReciclaAQP_boundary", "EcoRecicla AQP", $tags="Software System") {
+  ContainerDb(EcoReciclaAQP.BasedeDatosRelacional, "Base de Datos Relacional", $techn="PostgreSQL", $descr="Almacena la informacion persistente de usuarios, solicitudes, rutas y puntos.", $tags="Database", $link="")
+  Container(EcoReciclaAQP.AplicacionWebProgresivaPWA, "Aplicacion Web Progresiva (PWA)", $techn="JavaScript / Service Worker / IndexedDB", $descr="Interfaz de usuario accesible desde navegadores moviles y de escritorio con soporte offline parcial.", $tags="Web Browser", $link="")
+  Container(EcoReciclaAQP.APIRESTMonolitoModular, "API REST Monolito Modular", $techn="Python / API REST", $descr="Ejecuta la logica de negocio, validaciones de dominio y orquestacion de modulos.", $tags="Backend", $link="")
+}
+
+Rel(VecinoCiudadano, EcoReciclaAQP.AplicacionWebProgresivaPWA, "Registra solicitudes y consulta puntos", $techn="HTTPS / TLS", $tags="Relationship", $link="")
+Rel(RecicladorOperador, EcoReciclaAQP.AplicacionWebProgresivaPWA, "Consulta rutas, registra atenciones y pesajes", $techn="HTTPS / TLS", $tags="Relationship", $link="")
+Rel(AdministradorMunicipal, EcoReciclaAQP.AplicacionWebProgresivaPWA, "Consulta reportes e indicadores municipales", $techn="HTTPS / TLS", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.AplicacionWebProgresivaPWA, EcoReciclaAQP.APIRESTMonolitoModular, "Consume endpoints REST para solicitudes, rutas y autenticacion", $techn="HTTPS / JSON", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.APIRESTMonolitoModular, EcoReciclaAQP.BasedeDatosRelacional, "Lee y escribe datos del dominio con integridad transaccional", $techn="SQL / TCP (port 5432)", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.APIRESTMonolitoModular, ServiciodeMapasyGeolocalizacion, "Valida coordenadas geograficas de los puntos de recojo", $techn="HTTPS / REST JSON", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.APIRESTMonolitoModular, APIdeNotificacionesWhatsApp, "Despacha avisos de confirmacion de recojo", $techn="HTTPS / REST API", $tags="Relationship", $link="")
+
+SHOW_LEGEND(true)
+hide stereotypes
+@enduml
