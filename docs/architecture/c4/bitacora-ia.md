@@ -14,3 +14,8 @@
   - Se añadieron explícitamente las propiedades `title` y `description` dentro de la vista `systemContext` para garantizar el cumplimiento de la lista de verificación del laboratorio.
   - Se verificó que ninguna caja del Nivel 1 expusiera tecnologías internas (Python, PostgreSQL, React).
 - **Decisión de diseño y Git:** Propuesta refinada y aprobada por el equipo tras pasar la validación estricta de Structurizr DSL. Integrada en `docs/architecture/c4/workspace.dsl` para el commit `E1: contexto C4`.
+## Revisión de E1 (18/10/2026)
+- **Herramienta:** Codex.
+- **Solicitud de apoyo:** Revisar E1 respecto de la guía y los antecedentes de los Laboratorios 04 y 05, y corregir únicamente los errores encontrados.
+- **Resultado y decisión:** Se conservan la estructura del inventario, el prompt original y los estilos del contexto. Se retira el proveedor externo de pagos, porque Puntos y Beneficios es un módulo interno. Se eliminan Celery y Redis del inventario por no estar respaldados por los ADR. Se corrigen las fuentes de la PWA, PostgreSQL y WhatsApp, y se omite la versión de PostgreSQL no acordada. El servicio de mapas valida coordenadas, la cobertura distrital corresponde al módulo Rutas y Cobertura. La indicación original de tres servicios externos se ajusta a los dos respaldados por el diseño previo.
+- **Verificación:** Structurizr CLI v2025.11.09 ejecutó `validate -workspace docs/architecture/c4/workspace.dsl` con Java 23 y terminó sin errores, código de salida 0. El contexto conserva tres personas, el sistema principal, dos sistemas con etiqueta `Externo`, relaciones con intención, título y descripción. El registro anterior se conserva como antecedente de la propuesta inicial.

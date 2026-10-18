@@ -6,14 +6,13 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
         # ==========================================
         vecino = person "Vecino / Ciudadano" "Residente de Arequipa que solicita el recojo de residuos reciclables y acumula puntos de beneficio." "User"
         reciclador = person "Reciclador / Operador" "Personal operativo que atiende las rutas de recojo, registra pesajes y gestiona atenciones." "Operator"
-        admin = person "Administrador Municipal" "Personal encargado de supervisar indicadores de reciclaje y gestionar la cobertura distrital." "Admin"
+        admin = person "Administrador Municipal" "Personal encargado de consultar reportes e indicadores de reciclaje municipal." "Admin"
 
         # ==========================================
         # 2. SISTEMAS EXTERNOS (Nivel 1 - Contexto)
         # ==========================================
-        mapas = softwareSystem "Servicio de Mapas y Geolocalizacion" "API externa utilizada para geocodificacion, validacion de distritos y trazado de rutas." "Externo"
+        mapas = softwareSystem "Servicio de Mapas y Geolocalizacion" "Servicio externo utilizado para validar coordenadas geograficas de los puntos de recojo." "Externo"
         whatsapp = softwareSystem "API de Notificaciones WhatsApp" "Servicio externo para el envio asincrono de mensajes y alertas de confirmacion." "Externo"
-        pagos = softwareSystem "Proveedor de Pagos / Beneficios" "Plataforma externa para la redencion y acreditacion de puntos de beneficio." "Externo"
 
         # ==========================================
         # 3. SISTEMA PRINCIPAL (Nivel 1 - Contexto)
@@ -27,9 +26,8 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
         reciclador -> ecorecicla "Consulta rutas asignadas, atiende recojos y registra pesajes in situ"
         admin -> ecorecicla "Consulta reportes de pesaje e indicadores de reciclaje municipal"
         
-        ecorecicla -> mapas "Valida cobertura distrital y coordenadas geograficas"
+        ecorecicla -> mapas "Valida coordenadas geograficas de los puntos de recojo"
         ecorecicla -> whatsapp "Envia avisos y notificaciones de confirmacion de recojo"
-        ecorecicla -> pagos "Canaliza la acreditacion de puntos de beneficio"
     }
 
     views {
