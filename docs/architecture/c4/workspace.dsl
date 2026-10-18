@@ -33,7 +33,7 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
         # ==========================================
         # Relaciones de alto nivel del Sistema
         ecorecicla -> mapas "Valida coordenadas geograficas de los puntos de recojo"
-        ecorecicla -> whatsapp "Envia notificaciones"
+        ecorecicla -> whatsapp "Envia avisos y notificaciones de confirmacion de recojo"
         vecino -> ecorecicla "Registra solicitudes de recojo de reciclables y consulta sus puntos"
         reciclador -> ecorecicla "Consulta rutas asignadas, atiende recojos y registra pesajes in situ"
         admin -> ecorecicla "Consulta reportes de pesaje e indicadores de reciclaje municipal"
