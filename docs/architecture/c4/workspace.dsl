@@ -15,7 +15,131 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
         whatsapp workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la plataforma municipal de reciclaje EcoRecicla AQP." {
         
             model {
-                # ==========================================
+                # ===========workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la plataforma municipal de reciclaje EcoRecicla AQP." {
+                
+                    model {
+                        # ==========================================
+                        # 1. PERSONAS (Nivel 1 - Contexto)
+                        # ==========================================
+                        vecino = person "Vecino / Ciudadano" "Residente de Arequipa que solicita el recojo de residuos reciclables y acumula puntos de beneficio." "User"
+                        reciclador = person "Reciclador / Operador" "Personal operativo que atiende las rutas de recojo, registra pesajes y gestiona atenciones." "Operator"
+                        admin = person "Administrador Municipal" "Personal encargado de supervisar indicadores de reciclaje y gestionar la cobertura distrital." "Admin"
+                
+                        # ==========================================
+                        # 2. SISTEMAS EXTERNOS (Nivel 1 - Contexto)
+                        # ==========================================
+                        mapas = softwareSystem "Servicio de Mapas y Geolocalizacion" "API externa utilizada para geocodificacion, validacion de distritos y trazado de rutas." "Externo"
+                        whatsapp = softwareSystem "API de Notificaciones WhatsApp" "Servicio externo para el envio asincrono de mensajes y alertas de confirmacion." "Externo"
+                        pagos = softwareSystem "Proveedor de Pagos / Beneficios" "Plataforma externa para la redencion y acreditacion de puntos de beneficio." "Externo"
+                
+                        # ==========================================
+                        # 3. SISTEMA PRINCIPAL, CONTENEDORES Y COMPONENTES (Nivel 2 y 3)
+                        # ==========================================
+                        ecorecicla = softwareSystem "EcoRecicla AQP" "Plataforma municipal para la gestion integral de recojo, pesaje y acreditacion de reciclaje." {
+                            
+                            pwa = container "Aplicacion Web Progresiva (PWA)" "Interfaz de usuario accesible desde navegadores moviles y de escritorio con soporte offline parcial." "React / TypeScript PWA" "Web Browser"
+                            
+                            api = container "API REST Monolito Modular" "Ejecuta la logica de negocio, validaciones de dominio y orquestacion de modulos." "Python 3.12 / FastAPI" "Backend" {
+                                
+                                solicitudesMod = component "Modulo Solicitudes" "Gestiona el registro, validacion y ciclo de vida de las solicitudes de recojo." "FastAPI / Python" "Component"
+                                rutasMod = component "Modulo Rutas y Cobertura" "Gestiona las zonas de cobertura distrital y las rutas asignadas a recicladores." "FastAPI / Python" "Component"
+                                puntosMod = component "Modulo Puntos y Beneficios" "Administra la acreditacion y canje de puntos de reciclaje para los vecinos." "FastAPI / Python" "Component"
+                                reportesMod = component "Modulo Reportes" "Genera indicadores municipales sobre toneladas recicladas y cobertura." "FastAPI / Python" "Component"
+                                notifMod = component "Modulo Notificaciones" "Servicio auxiliar para la composicion y despacho asincrono de avisos." "FastAPI / Python" "Component"
+                            }
+                            
+                            worker = container "Worker de Tareas Asincronas" "Procesa trabajos en segundo plano como el despacho diferido de notificaciones." "Python / Celery" "Worker"
+                            bd = container "Base de Datos Relacional" "Almacena la informacion persistente de usuarios, solicitudes, rutas y puntos." "PostgreSQL 16" "Database"
+                            redis = container "Cola de Mensajes y Cache" "Gestiona la cola de tareas asincronas para Celery y el almacenamiento en memoria." "Redis 7" "Queue"
+                        }
+                
+                        # ==========================================
+                        # 4. RELACIONES (Nivel 1, 2 y 3)
+                        # ==========================================
+                        vecino -> pwa "Registra solicitudes y consulta puntos" "HTTPS / TLS"
+                        reciclador -> pwa "Consulta rutas, registra atenciones y pesajes" "HTTPS / TLS"
+                        admin -> pwa "Consulta reportes e indicadores municipales" "HTTPS / TLS"
+                
+                        pwa -> solicitudesMod "Envia solicitudes de recojo y atenciones" "HTTPS / REST JSON"
+                        pwa -> reportesMod "Consulta indicadores y reportes" "HTTPS / REST JSON"
+                
+                        solicitudesMod -> rutasMod "Consulta contrato publico de cobertura" "Llamada interna"
+                        solicitudesMod -> puntosMod "Solicita acreditacion de puntos" "Llamada interna"
+                        solicitudesMod -> notifMod "Pide notificar evento de confirmacion" "Llamada interna"
+                        reportesMod -> solicitudesMod "Consulta datos de solicitudes para estadisticas" "Lectura directa"
+                
+                        notifMod -> redis "Encola tareas de notificaciones" "RESP / TCP (port 6379)"
+                        solicitudesMod -> bd "Persiste solicitudes de recojo" "SQL / TCP (port 5432)"
+                        rutasMod -> bd "Persiste rutas y zonas" "SQL / TCP (port 5432)"
+                        puntosMod -> bd "Persiste saldo y canjes de puntos" "SQL / TCP (port 5432)"
+                        
+                        worker -> redis "Obtiene tareas pendientes de la cola" "RESP / TCP (port 6379)"
+                        worker -> bd "Actualiza estados de envios de notificaciones" "SQL / TCP (port 5432)"
+                
+                        rutasMod -> mapas "Valida coordenadas geograficas y limites distritales" "HTTPS / REST API"
+                        worker -> whatsapp "Despacha mensajes de texto y alertas de confirmacion" "HTTPS / REST API"
+                        puntosMod -> pagos "Acredita y sincroniza puntos de beneficio" "HTTPS / REST API"
+                
+                        ecorecicla -> mapas "Valida cobertura distrital"
+                        ecorecicla -> whatsapp "Envia notificaciones"
+                        ecorecicla -> pagos "Canaliza puntos"
+                    }
+                
+                    views {
+                        # VISTA NIVEL 1: Contexto
+                        systemContext ecorecicla "VistaContexto" "Diagrama de Contexto del Sistema EcoRecicla AQP (Nivel 1 C4)." {
+                            title "Diagrama de Contexto del Sistema EcoRecicla AQP"
+                            description "Muestra las personas que interactuan con la plataforma EcoRecicla AQP y sus conexiones con sistemas externos."
+                            include *
+                            autoLayout lr
+                        }
+                
+                        # VISTA NIVEL 2: Contenedores
+                        container ecorecicla "VistaContenedores" "Diagrama de Contenedores del Sistema EcoRecicla AQP (Nivel 2 C4)." {
+                            title "Diagrama de Contenedores - EcoRecicla AQP"
+                            description "Muestra las aplicaciones, servicios y almacenes de datos que integran la plataforma y sus protocolos de comunicacion."
+                            include *
+                            autoLayout lr
+                        }
+                
+                        # VISTA NIVEL 3: Componentes
+                        component api "VistaComponentes" "Diagrama de Componentes del contenedor API REST Monolito Modular (Nivel 3 C4)." {
+                            title "Diagrama de Componentes - API REST Monolito Modular"
+                            description "Muestra los modulos internos de la API, sus dependencias libres de ciclos y sus conexiones externas."
+                            include *
+                            autoLayout lr
+                        }
+                
+                        # VISTA DINÁMICA (NUEVA EN E4)
+                        dynamic ecorecicla "VistaDinamica" "Vista dinamica del flujo critico: Solicitud de recojo de reciclables." {
+                            title "Vista Dinámica - Solicitud de Recojo de Reciclables"
+                            description "Muestra la secuencia numerada de interacciones entre la PWA, los modulos de la API y la infraestructura durante el registro de un recojo."
+                            
+                            pwa -> solicitudesMod "Envia datos de la solicitud de recojo" "HTTPS / REST JSON"
+                            solicitudesMod -> rutasMod "Consulta la cobertura distrital" "Llamada interna"
+                            solicitudesMod -> bd "Persiste la solicitud en estado PENDIENTE" "SQL / TCP"
+                            solicitudesMod -> notifMod "Notifica la creacion de la solicitud" "Llamada interna"
+                            notifMod -> redis "Encola la tarea de notificacion por WhatsApp" "RESP / TCP"
+                            
+                            autoLayout lr
+                        }
+                
+                        # ESTILOS VISUALES
+                        styles {
+                            element "User" { shape Person background #08427b color #ffffff }
+                            element "Operator" { shape Person background #1168cb color #ffffff }
+                            element "Admin" { shape Person background #228b22 color #ffffff }
+                            element "Software System" { background #1168cb color #ffffff }
+                            element "Externo" { background #999999 color #ffffff }
+                            element "Web Browser" { shape WebBrowser background #438dd5 color #ffffff }
+                            element "Backend" { shape Component background #85bbf0 color #000000 }
+                            element "Component" { shape Component background #85bbf0 color #000000 }
+                            element "Worker" { shape Robot background #85bbf0 color #000000 }
+                            element "Database" { shape Cylinder background #438dd5 color #ffffff }
+                            element "Queue" { shape Pipe background #85bbf0 color #000000 }
+                        }
+                    }
+                }===============================
                 # 1. PERSONAS (Nivel 1 - Contexto)
                 # ==========================================
                 vecino = person "Vecino / Ciudadano" "Residente de Arequipa que solicita el recojo de residuos reciclables y acumula puntos de beneficio." "User"
