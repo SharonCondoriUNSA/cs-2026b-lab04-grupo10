@@ -41,3 +41,22 @@
 - **Solicitud de apoyo:** Corregir los errores de E2 conservando el trabajo de la compañera y mostrar los archivos modificados.
 - **Correcciones:** Se recuperó el bloque completo del modelo y se retiró el fragmento duplicado que impedía interpretar el archivo. Se incorporaron el inventario y las correcciones de contexto de E1. Se conservan tres contenedores, PWA, API REST y PostgreSQL, con sus descripciones, protocolos y estilos. Se retiran el proveedor externo de pagos, Celery, Redis, los frameworks y las versiones sin respaldo en los antecedentes. La API se comunica con WhatsApp, sin introducir un worker independiente. Se declaran primero las relaciones de contexto para evitar duplicarlas con las relaciones implícitas de Structurizr.
 - **Verificaciones:** La primera ejecución confirmó el error de sintaxis en la línea 15 del archivo original. Después de recuperar el modelo se detectó una relación duplicada hacia mapas y se corrigió el orden de declaración. La versión final pasó `validate -workspace docs/architecture/c4/workspace.dsl` con Structurizr CLI v2025.11.09 y Java 23, código de salida 0. Se comprobaron las dos vistas, los tres contenedores, las etiquetas `Web Browser` y `Database` y los protocolos. No se modela una cola porque los ADR no la establecen. Los registros originales se conservan como antecedentes, sus tecnologías propuestas se sustituyen por las documentadas en esta revisión.
+
+
+## Registro 3: Formulación y Auditoría del Modelo C4 Nivel 3 (E3 - Componentes)
+- **Fecha:** 17/10/2026
+- **Herramienta:** Gemini / AI Assistant
+- **Propósito de la consulta:** Definir los componentes internos del contenedor API REST Monolito Modular para la vista `component`, asegurando correspondencia exacta con `paquetes.puml` del Lab 05.
+- **Prompt estructurado por el equipo:** 
+  > "Actúa como un arquitecto de software. A partir de paquetes.puml del Lab 05, define 5 componentes en Structurizr DSL dentro del contenedor API: Solicitudes, Rutas y Cobertura, Puntos y Beneficios, Reportes y Notificaciones. Modela las dependencias entre componentes respetando la regla anti-ciclos (C4) y agrega la vista component con título y descripción."
+- **Evaluación crítica y correcciones applied:**
+  - Se verificó que los 5 módulos coincidan 1:1 con el diseño de paquetes del Laboratorio 05.
+  - Se confirmó la ausencia de dependencias cíclicas: `Solicitudes` consume contratos públicos de `Rutas`, `Puntos` y `Notificaciones`; `Reportes` solo lee `Solicitudes`.
+  - Se enlazaron los componentes con la base de datos PostgreSQL y las APIs externas correspondientes.
+- **Decisión de diseño y Git:** Integrado en `docs/architecture/c4/workspace.dsl` para el commit `E3: componentes C4`.
+
+## Revisión de E3 (18/10/2026)
+- **Herramienta:** Codex.
+- **Solicitud de apoyo:** Revisar y corregir E3 conservando los elementos útiles del trabajo de la compañera.
+- **Correcciones:** Se recuperan las declaraciones de componentes y la vista de E3 sobre el modelo corregido de E2, eliminando los bloques pegados que invalidaban la sintaxis. Se conservan las descripciones de los cinco componentes existentes y se añade Compartido para representar los seis paquetes del Lab05. Notificaciones se identifica como auxiliar de Solicitudes, no como un quinto módulo de dominio. Reportes consume FuentePesajes mediante contrato público, sin lectura directa de entidades ni esquemas ajenos. Se mantienen CoberturaRecojo, AcreditadorPuntos y NotificadorSolicitud. La validación opcional de coordenadas se conecta desde Solicitudes a mapas, como en clases.puml, y el aviso se conecta desde Notificaciones a WhatsApp. Se conservan los ajustes de tecnologías y sistemas externos de E1 y E2.
+- **Verificaciones:** El archivo original falló en la línea 15 por un bloque workspace incrustado. El modelo corregido pasó Structurizr CLI v2025.11.09 con Java 23, código de salida 0. Se comprobaron seis componentes, las nueve dependencias internas de paquetes.puml y la ausencia de ciclos mediante recorrido del grafo. Las tres vistas comparten el mismo modelo y mantienen título y descripción. Los registros originales se conservan como antecedentes, esta revisión corrige la afirmación previa de correspondencia exacta con solo cinco paquetes.

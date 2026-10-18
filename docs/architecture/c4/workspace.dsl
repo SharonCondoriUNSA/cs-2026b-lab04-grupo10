@@ -21,7 +21,14 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
 
             pwa = container "Aplicacion Web Progresiva (PWA)" "Interfaz de usuario accesible desde navegadores moviles y de escritorio con soporte offline parcial." "JavaScript / Service Worker / IndexedDB" "Web Browser"
 
-            api = container "API REST Monolito Modular" "Ejecuta la logica de negocio, validaciones de dominio y orquestacion de modulos." "Python / API REST" "Backend"
+            api = container "API REST Monolito Modular" "Ejecuta la logica de negocio, validaciones de dominio y orquestacion de modulos." "Python / API REST" "Backend" {
+            solicitudesMod = component "Modulo Solicitudes" "Gestiona el registro, validacion y ciclo de vida de las solicitudes de recojo." "Python" "Component"
+            rutasMod = component "Modulo Rutas y Cobertura" "Gestiona las zonas de cobertura distrital y las rutas asignadas a recicladores." "Python" "Component"
+            puntosMod = component "Modulo Puntos y Beneficios" "Administra la acreditacion y canje de puntos de reciclaje para los vecinos." "Python" "Component"
+            reportesMod = component "Modulo Reportes" "Genera indicadores municipales sobre toneladas recicladas y cobertura." "Python" "Component"
+            notifMod = component "Notificaciones (auxiliar de Solicitudes)" "Servicio auxiliar para la composicion y despacho asincrono de avisos." "Python" "Component"
+            compartidoMod = component "Compartido" "Define IdentificadorSolicitud como alias de UUID, sin entidades de dominio ni acceso a datos." "Python / UUID" "Component"
+        }
 
 
             bd = container "Base de Datos Relacional" "Almacena la informacion persistente de usuarios, solicitudes, rutas y puntos." "PostgreSQL" "Database"
@@ -54,6 +61,23 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
 
         api -> whatsapp "Despacha avisos de confirmacion de recojo" "HTTPS / REST API"
 
+        # Colaboraciones de los componentes, alineadas con paquetes.puml
+        pwa -> solicitudesMod "Envia solicitudes de recojo y atenciones" "HTTPS / REST JSON"
+        pwa -> reportesMod "Consulta indicadores y reportes" "HTTPS / REST JSON"
+        solicitudesMod -> rutasMod "Consulta CoberturaRecojo para determinar cobertura distrital" "Contrato publico / llamada interna"
+        solicitudesMod -> puntosMod "Solicita acreditacion mediante AcreditadorPuntos" "Contrato publico / llamada interna"
+        solicitudesMod -> notifMod "Solicita aviso asincrono mediante NotificadorSolicitud" "Puerto interno / llamada interna"
+        reportesMod -> solicitudesMod "Consulta pesajes confirmados mediante FuentePesajes" "Contrato publico / llamada interna"
+        solicitudesMod -> compartidoMod "Utiliza IdentificadorSolicitud" "Tipo compartido UUID"
+        rutasMod -> compartidoMod "Utiliza IdentificadorSolicitud" "Tipo compartido UUID"
+        puntosMod -> compartidoMod "Utiliza IdentificadorSolicitud" "Tipo compartido UUID"
+        notifMod -> compartidoMod "Utiliza IdentificadorSolicitud" "Tipo compartido UUID"
+        reportesMod -> compartidoMod "Utiliza IdentificadorSolicitud" "Tipo compartido UUID"
+        solicitudesMod -> bd "Persiste solicitudes en su esquema" "SQL / TCP (port 5432)"
+        rutasMod -> bd "Persiste rutas y zonas en su esquema" "SQL / TCP (port 5432)"
+        puntosMod -> bd "Persiste puntos y canjes en su esquema" "SQL / TCP (port 5432)"
+        solicitudesMod -> mapas "Valida opcionalmente coordenadas mediante ServicioMapas" "HTTPS / REST JSON"
+        notifMod -> whatsapp "Despacha avisos de confirmacion de recojo" "HTTPS / REST API"
     }
 
     views {
@@ -78,9 +102,22 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
         }
 
         # ------------------------------------------
+        # VISTA NIVEL 3: Componentes (E3)
+        component api "VistaComponentes" "Diagrama de Componentes del contenedor API REST Monolito Modular (Nivel 3 C4)." {
+            title "Diagrama de Componentes - API REST Monolito Modular"
+            description "Muestra los cuatro modulos de dominio, Notificaciones como auxiliar de Solicitudes y los tipos compartidos, con dependencias sin ciclos."
+            include *
+            autoLayout lr
+        }
+
         # ESTILOS VISUALES Y FORMAS
         # ------------------------------------------
         styles {
+            element "Component" {
+                shape Component
+                background #85bbf0
+                color #000000
+            }
             element "User" {
                 shape Person
                 background #08427b
