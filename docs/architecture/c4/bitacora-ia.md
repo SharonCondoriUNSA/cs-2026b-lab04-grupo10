@@ -28,3 +28,15 @@
   - Se explicitation los protocolos técnicos en cada relación del Nivel 2 (`HTTPS / JSON`, `SQL / TCP (port 5432)`, `RESP / TCP (port 6379)`).
   - Se aplicaron formas específicas en los estilos (`WebBrowser`, `Cylinder`, `Pipe`) para comunicar visualmente el tipo de contenedor.
 - **Decisión de diseño y Git:** Integrado en `docs/architecture/c4/workspace.dsl` para el commit `E2: contenedores C4`.
+
+## Registro 3: Formulación y Auditoría del Modelo C4 Nivel 3 (E3 - Componentes)
+- **Fecha:** 17/10/2026
+- **Herramienta:** Gemini / AI Assistant
+- **Propósito de la consulta:** Definir los componentes internos del contenedor API REST Monolito Modular para la vista `component`, asegurando correspondencia exacta con `paquetes.puml` del Lab 05.
+- **Prompt estructurado por el equipo:** 
+  > "Actúa como un arquitecto de software. A partir de paquetes.puml del Lab 05, define 5 componentes en Structurizr DSL dentro del contenedor API: Solicitudes, Rutas y Cobertura, Puntos y Beneficios, Reportes y Notificaciones. Modela las dependencias entre componentes respetando la regla anti-ciclos (C4) y agrega la vista component con título y descripción."
+- **Evaluación crítica y correcciones applied:**
+  - Se verificó que los 5 módulos coincidan 1:1 con el diseño de paquetes del Laboratorio 05.
+  - Se confirmó la ausencia de dependencias cíclicas: `Solicitudes` consume contratos públicos de `Rutas`, `Puntos` y `Notificaciones`; `Reportes` solo lee `Solicitudes`.
+  - Se enlazaron los componentes con la base de datos PostgreSQL y las APIs externas correspondientes.
+- **Decisión de diseño y Git:** Integrado en `docs/architecture/c4/workspace.dsl` para el commit `E3: componentes C4`.
