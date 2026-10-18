@@ -14,3 +14,17 @@
   - Se añadieron explícitamente las propiedades `title` y `description` dentro de la vista `systemContext` para garantizar el cumplimiento de la lista de verificación del laboratorio.
   - Se verificó que ninguna caja del Nivel 1 expusiera tecnologías internas (Python, PostgreSQL, React).
 - **Decisión de diseño y Git:** Propuesta refinada y aprobada por el equipo tras pasar la validación estricta de Structurizr DSL. Integrada en `docs/architecture/c4/workspace.dsl` para el commit `E1: contexto C4`.
+
+
+## Registro 2: Formulación y Auditoría del Modelo C4 Nivel 2 (E2 - Contenedores)
+- **Fecha:** 17/10/2026
+- **Herramienta:** Gemini / AI Assistant
+- **Propósito de la consulta:** Elaborar la definición de contenedores y protocolos de comunicación para la vista `container` a partir del ADR-001 (Monolito Modular).
+- **Prompt estructurado por el equipo:** 
+  > "Actúa como un arquitecto de software. A partir del ADR-001, define 5 contenedores para EcoRecicla AQP en Structurizr DSL: PWA React, API REST Python, Worker Celery, PostgreSQL 16 y Redis 7. Asigna etiquetas C4 (Web Browser, Database, Queue) y explicita los protocolos de comunicación en las relaciones (HTTPS/JSON, SQL/TCP, RESP/TCP). Agrega la vista container con título y descripción."
+- **Evaluación crítica y correcciones aplicadas:**
+  - Se auditó que ningún contenedor utilizara nombres de infraestructura genérica como "Docker", "servidor" o "nube".
+  - Se confirmó que cada contenedor especifique su tecnología exacta entre comillas dobles (React, Python 3.12/FastAPI, Celery, PostgreSQL 16, Redis 7).
+  - Se explicitation los protocolos técnicos en cada relación del Nivel 2 (`HTTPS / JSON`, `SQL / TCP (port 5432)`, `RESP / TCP (port 6379)`).
+  - Se aplicaron formas específicas en los estilos (`WebBrowser`, `Cylinder`, `Pipe`) para comunicar visualmente el tipo de contenedor.
+- **Decisión de diseño y Git:** Integrado en `docs/architecture/c4/workspace.dsl` para el commit `E2: contenedores C4`.
