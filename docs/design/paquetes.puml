@@ -1,0 +1,45 @@
+@startuml paquetes
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam packageStyle rectangle
+
+title EcoRecicla AQP — Paquetes del monolito modular (vista de desarrollo)
+
+package "ecorecicla" {
+    package "solicitudes" as SOL
+    package "rutas_cobertura" as RUT
+    package "puntos_beneficios" as PUN
+    package "reportes" as REP
+    package "notificaciones" as NOT
+    package "compartido" as COM
+}
+
+' Dependencias de Solicitudes hacia contratos públicos y puertos
+SOL ..> RUT : consulta contrato publico\nCoberturaRecojo
+SOL ..> PUN : solicita acreditacion\nAcreditadorPuntos (contrato publico)
+SOL ..> NOT : envia aviso asincrono\nNotificadorSolicitud
+SOL ..> COM : utiliza IdentificadorSolicitud\n(tipo compartido UUID)
+
+' Dependencias de otros módulos
+REP ..> SOL : consulta pesajes confirmados\nFuentePesajes (contrato publico)
+RUT ..> COM : utiliza IdentificadorSolicitud
+PUN ..> COM : utiliza IdentificadorSolicitud
+NOT ..> COM : utiliza IdentificadorSolicitud
+REP ..> COM : utiliza IdentificadorSolicitud
+
+note bottom of SOL
+  Regla C4 (ADR-001):
+  Sin dependencias cíclicas.
+  Los módulos consumen únicamente los
+  contratos públicos e interfaces expuestas.
+  notificaciones: paquete auxiliar de infraestructura de Solicitudes,
+  no un quinto modulo de dominio. compartido: solo tipos comunes,
+  sin entidades de dominio ni acceso cruzado a esquemas.
+  IdentificadorSolicitud es un alias compartido de UUID
+  para referenciar solicitudes sin importar sus entidades.
+  AcreditadorPuntos y FuentePesajes precisan los contratos publicos.
+  confirmarPuntosAcreditados es receptor de SolicitudRecojo.
+  Reportes consume FuentePesajes: la colaboracion E4 no implica SOL -> REP.
+end note
+
+@enduml
