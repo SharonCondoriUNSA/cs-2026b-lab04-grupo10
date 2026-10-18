@@ -1,5 +1,6 @@
 # Comparación: Diagrama de Secuencia UML vs. Vista Dinámica C4
 
-El diagrama de secuencia UML (Laboratorio 05) detalla aspectos de bajo nivel como firmas de métodos, tipos de retorno, activación de líneas de vida y fragmentos combinados (`alt`/`loop`), sirviendo directamente a los **desarrolladores** encargados de implementar el código.
-
-Por su parte, la vista dinámica C4 (Laboratorio 06) omite la complejidad sintáctica interna de clases y llamadas para enfocarse únicamente en la secuencia de interacción de alto nivel entre contenedores y componentes, sirviendo a **arquitectos, líderes técnicos y evaluadores** para auditar el flujo del negocio sin saturarse de detalles de implementación.
+El diagrama de secuencia UML del Lab05 muestra firmas, retornos, líneas de vida y fragmentos `alt` y `loop`, orientados a los desarrolladores.
+La vista dinámica C4 resume el mismo registro en cinco interacciones entre la PWA, componentes, mapas y persistencia, para comunicar el flujo a arquitectos, líderes técnicos y evaluadores.
+Se omiten las clases, la iteración por detalles, los retornos HTTP y las ramas de error de datos o falta de cobertura, que impiden guardar en la secuencia UML. Se representa el escenario con datos y cobertura válidos.
+La comprobación de mapas es opcional, su fallo permite guardar PENDIENTE con ubicación por revisar. Después de confirmar la persistencia se solicita el aviso interno asíncrono, sin añadir Redis ni envío por WhatsApp a este escenario.
