@@ -137,7 +137,8 @@ graph LR
     2-. "<div>Consulta rutas asignadas,<br />atiende recojos y registra<br />pesajes in situ</div><div style='font-size: 70%'></div>" .->6
     3-. "<div>Consulta reportes de pesaje e<br />indicadores de reciclaje<br />municipal</div><div style='font-size: 70%'></div>" .->6
 
-  end```
+  end
+```
 
 ### Vistas de arquitectura
 
