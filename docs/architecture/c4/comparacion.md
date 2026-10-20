@@ -9,9 +9,17 @@ La comprobación de mapas es opcional, su fallo permite guardar PENDIENTE con ub
 
 | Aspecto | C4-PlantUML escrito a mano | Structurizr DSL exportado |
 | --- | --- | --- |
-| Tiempo invertido | No se cronometró la redacción y revisión del archivo manual, no se atribuye una duración ficticia. Para este contexto se escribieron seis elementos y cinco relaciones. | En una repetición local se midieron 0.77 s para exportar las cinco vistas a C4-PlantUML y 0.83 s para Mermaid. Son tiempos de exportación, no del modelado ni de la revisión visual. |
+| Tiempo invertido | Repetición del 20/10/2026: **35 s** para reelaborar el contexto con macros C4, comprobar sus seis elementos y cinco relaciones, validar la sintaxis, renderizar y revisar el PNG. Elaboración asistida por Codex en esta sesión, no una medición de escritura humana. | Repetición del 20/10/2026: **11 s** para exportar desde el workspace existente, comprobar la sintaxis del contexto, renderizarlo y revisar su PNG. La herramienta exportó las cinco fuentes, pero solo se renderizó el contexto durante esta medición. |
 | Errores y diferencias encontrados | El contexto manual pasó la comprobación de sintaxis, sin errores detectados. Se compararon los nombres de sus seis elementos y las etiquetas de sus cinco relaciones con el contexto exportado. | La exportación inicial no conservó los colores de las etiquetas. Se activó `c4plantuml.tags` en el workspace y se regeneraron las imágenes. Mermaid y PlantUML distribuyen los elementos de forma diferente, y el contexto manual utiliza `System_Ext` para los sistemas externos. |
 | Cambio del nombre de un contenedor | Este contexto de nivel 1 no muestra contenedores, por lo que un cambio exclusivo de nombre de la API no lo afecta. Los diagramas de contenedores mantenidos a mano sí requieren revisar cada archivo donde se repita ese nombre. | Se cambia el nombre en una declaración del workspace y se reexportan las vistas afectadas y sus PNG. Si cambia el nombre del sistema principal, también debe actualizarse el contexto manual independiente. |
+
+### Alcance de la medición de tiempo
+
+La observación de la revisora se atendió con una nueva repetición cronometrada, el tiempo de elaboración original del 18/10/2026 no fue registrado. Se utilizó un archivo temporal inicialmente vacío para redactar explícitamente las macros del contexto, con el dominio y los nombres ya conocidos. No se utilizó el exportador para construir esa versión manual ni se modificó el contexto entregado.
+
+Los 35 s y 11 s se midieron como tiempo transcurrido de esta sesión, incluyen llamadas a herramientas, comprobaciones y revisión de imagen. En ambos enfoques se obtuvo un PNG del mismo contexto. El enfoque exportado parte del modelo ya construido, su tiempo no incluye elaborar el workspace. La repetición asistida tampoco mide aprendizaje, mecanografía ni tiempo de una persona. Es una comparación local de estas tareas, no una estimación del esfuerzo humano total ni una prueba general de productividad.
+
+Los tiempos anteriores de 0.77 s para C4-PlantUML y 0.83 s para Mermaid corresponden únicamente a exportar las cinco vistas el 18/10/2026, sin renderización ni revisión. Se conservan como dato de esa operación y no se comparan directamente con los 35 s de reelaboración del contexto.
 
 ### Reproducción
 
