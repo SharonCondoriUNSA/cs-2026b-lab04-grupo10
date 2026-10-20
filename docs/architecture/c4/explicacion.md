@@ -1,0 +1,3 @@
+# EcoRecicla AQP para la administración municipal
+
+EcoRecicla AQP ayuda a organizar el recojo de materiales reciclables en Arequipa. Los vecinos solicitan el recojo y consultan sus puntos. Los recicladores consultan sus rutas, atienden los recojos y registran los pesos. La administración municipal consulta reportes e indicadores de reciclaje. La plataforma se conecta con un servicio de mapas para comprobar las coordenadas de los puntos de recojo y con WhatsApp para enviar avisos. Estas conexiones se distinguen de las funciones internas de solicitudes, rutas, puntos y reportes. El objetivo es reunir la información del proceso y facilitar su seguimiento por los vecinos, el personal de recojo y la municipalidad.
