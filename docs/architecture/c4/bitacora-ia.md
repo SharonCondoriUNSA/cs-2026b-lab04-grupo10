@@ -117,3 +117,13 @@
 - **Prompt utilizado:** Explica el diagrama de contexto de EcoRecicla AQP a un representante de la administración municipal que no es técnico, en máximo 120 palabras. Indica qué hace el sistema, quién lo usa y de qué servicios externos depende. Evita la jerga y no prometas capacidades que no consten en el modelo.
 - **Propuesta:** Se redactó explicacion.md describiendo vecinos, recicladores, administración municipal, mapas y WhatsApp.
 - **Verificación y decisión:** Se comprobó el límite de palabras y la correspondencia con los seis elementos y las cinco relaciones del contexto. Se conserva el texto sin atribuir garantías de entrega, reintentos ni resultados de una implementación real. La referencia a WhatsApp corresponde a la integración general del contexto, no al aviso interno del escenario dinámico.
+
+## Registro 9: README y preparación de entrega (E8)
+- **Fecha:** 18/10/2026.
+- **Herramienta:** Codex.
+- **Solicitud de apoyo:** Continuar con el ejercicio siguiente a E7, E8 del Lab06.
+- **Instrucción aplicada:** Agregar al README la sección Arquitectura C4 (Lab 06), copiar el contexto Mermaid desde export/, enlazar los PNG de las cinco vistas y sus fuentes y documentación. Comprobar los enlaces y distinguir la revisión entre grupos de la revisión de PR del equipo. No registrar revisiones, respuestas, entrega al Aula Virtual ni etiquetas que no se hayan realizado.
+- **Propuesta y decisión:** Se conservan las secciones previas del README y se añade la sección C4 y el enlace a su bitácora. Se documentan las limitaciones verificadas en E6 y E7. E8 parte de la rama de E7 mientras E6 y E7 siguen pendientes de integración. Se solicita el enlace del otro grupo o issue para completar la revisión cruzada, sin enviar mensajes ni abrir issues en esta sesión.
+- **Pendientes:** Evidencia de revisión entre grupos y respuesta, revisión e integración de los PR, etiqueta v0.6-c4 sobre la versión final y confirmación de entrega en Aula Virtual. La etiqueta no se crea en esta rama de trabajo. E8 está preparado documentalmente, todavía no se considera completada la entrega.
+- **Aclaración del usuario:** Todavía no hay otro grupo asignado para la revisión cruzada. Se registra ese motivo como pendiente, sin inventar una revisión.
+- **Verificaciones realizadas:** Todos los enlaces locales del README apuntan a archivos existentes. El bloque Mermaid coincide exactamente con la exportación del contexto y la tabla enlaza las cinco vistas. `git diff --check` pasó. La renderización del bloque en GitHub sigue pendiente de comprobar, se conserva el enlace alternativo al PNG.
