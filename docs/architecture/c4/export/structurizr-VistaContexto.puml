@@ -1,0 +1,40 @@
+@startuml
+title <size:24>Diagrama de Contexto del Sistema EcoRecicla AQP</size>\n<size:24>Muestra las personas que interactuan con la plataforma EcoRecicla AQP y sus conexiones con sistemas externos.</size>
+
+set separator none
+left to right direction
+
+<style>
+  root {
+    BackgroundColor: #ffffff
+    FontColor: #444444
+  }
+</style>
+
+!include <C4/C4>
+!include <C4/C4_Context>
+
+AddElementTag("Software System,Externo", $bgColor="#999999", $borderColor="#6b6b6b", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Operator", $bgColor="#1168cb", $borderColor="#0b488e", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Admin", $bgColor="#228b22", $borderColor="#176117", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Software System", $bgColor="#1168cb", $borderColor="#0b488e", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("User", $bgColor="#08427b", $borderColor="#052e56", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+
+AddRelTag("Relationship", $textColor="#444444", $lineColor="#444444", $lineStyle = DashedLine())
+
+Person(VecinoCiudadano, "Vecino / Ciudadano", $descr="Residente de Arequipa que solicita el recojo de residuos reciclables y acumula puntos de beneficio.", $tags="User", $link="")
+Person(RecicladorOperador, "Reciclador / Operador", $descr="Personal operativo que atiende las rutas de recojo, registra pesajes y gestiona atenciones.", $tags="Operator", $link="")
+Person(AdministradorMunicipal, "Administrador Municipal", $descr="Personal encargado de consultar reportes e indicadores de reciclaje municipal.", $tags="Admin", $link="")
+System(ServiciodeMapasyGeolocalizacion, "Servicio de Mapas y Geolocalizacion", $descr="Servicio externo utilizado para validar coordenadas geograficas de los puntos de recojo.", $tags="Software System,Externo", $link="")
+System(APIdeNotificacionesWhatsApp, "API de Notificaciones WhatsApp", $descr="Servicio externo para el envio asincrono de mensajes y alertas de confirmacion.", $tags="Software System,Externo", $link="")
+System(EcoReciclaAQP, "EcoRecicla AQP", $descr="Plataforma municipal para la gestion integral de recojo, pesaje y acreditacion de reciclaje.", $tags="Software System", $link="")
+
+Rel(EcoReciclaAQP, ServiciodeMapasyGeolocalizacion, "Valida coordenadas geograficas de los puntos de recojo", $techn="", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP, APIdeNotificacionesWhatsApp, "Envia avisos y notificaciones de confirmacion de recojo", $techn="", $tags="Relationship", $link="")
+Rel(VecinoCiudadano, EcoReciclaAQP, "Registra solicitudes de recojo de reciclables y consulta sus puntos", $techn="", $tags="Relationship", $link="")
+Rel(RecicladorOperador, EcoReciclaAQP, "Consulta rutas asignadas, atiende recojos y registra pesajes in situ", $techn="", $tags="Relationship", $link="")
+Rel(AdministradorMunicipal, EcoReciclaAQP, "Consulta reportes de pesaje e indicadores de reciclaje municipal", $techn="", $tags="Relationship", $link="")
+
+SHOW_LEGEND(true)
+hide stereotypes
+@enduml

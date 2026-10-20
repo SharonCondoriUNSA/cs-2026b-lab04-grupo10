@@ -1,0 +1,55 @@
+graph LR
+  linkStyle default fill:#ffffff
+
+  subgraph diagram ["Diagrama de Componentes - API REST Monolito Modular"]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    4["<div style='font-weight: bold'>Servicio de Mapas y Geolocalizacion</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Servicio externo utilizado<br />para validar coordenadas<br />geograficas de los puntos de<br />recojo.</div>"]
+    style 4 fill:#999999,stroke:#6b6b6b,color:#ffffff
+    5["<div style='font-weight: bold'>API de Notificaciones WhatsApp</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Servicio externo para el<br />envio asincrono de mensajes y<br />alertas de confirmacion.</div>"]
+    style 5 fill:#999999,stroke:#6b6b6b,color:#ffffff
+
+    subgraph 6 ["EcoRecicla AQP"]
+      style 6 fill:#ffffff,stroke:#0b488e,color:#0b488e
+
+      subgraph 8 ["API REST Monolito Modular"]
+        style 8 fill:#ffffff,stroke:#5d82a8,color:#5d82a8
+
+        10["<div style='font-weight: bold'>Modulo Rutas y Cobertura</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Gestiona las zonas de<br />cobertura distrital y las<br />rutas asignadas a<br />recicladores.</div>"]
+        style 10 fill:#85bbf0,stroke:#5d82a8,color:#000000
+        11["<div style='font-weight: bold'>Modulo Puntos y Beneficios</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Administra la acreditacion y<br />canje de puntos de reciclaje<br />para los vecinos.</div>"]
+        style 11 fill:#85bbf0,stroke:#5d82a8,color:#000000
+        12["<div style='font-weight: bold'>Modulo Reportes</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Genera indicadores<br />municipales sobre toneladas<br />recicladas y cobertura.</div>"]
+        style 12 fill:#85bbf0,stroke:#5d82a8,color:#000000
+        13["<div style='font-weight: bold'>Notificaciones (auxiliar de Solicitudes)</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Servicio auxiliar para la<br />composicion y despacho<br />asincrono de avisos.</div>"]
+        style 13 fill:#85bbf0,stroke:#5d82a8,color:#000000
+        14["<div style='font-weight: bold'>Compartido</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python / UUID]</div><div style='font-size: 80%; margin-top:10px'>Define IdentificadorSolicitud<br />como alias de UUID, sin<br />entidades de dominio ni<br />acceso a datos.</div>"]
+        style 14 fill:#85bbf0,stroke:#5d82a8,color:#000000
+        9["<div style='font-weight: bold'>Modulo Solicitudes</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Gestiona el registro,<br />validacion y ciclo de vida de<br />las solicitudes de recojo.</div>"]
+        style 9 fill:#85bbf0,stroke:#5d82a8,color:#000000
+      end
+
+      15[("<div style='font-weight: bold'>Base de Datos Relacional</div><div style='font-size: 70%; margin-top: 0px'>[Container: PostgreSQL]</div><div style='font-size: 80%; margin-top:10px'>Almacena la informacion<br />persistente de usuarios,<br />solicitudes, rutas y puntos.</div>")]
+      style 15 fill:#438dd5,stroke:#2e6295,color:#ffffff
+      7["<div style='font-weight: bold'>Aplicacion Web Progresiva (PWA)</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript / Service Worker / IndexedDB]</div><div style='font-size: 80%; margin-top:10px'>Interfaz de usuario accesible<br />desde navegadores moviles y<br />de escritorio con soporte<br />offline parcial.</div>"]
+      style 7 fill:#438dd5,stroke:#2e6295,color:#ffffff
+    end
+
+    7-. "<div>Envia solicitudes de recojo y<br />atenciones</div><div style='font-size: 70%'>[HTTPS / REST JSON]</div>" .->9
+    7-. "<div>Consulta indicadores y<br />reportes</div><div style='font-size: 70%'>[HTTPS / REST JSON]</div>" .->12
+    9-. "<div>Consulta CoberturaRecojo para<br />determinar cobertura<br />distrital</div><div style='font-size: 70%'>[Contrato publico / llamada interna]</div>" .->10
+    9-. "<div>Solicita acreditacion<br />mediante AcreditadorPuntos</div><div style='font-size: 70%'>[Contrato publico / llamada interna]</div>" .->11
+    9-. "<div>Solicita aviso asincrono<br />mediante NotificadorSolicitud</div><div style='font-size: 70%'>[Puerto interno / llamada interna]</div>" .->13
+    12-. "<div>Consulta pesajes confirmados<br />mediante FuentePesajes</div><div style='font-size: 70%'>[Contrato publico / llamada interna]</div>" .->9
+    9-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->14
+    10-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->14
+    11-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->14
+    13-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->14
+    12-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->14
+    9-. "<div>Persiste solicitudes en su<br />esquema</div><div style='font-size: 70%'>[SQL / TCP (port 5432)]</div>" .->15
+    10-. "<div>Persiste rutas y zonas en su<br />esquema</div><div style='font-size: 70%'>[SQL / TCP (port 5432)]</div>" .->15
+    11-. "<div>Persiste puntos y canjes en<br />su esquema</div><div style='font-size: 70%'>[SQL / TCP (port 5432)]</div>" .->15
+    9-. "<div>Valida opcionalmente<br />coordenadas mediante<br />ServicioMapas</div><div style='font-size: 70%'>[HTTPS / REST JSON]</div>" .->4
+    13-. "<div>Despacha avisos de<br />confirmacion de recojo</div><div style='font-size: 70%'>[HTTPS / REST API]</div>" .->5
+
+  end

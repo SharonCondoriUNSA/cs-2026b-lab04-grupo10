@@ -1,0 +1,49 @@
+@startuml
+title <size:24>Despliegue - EcoRecicla AQP (Produccion)</size>\n<size:24>PWA en el dispositivo del usuario, API y PostgreSQL en un unico VPS. Dimensionamiento inicial sujeto a medicion y cotizacion, acorde con la prioridad de bajo costo de R-03.</size>
+
+set separator none
+left to right direction
+
+<style>
+  root {
+    BackgroundColor: #ffffff
+    FontColor: #444444
+  }
+</style>
+
+!include <C4/C4>
+!include <C4/C4_Context>
+!include <C4/C4_Container>
+!include <C4/C4_Deployment>
+
+AddElementTag("Web Browser", $bgColor="#438dd5", $borderColor="#2e6295", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Element", $bgColor="#ffffff", $borderColor="#444444", $fontColor="#444444", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Backend", $bgColor="#85bbf0", $borderColor="#5d82a8", $fontColor="#000000", $sprite="", $shadowing="", $borderStyle="solid")
+AddElementTag("Database", $bgColor="#438dd5", $borderColor="#2e6295", $fontColor="#ffffff", $sprite="", $shadowing="", $borderStyle="solid")
+
+AddRelTag("Relationship", $textColor="#444444", $lineColor="#444444", $lineStyle = DashedLine())
+
+Deployment_Node(Producción.Dispositivodelusuario, "Dispositivo del usuario", $type="Android o Windows / navegador compatible con PWA", $descr="Equipo existente del vecino, reciclador o personal municipal, sin servidor adicional.", $tags="Element", $link="") {
+  Deployment_Node(Producción.Dispositivodelusuario.Navegadorweb, "Navegador web", $type="JavaScript / Service Worker / IndexedDB", $descr="Ejecuta la PWA y conserva registros temporales sin conexion.", $tags="Element", $link="") {
+    Container(Producción.Dispositivodelusuario.Navegadorweb.AplicacionWebProgresivaPWA_1, "Aplicacion Web Progresiva (PWA)", $techn="JavaScript / Service Worker / IndexedDB", $descr="Interfaz de usuario accesible desde navegadores moviles y de escritorio con soporte offline parcial.", $tags="Web Browser", $link="")
+  }
+
+}
+
+Deployment_Node(Producción.VPSunicoMVP, "VPS unico - MVP", $type="Ubuntu Server 24.04 LTS / 2 vCPU / 4 GB RAM / 40 GB SSD", $descr="Propuesta inicial compartida para API y base de datos. Capacidad por confirmar mediante mediciones, sin proveedor contratado.", $tags="Element", $link="") {
+  Deployment_Node(Producción.VPSunicoMVP.Entornodeaplicacion, "Entorno de aplicacion", $type="Python / entorno virtual", $descr="Un proceso de la API del monolito modular, sin separar los modulos en servicios.", $tags="Element", $link="") {
+    Container(Producción.VPSunicoMVP.Entornodeaplicacion.APIRESTMonolitoModular_1, "API REST Monolito Modular", $techn="Python / API REST", $descr="Ejecuta la logica de negocio, validaciones de dominio y orquestacion de modulos.", $tags="Backend", $link="")
+  }
+
+  Deployment_Node(Producción.VPSunicoMVP.Serviciodebasededatos, "Servicio de base de datos", $type="PostgreSQL / servicio Linux", $descr="Una instancia local, con esquemas aislados por modulo, accesible por la API.", $tags="Element", $link="") {
+    ContainerDb(Producción.VPSunicoMVP.Serviciodebasededatos.BasedeDatosRelacional_1, "Base de Datos Relacional", $techn="PostgreSQL", $descr="Almacena la informacion persistente de usuarios, solicitudes, rutas y puntos.", $tags="Database", $link="")
+  }
+
+}
+
+Rel(Producción.Dispositivodelusuario.Navegadorweb.AplicacionWebProgresivaPWA_1, Producción.VPSunicoMVP.Entornodeaplicacion.APIRESTMonolitoModular_1, "Consume endpoints REST para solicitudes, rutas y autenticacion", $techn="HTTPS / JSON", $tags="Relationship", $link="")
+Rel(Producción.VPSunicoMVP.Entornodeaplicacion.APIRESTMonolitoModular_1, Producción.VPSunicoMVP.Serviciodebasededatos.BasedeDatosRelacional_1, "Lee y escribe datos del dominio con integridad transaccional", $techn="SQL / TCP (port 5432)", $tags="Relationship", $link="")
+
+SHOW_LEGEND(true)
+hide stereotypes
+@enduml

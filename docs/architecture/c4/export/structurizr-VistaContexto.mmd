@@ -1,0 +1,26 @@
+graph LR
+  linkStyle default fill:#ffffff
+
+  subgraph diagram ["Diagrama de Contexto del Sistema EcoRecicla AQP"]
+    style diagram fill:#ffffff,stroke:#ffffff
+
+    1["<div style='font-weight: bold'>Vecino / Ciudadano</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div><div style='font-size: 80%; margin-top:10px'>Residente de Arequipa que<br />solicita el recojo de<br />residuos reciclables y<br />acumula puntos de beneficio.</div>"]
+    style 1 fill:#08427b,stroke:#052e56,color:#ffffff
+    2["<div style='font-weight: bold'>Reciclador / Operador</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div><div style='font-size: 80%; margin-top:10px'>Personal operativo que<br />atiende las rutas de recojo,<br />registra pesajes y gestiona<br />atenciones.</div>"]
+    style 2 fill:#1168cb,stroke:#0b488e,color:#ffffff
+    3["<div style='font-weight: bold'>Administrador Municipal</div><div style='font-size: 70%; margin-top: 0px'>[Person]</div><div style='font-size: 80%; margin-top:10px'>Personal encargado de<br />consultar reportes e<br />indicadores de reciclaje<br />municipal.</div>"]
+    style 3 fill:#228b22,stroke:#176117,color:#ffffff
+    4["<div style='font-weight: bold'>Servicio de Mapas y Geolocalizacion</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Servicio externo utilizado<br />para validar coordenadas<br />geograficas de los puntos de<br />recojo.</div>"]
+    style 4 fill:#999999,stroke:#6b6b6b,color:#ffffff
+    5["<div style='font-weight: bold'>API de Notificaciones WhatsApp</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Servicio externo para el<br />envio asincrono de mensajes y<br />alertas de confirmacion.</div>"]
+    style 5 fill:#999999,stroke:#6b6b6b,color:#ffffff
+    6["<div style='font-weight: bold'>EcoRecicla AQP</div><div style='font-size: 70%; margin-top: 0px'>[Software System]</div><div style='font-size: 80%; margin-top:10px'>Plataforma municipal para la<br />gestion integral de recojo,<br />pesaje y acreditacion de<br />reciclaje.</div>"]
+    style 6 fill:#1168cb,stroke:#0b488e,color:#ffffff
+
+    6-. "<div>Valida coordenadas<br />geograficas de los puntos de<br />recojo</div><div style='font-size: 70%'></div>" .->4
+    6-. "<div>Envia avisos y notificaciones<br />de confirmacion de recojo</div><div style='font-size: 70%'></div>" .->5
+    1-. "<div>Registra solicitudes de<br />recojo de reciclables y<br />consulta sus puntos</div><div style='font-size: 70%'></div>" .->6
+    2-. "<div>Consulta rutas asignadas,<br />atiende recojos y registra<br />pesajes in situ</div><div style='font-size: 70%'></div>" .->6
+    3-. "<div>Consulta reportes de pesaje e<br />indicadores de reciclaje<br />municipal</div><div style='font-size: 70%'></div>" .->6
+
+  end
