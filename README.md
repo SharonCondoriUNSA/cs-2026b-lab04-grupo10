@@ -167,10 +167,10 @@ La validación con Structurizr y las comprobaciones de coherencia del modelo no 
 
 | Actividad requerida por E8 | Estado | Evidencia |
 | --- | --- | --- |
-| Revisar los contenedores de otro grupo con la lista oficial y registrar observaciones en un issue de su repositorio | Pendiente | Aún no se ha asignado otro grupo para la revisión, por lo que todavía no hay issue. |
-| Responder o corregir las observaciones de otro grupo sobre EcoRecicla AQP | Pendiente | Falta el enlace de la revisión recibida y su respuesta. |
+| Revisión de los contenedores por parte del docente encargado del curso de construcción de software | Pendiente | Aún se realizará la revisión por parte del docente. |
+| Responder o corregir las observaciones realizadas por parte del docente del curso  | Pendiente | Falta el enlace de la revisión . |
   | Revisión de los PR de E6, E7 y E8 antes de integrar en main | Realizado | Se completó la revisión de las ramas E6 al E8 y se hizo el merge respectivo. |
 | Crear y publicar la etiqueta v0.6-c4 sobre la versión final revisada e integrada | Realizado | La etiqueta se creó con éxito. |
-| Entregar el enlace del repositorio en el Aula Virtual | Pendiente de confirmación del equipo | No se registra una entrega que no se ha comprobado. |
+| Entregar el enlace del repositorio en el Aula Virtual | Realizado | Se registro la entrega en el aula virtual. |
 
 La revisión de PR entre compañeras y la revisión cruzada entre grupos son actividades distintas. El repositorio para la entrega es https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10. La evidencia pendiente se actualizará cuando se realice, antes de cerrar la entrega del laboratorio.
