@@ -1,15 +1,14 @@
-"""Contrato observable de E1, la versión con patrones se añadirá al fixture en E2."""
+"""El mismo contrato observable se ejecuta sobre antes y versión refactorizada."""
 import importlib
 from datetime import datetime
 from decimal import Decimal
 
 import pytest
 
-from src.puntos_beneficios.antes.servicio import ServicioPuntos
 from src.solicitudes.externos import GeoClient, MapaSDK
 
 
-@pytest.fixture(params=["src.solicitudes.antes.servicio"])
+@pytest.fixture(params=["src.solicitudes.antes.servicio", "src.solicitudes.servicio"])
 def m(request):
     return importlib.import_module(request.param)
 
@@ -20,6 +19,11 @@ def solicitud(m):
 
 
 def servicio(m, **kwargs):
+    versiones_puntos = {
+        "src.solicitudes.antes.servicio": "src.puntos_beneficios.antes.servicio",
+        "src.solicitudes.servicio": "src.puntos_beneficios.servicio",
+    }
+    ServicioPuntos = importlib.import_module(versiones_puntos[m.__name__]).ServicioPuntos
     kwargs.setdefault("cobertura", lambda distrito: distrito == "DISTRITO_PRUEBA")
     kwargs.setdefault("puntos", ServicioPuntos({"PLASTICO": Decimal("10"),
                                               "PAPEL": Decimal("5")}))
@@ -175,3 +179,31 @@ def test_peso_real_cero_no_avanza(m):
     with pytest.raises(ValueError, match="Peso real invalido"):
         s.registrar_pesaje(p, Decimal("0"))
     assert p.estado == "RECOGIDA" and p.peso_real_kg is None
+
+
+@pytest.mark.parametrize("material", ["VIDRIO", "DESCONOCIDO"])
+def test_regla_desconocida_no_acredita(m, material):
+    s, p = servicio(m), solicitud(m)
+    p.estado, p.peso_real_kg = "PESADA", Decimal("2")
+    with pytest.raises(ValueError, match="Material sin regla de puntos"):
+        s.acreditar_puntos(p, material)
+    assert p.estado == "PESADA" and p.acreditacion_id is None and s.eventos == []
+
+
+@pytest.mark.parametrize("tarifa", [None, Decimal("-1"), Decimal("NaN"),
+                                    Decimal("Infinity")])
+def test_tarifa_invalida_no_acredita(m, tarifa):
+    s, p = servicio(m), solicitud(m)
+    s.puntos.tarifas["PLASTICO"] = tarifa
+    p.estado, p.peso_real_kg = "PESADA", Decimal("2")
+    with pytest.raises(ValueError, match="Tarifa de puntos invalida"):
+        s.acreditar_puntos(p, "PLASTICO")
+    assert p.estado == "PESADA" and p.acreditacion_id is None and s.eventos == []
+
+
+def test_tarifa_cero_es_valida(m):
+    s, p = servicio(m), solicitud(m)
+    s.puntos.tarifas["PAPEL"] = Decimal("0")
+    p.estado, p.peso_real_kg = "PESADA", Decimal("2")
+    assert s.acreditar_puntos(p, "PAPEL") == 0
+    assert p.estado == "PUNTOS_ACREDITADOS"
