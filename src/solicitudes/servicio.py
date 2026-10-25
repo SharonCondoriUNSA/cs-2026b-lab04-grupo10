@@ -1,15 +1,19 @@
-"""Servicio E3: selección por registro y ciclo de vida delegado a State."""
+"""Servicio E4: Strategy, Adapter, Factory, State, Observer y Decorator."""
 from copy import deepcopy
 from decimal import Decimal
 
 from src.solicitudes.modelos import Detalle, Solicitud, RepositorioMemoria
 from src.solicitudes.externos import GeoClient, MapaSDK
 from src.solicitudes.mapas import FabricaMapas, GeoAdapter, MapaAdapter
+from src.solicitudes.decoradores import ConReintentos
+from src.solicitudes.eventos import (
+    AvisosInternos, EventoSolicitud, ProyeccionPesajes, PublicadorEventos,
+)
 
 
 class ServicioSolicitudes:
     def __init__(self, repositorio=None, cobertura=None, mapa=None, geo=None,
-                 puntos=None, fabrica_mapas=None):
+                 puntos=None, fabrica_mapas=None, publicador=None):
         self.repositorio = repositorio if repositorio is not None else RepositorioMemoria()
         self.cobertura = cobertura if cobertura is not None else lambda distrito: False
         self.fabrica_mapas = fabrica_mapas if fabrica_mapas is not None else FabricaMapas()
@@ -20,6 +24,10 @@ class ServicioSolicitudes:
             self.fabrica_mapas.registrar("GEO", lambda: GeoAdapter(geo_client))
         self.puntos = puntos
         self.eventos = []
+        self.publicador = publicador if publicador is not None else PublicadorEventos()
+        if publicador is None:
+            self.publicador.suscribir(AvisosInternos(self.eventos))
+            self.publicador.suscribir(ProyeccionPesajes(self.eventos))
 
     def solicitar_recojo(self, solicitud, proveedor="MAPA"):
         solicitud.comprobar_registro()
@@ -40,15 +48,8 @@ class ServicioSolicitudes:
                 raise ValueError("Coordenadas invalidas")
         if not self.cobertura(solicitud.distrito):
             raise ValueError("Distrito sin cobertura")
-        mapas = self.fabrica_mapas.crear(proveedor)
-        validada = False
-        for intento in range(3):
-            try:
-                validada = mapas.validar_ubicacion(solicitud.latitud, solicitud.longitud)
-                break
-            except (TimeoutError, ConnectionError):
-                if intento == 2:
-                    validada = False
+        mapas = ConReintentos(self.fabrica_mapas.crear(proveedor))
+        validada = mapas.validar_ubicacion(solicitud.latitud, solicitud.longitud)
         # Se publica éxito únicamente tras confirmar persistencia.
         pendiente = deepcopy(solicitud)
         pendiente.registrar_pendiente()
@@ -57,7 +58,7 @@ class ServicioSolicitudes:
         solicitud.estado = pendiente.estado
         solicitud.ubicacion_validada = validada
         solicitud.detalles = deepcopy(pendiente.detalles)
-        self.eventos.append(f"aviso_interno:{solicitud.id}:PENDIENTE")
+        self.publicador.publicar(EventoSolicitud("REGISTRADA", solicitud.id))
         return {"id": solicitud.id, "estado": solicitud.estado,
                 "ubicacion_validada": validada, "revision_ubicacion": not validada}
 
@@ -77,8 +78,9 @@ class ServicioSolicitudes:
         resultado = self.puntos.acreditar(solicitud.id, material, solicitud.peso_real_kg)
         self.confirmar_puntos_acreditados(solicitud, resultado["acreditacion_id"])
         solicitud.puntos = resultado["puntos"]
-        self.eventos.append(f"puntos:{solicitud.id}:{solicitud.puntos}")
-        self.eventos.append(f"reporte_pesaje:{solicitud.id}:{solicitud.peso_real_kg}")
+        self.publicador.publicar(EventoSolicitud(
+            "PUNTOS_ACREDITADOS", solicitud.id, solicitud.puntos, solicitud.peso_real_kg,
+        ))
         return solicitud.puntos
 
     def confirmar_puntos_acreditados(self, solicitud, acreditacion_id):

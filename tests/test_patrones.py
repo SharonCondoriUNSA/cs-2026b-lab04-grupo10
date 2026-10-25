@@ -153,3 +153,98 @@ def test_state_rechaza_acreditacion_antes_de_invocar_puntos():
     with pytest.raises(ValueError, match="Transicion invalida"):
         servicio.acreditar_puntos(solicitud, "PAPEL")
     assert solicitud.estado == "PENDIENTE" and servicio.eventos == []
+
+
+def test_observer_dos_suscriptores_reciben_despues_de_persistir():
+    from src.solicitudes.eventos import PublicadorEventos, Suscriptor
+
+    recibidos = []
+    servicio = ServicioSolicitudes(cobertura=lambda distrito: True,
+                                   publicador=PublicadorEventos())
+
+    class Auditor(Suscriptor):
+        def __init__(self, nombre):
+            self.nombre = nombre
+
+        def recibir(self, evento):
+            registro = servicio.repositorio.registros[evento.solicitud_id]
+            recibidos.append((self.nombre, evento.tipo, registro.estado))
+
+    servicio.publicador.suscribir(Auditor("auditoria"))
+    servicio.publicador.suscribir(Auditor("seguimiento"))
+    servicio.solicitar_recojo(nueva_solicitud())
+    assert recibidos == [("auditoria", "REGISTRADA", "PENDIENTE"),
+                         ("seguimiento", "REGISTRADA", "PENDIENTE")]
+    assert servicio.publicador.fallos == []
+
+
+def test_observer_defecto_conserva_avisos_y_proyeccion_de_pesaje():
+    servicio = ServicioSolicitudes(
+        cobertura=lambda distrito: True,
+        puntos=ServicioPuntos({"PAPEL": Decimal("5")}),
+    )
+    solicitud = nueva_solicitud()
+    servicio.solicitar_recojo(solicitud)
+    servicio.asignar_reciclador(solicitud, "reciclador-prueba")
+    servicio.registrar_recojo(solicitud, datetime(2026, 10, 25, 10))
+    servicio.registrar_pesaje(solicitud, Decimal("2"))
+    servicio.acreditar_puntos(solicitud, "PAPEL")
+    assert servicio.eventos == ["aviso_interno:sol-state:PENDIENTE",
+                                "puntos:sol-state:10", "reporte_pesaje:sol-state:2"]
+
+
+def test_observer_fallo_no_revierte_registro_ni_bloquea_otro_suscriptor():
+    from src.solicitudes.eventos import AvisosInternos, PublicadorEventos, Suscriptor
+
+    class Fallido(Suscriptor):
+        def recibir(self, evento):
+            raise OSError("Consumidor no disponible")
+
+    publicador = PublicadorEventos()
+    avisos = []
+    publicador.suscribir(Fallido())
+    publicador.suscribir(AvisosInternos(avisos))
+    servicio = ServicioSolicitudes(cobertura=lambda distrito: True, publicador=publicador)
+    resultado = servicio.solicitar_recojo(nueva_solicitud())
+    assert resultado["estado"] == "PENDIENTE"
+    assert servicio.repositorio.registros["sol-state"].estado == "PENDIENTE"
+    assert avisos == ["aviso_interno:sol-state:PENDIENTE"]
+    assert publicador.fallos == [("sol-state", "OSError")]
+
+
+@pytest.mark.parametrize("fallas,esperado", [(0, True), (2, True), (3, False)])
+def test_decorator_recuperacion_y_limite_de_tres_intentos(fallas, esperado):
+    from src.solicitudes.decoradores import ConReintentos
+
+    sdk = MapaSDK(fallas=fallas)
+    puerto = ConReintentos(MapaAdapter(sdk))
+    assert puerto.validar_ubicacion(Decimal("-16"), Decimal("-71")) is esperado
+    assert sdk.llamadas == min(fallas + 1, 3)
+
+
+def test_decorator_no_reintenta_respuesta_negativa():
+    from src.solicitudes.decoradores import ConReintentos
+
+    sdk = GeoClient(valida=False)
+    assert ConReintentos(GeoAdapter(sdk)).validar_ubicacion(
+        Decimal("-16"), Decimal("-71")) is False
+    assert sdk.llamadas == 1
+
+
+def test_decorator_no_oculta_errores_no_transitorios():
+    from src.solicitudes.decoradores import ConReintentos
+
+    class ErrorDeContrato(PuertoMapas):
+        def validar_ubicacion(self, latitud, longitud):
+            raise ValueError("Respuesta invalida")
+
+    with pytest.raises(ValueError, match="Respuesta invalida"):
+        ConReintentos(ErrorDeContrato()).validar_ubicacion(Decimal("0"), Decimal("0"))
+
+
+@pytest.mark.parametrize("intentos", [0, -1, True, 1.5])
+def test_decorator_rechaza_limite_de_intentos_invalido(intentos):
+    from src.solicitudes.decoradores import ConReintentos
+
+    with pytest.raises(ValueError, match="Numero de intentos invalido"):
+        ConReintentos(MapaAdapter(MapaSDK()), max_intentos=intentos)
