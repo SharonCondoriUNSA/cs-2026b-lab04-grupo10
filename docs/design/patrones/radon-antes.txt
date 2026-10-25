@@ -1,0 +1,22 @@
+src\solicitudes\antes\servicio.py
+    M 55:4 ServicioSolicitudes.solicitar_recojo - D (25)
+    C 45:0 ServicioSolicitudes - B (8)
+    M 123:4 ServicioSolicitudes.registrar_pesaje - B (6)
+    M 46:4 ServicioSolicitudes.__init__ - A (5)
+    M 107:4 ServicioSolicitudes.asignar_reciclador - A (5)
+    M 144:4 ServicioSolicitudes.confirmar_puntos_acreditados - A (5)
+    M 115:4 ServicioSolicitudes.registrar_recojo - A (4)
+    M 132:4 ServicioSolicitudes.acreditar_puntos - A (4)
+    M 152:4 ServicioSolicitudes.cerrar - A (3)
+    C 37:0 RepositorioMemoria - A (2)
+    C 15:0 Detalle - A (1)
+    C 21:0 Solicitud - A (1)
+    M 38:4 RepositorioMemoria.__init__ - A (1)
+    M 41:4 RepositorioMemoria.guardar - A (1)
+src\puntos_beneficios\antes\servicio.py
+    M 9:4 ServicioPuntos.acreditar - B (9)
+    C 5:0 ServicioPuntos - B (6)
+    M 6:4 ServicioPuntos.__init__ - A (1)
+
+17 blocks (classes, functions, methods) analyzed.
+Average complexity: B (5.117647058823529)
