@@ -1,9 +1,8 @@
-"""E2: servicio con selección por registro y puertos, sin State ni Observer todavía."""
+"""Servicio E3: selección por registro y ciclo de vida delegado a State."""
 from copy import deepcopy
-from datetime import datetime
 from decimal import Decimal
 
-from src.solicitudes.antes.servicio import Detalle, Solicitud, RepositorioMemoria
+from src.solicitudes.modelos import Detalle, Solicitud, RepositorioMemoria
 from src.solicitudes.externos import GeoClient, MapaSDK
 from src.solicitudes.mapas import FabricaMapas, GeoAdapter, MapaAdapter
 
@@ -23,8 +22,7 @@ class ServicioSolicitudes:
         self.eventos = []
 
     def solicitar_recojo(self, solicitud, proveedor="MAPA"):
-        if solicitud.estado is not None or solicitud.cerrada:
-            raise ValueError("Solicitud ya registrada")
+        solicitud.comprobar_registro()
         if not isinstance(solicitud.id, str) or not solicitud.id.strip():
             raise ValueError("Identificador invalido")
         if solicitud.id in self.repositorio.registros:
@@ -53,7 +51,7 @@ class ServicioSolicitudes:
                     validada = False
         # Se publica éxito únicamente tras confirmar persistencia.
         pendiente = deepcopy(solicitud)
-        pendiente.estado = "PENDIENTE"
+        pendiente.registrar_pendiente()
         pendiente.ubicacion_validada = validada
         self.repositorio.guardar(pendiente)
         solicitud.estado = pendiente.estado
@@ -64,33 +62,16 @@ class ServicioSolicitudes:
                 "ubicacion_validada": validada, "revision_ubicacion": not validada}
 
     def asignar_reciclador(self, solicitud, reciclador_id):
-        if solicitud.estado != "PENDIENTE" or solicitud.cerrada:
-            raise ValueError("Transicion invalida")
-        if not isinstance(reciclador_id, str) or not reciclador_id.strip():
-            raise ValueError("Reciclador invalido")
-        solicitud.reciclador_id = reciclador_id
-        solicitud.estado = "ASIGNADA"
+        solicitud.asignar_reciclador(reciclador_id)
 
     def registrar_recojo(self, solicitud, fecha_recojo):
-        if solicitud.estado != "ASIGNADA" or solicitud.cerrada:
-            raise ValueError("Transicion invalida")
-        if not isinstance(fecha_recojo, datetime):
-            raise ValueError("Fecha invalida")
-        solicitud.fecha_recojo = fecha_recojo
-        solicitud.estado = "RECOGIDA"
+        solicitud.registrar_recojo(fecha_recojo)
 
     def registrar_pesaje(self, solicitud, peso_real_kg):
-        if solicitud.estado != "RECOGIDA" or solicitud.cerrada:
-            raise ValueError("Transicion invalida")
-        if (not isinstance(peso_real_kg, Decimal)
-                or not peso_real_kg.is_finite() or peso_real_kg <= 0):
-            raise ValueError("Peso real invalido")
-        solicitud.peso_real_kg = peso_real_kg
-        solicitud.estado = "PESADA"
+        solicitud.registrar_pesaje(peso_real_kg)
 
     def acreditar_puntos(self, solicitud, material):
-        if solicitud.estado != "PESADA" or solicitud.cerrada:
-            raise ValueError("Transicion invalida")
+        solicitud.comprobar_acreditacion()
         if self.puntos is None:
             raise ValueError("Servicio de puntos no configurado")
         resultado = self.puntos.acreditar(solicitud.id, material, solicitud.peso_real_kg)
@@ -101,14 +82,7 @@ class ServicioSolicitudes:
         return solicitud.puntos
 
     def confirmar_puntos_acreditados(self, solicitud, acreditacion_id):
-        if solicitud.estado != "PESADA" or solicitud.cerrada:
-            raise ValueError("Transicion invalida")
-        if not isinstance(acreditacion_id, str) or not acreditacion_id.strip():
-            raise ValueError("Acreditacion invalida")
-        solicitud.acreditacion_id = acreditacion_id
-        solicitud.estado = "PUNTOS_ACREDITADOS"
+        solicitud.confirmar_puntos_acreditados(acreditacion_id)
 
     def cerrar(self, solicitud):
-        if solicitud.estado != "PUNTOS_ACREDITADOS" or solicitud.cerrada:
-            raise ValueError("Transicion invalida")
-        solicitud.cerrada = True
+        solicitud.cerrar()
