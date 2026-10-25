@@ -1,30 +1,39 @@
 # Bitácora IA, Lab07
 
+Se utilizó Codex como apoyo para elaborar propuestas de código y pruebas, revisar los patrones y explicar sus decisiones. Se conservan los prompts utilizados y los resultados comprobados.
+
 ## E1, línea base y detector de olores, 25/10/2026
 
-- **Herramienta:** Codex, esta conversación.
+- **Herramienta:** Codex.
 - **Solicitud recibida:** Desarrollar primero E1 de EcoRecicla AQP siguiendo la guía y los recursos AgroConecta como referencia, conservar la estructura del repositorio. E2-E4 se trabajarán posteriormente y E5-E8 corresponden a la compañera.
 - **Instrucción de elaboración aplicada:** Implementa una versión ingenua del registro de recojo según la secuencia del Lab05, con dos servicios de mapas simulados y firmas distintas. Mantén la cobertura interna y el registro PENDIENTE cuando falle mapas. Prepara el ciclo de estados y el cálculo posterior de puntos, con tarifas de prueba configurables y sin trasladar el cálculo fuera de Puntos/Beneficios. Añade al menos ocho pruebas de caracterización con fixture parametrizado, mide la complejidad real y aplica el Prompt IA 1, sin refactorizar todavía.
 - **Propuesta:** Servicio de Solicitudes con condicionales y reintentos duplicados, módulo interno de puntos con selección por material, repositorio y buzón de eventos en memoria. No se modifica dominio.py del Lab05. El prompt de revisión adaptado y su tabla de resultados están completos en olores.md.
-- **Verificaciones reales:** 28 casos de caracterización pasaron. Radon 6.0.1 produjo complejidad 25 en solicitar_recojo y 9 en acreditar del módulo de puntos. Se guardó la salida en radon-antes.txt. Inicialmente el entorno aislado no podía leer pytest y radon instalados en la carpeta de apoyo, se ejecutaron con autorización fuera del aislamiento. Se corrigió la invocación de radon a su entrada de módulo, sin modificar resultados ni fingir que el primer comando funcionó.
-- **Decisión:** Se conserva la línea base para comparar. Se proponen Strategy y Factory para puntos, Adapter para mapas, State para solicitudes y Observer y Decorator para avisos y reintentos. Se rechaza Abstract Factory por ausencia de familias de productos. Las tarifas, el redondeo y el máximo de tres intentos son supuestos explícitos del laboratorio. No se registra una aprobación humana que no se haya recibido.
-- **Alcance:** Esto documenta una sesión real de elaboración y revisión, no cinco conversaciones distintas. La bitácora podrá ampliarse en los ejercicios siguientes sin inventar interacciones.
-- **Comprobación conjunta final:** Las 28 caracterizaciones nuevas y las siete pruebas locales existentes del Lab05 pasaron juntas, 35 passed y 3 subtests passed. El archivo antiguo tests/test_solicitudes.py se conserva sin incluirlo en el commit. git diff --cached --check no detectó errores.
+- **Verificación:** 28 caracterizaciones aprobadas. Radon registró complejidad 25 en solicitar_recojo y 9 en acreditar. La salida está en radon-antes.txt. La comprobación conjunta con las siete pruebas locales del Lab05 también pasó.
+- **Decisión:** Conservar la línea base para comparar, preparar los patrones justificados y rechazar Abstract Factory por ausencia de familias de productos. Tarifas, redondeo y reintentos son supuestos documentados del ejercicio.
 
 ## E2, Strategy, Adapter y Factory, 25/10/2026
 
-- **Herramienta:** Codex, esta conversación.
+- **Herramienta:** Codex.
 - **Solicitud recibida:** Continuar con E2 tras subir E1 para revisión por Pull Request.
 - **Prompt IA 2 adaptado y utilizado:** Aplica únicamente Strategy, Adapter y Factory por registro a la versión antes de EcoRecicla AQP. Usa Strategy para la variación principal de reglas de puntos y Adapter para las interfaces simuladas de mapas. Conserva comportamiento observable, mensajes de error, tarifas y truncamiento, estados, datos guardados y eventos de test_comportamiento.py. No introduzcas Singleton, estado global, State, Observer ni Decorator. Deja antes/ intacta, añade la versión refactorizada al fixture y demuestra una variante nueva sin modificar los servicios. Explica en tres líneas el olor eliminado.
 - **Propuesta aplicada:** Se crean puertos pequeños, adaptadores de mapas y registros de constructores por instancia. El servicio de puntos delega a ReglaPuntos, las tarifas existentes comparten PuntosPorPeso porque no difieren de algoritmo. Se conservan los módulos y el contrato público entre Solicitudes y Puntos/Beneficios, sin compartir entidades. La versión después se coloca directamente en src/solicitudes y src/puntos_beneficios, siguiendo la estructura de la guía.
-- **Verificaciones reales:** 78 casos pasaron, 35 caracterizaciones por versión y ocho casos de patrones. Se mantienen las expectativas originales y se amplían los límites de las tarifas y reglas desconocidas. Se demuestra un algoritmo por lotes y un proveedor de mapas adicional mediante registro, sin editar los servicios. Se verifica que los registros de otras instancias no se alteren y que los adaptadores propaguen errores sin reintentar. La ejecución usa las dependencias de apoyo de E1, sin APIs reales. El resumen y las tres líneas solicitadas están en e2-strategy-adapter-factory.md.
-- **Decisión y límites:** Se conserva el refactor de E2. El catálogo de materiales aceptados para registrar solicitudes no se amplía por el solo registro de una nueva regla de puntos. State, Observer y Decorator quedan para E3 y E4. No se registra aprobación humana ni integración de PR que todavía no se hayan realizado. E2 parte de E1 mientras este se encuentre pendiente de integración.
+- **Verificación:** 78 casos aprobados sobre ambas versiones y los patrones. Se comprobó la extensión mediante registros y la traducción de los adaptadores sin reglas de negocio.
+- **Decisión:** Conservar Strategy, Adapter y Factory. Una regla nueva de puntos no amplía automáticamente el catálogo de materiales. State, Observer y Decorator se reservan para E3 y E4.
 
 ## E3, State de solicitudes, 25/10/2026
 
-- **Herramienta:** Codex, esta conversación.
+- **Herramienta:** Codex.
 - **Solicitud recibida:** Continuar con E3 después de preparar el PR de E2.
 - **Instrucción aplicada:** Implementa únicamente State usando estados-solicitud.mmd del Lab05. La clase base debe prohibir las transiciones y las clases concretas permitir solo las correspondientes. Mantén cinco estados de dominio, todas las operaciones del diagrama, las guardas y las etiquetas observables. Delega desde Solicitudes al objeto estado y conserva las pruebas antes/después, sin agregar Observer ni Decorator ni modificar la versión antes.
 - **Propuesta:** Se crea estados.py con base prohibitiva, cinco estados concretos y pseudoinicio y pseudofinal. La entidad en modelos.py almacena el objeto de estado, conserva la interfaz de construcción de E1 y expone operaciones delegadas. El servicio deja de comparar nombres de estado. Puntos/Beneficios sigue calculando, Solicitudes solo confirma la acreditación.
-- **Verificaciones reales:** 110 casos pasaron, 70 caracterizaciones de ambas versiones, ocho casos de E2 y 32 casos de E3. Se prueba el recorrido completo, 25 transiciones prohibidas, cuatro guardas, cierre definitivo y bloqueo de una acreditación antes de invocar Puntos/Beneficios. Se mantiene el error y no se modifica la entidad al rechazar una operación. Se comprueba que no existan condicionales sobre nombres de estado en las clases State ni comparaciones de estado en el servicio refactorizado.
+- **Verificación:** 110 casos aprobados. Se comprobaron el ciclo completo, transiciones prohibidas y guardas sin modificación de datos al fallar.
 - **Decisión:** Se conserva State y la compatibilidad de las propiedades públicas usadas por las pruebas. SinRegistrar y Finalizada son pseudoelementos, no nuevas etiquetas de negocio. La versión antes y el modelo del Lab05 quedan intactos, Observer y Decorator se reservan a E4. Pendiente de revisión de la compañera.
+
+## E4, Observer y Decorator, 25/10/2026
+
+- **Herramienta:** Codex.
+- **Solicitud recibida:** Desarrollar E4 después de preparar el PR de E3.
+- **Instrucción aplicada:** Reemplaza los avisos agregados a mano por Observer con al menos dos suscriptores y extrae los reintentos caracterizados en E1 a un Decorator del puerto de mapas. Mantén resultados, estados, errores y orden de eventos observables. Agrega pruebas para ambos patrones y conserva la versión antes, sin implementar E5-E8.
+- **Propuesta:** Publicador por instancia con eventos inmutables y dos suscriptores predeterminados, AvisosInternos y ProyeccionPesajes. Se permite suscribir consumidores adicionales y se registran errores para que un fallo no revierta la persistencia ni impida invocar otros consumidores. ConReintentos envuelve el puerto de mapas y conserva tres intentos ante fallos transitorios, sin repetir respuestas negativas ni efectos de acreditación.
+- **Verificación:** 122 casos aprobados. Se verificaron dos suscriptores, publicación después de persistir, aislamiento de fallos y reintentos limitados a errores transitorios.
+- **Decisión:** Aplicar Decorator a los reintentos ya identificados en E1. Observer conserva el buzón local de eventos, sin envíos externos ni garantía de entrega durable.
