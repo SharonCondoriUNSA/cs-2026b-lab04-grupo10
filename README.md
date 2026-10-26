@@ -174,3 +174,40 @@ La validación con Structurizr y las comprobaciones de coherencia del modelo no 
 | Entregar el enlace del repositorio en el Aula Virtual | Realizado | Se registro la entrega en el aula virtual. |
 
 La revisión de PR entre compañeras y la revisión cruzada entre grupos son actividades distintas. El repositorio para la entrega es https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10. La evidencia pendiente se actualizará cuando se realice, antes de cerrar la entrega del laboratorio.
+
+## Patrones de diseño (Lab 07)
+
+El refactor del flujo de solicitudes aplica patrones únicamente a responsabilidades observadas en la línea base. El [ADR-005](docs/architecture/adr/005-patrones-de-diseno.md) registra la decisión y sus alternativas. Los diagramas PlantUML y PNG están en [docs/design/patrones](docs/design/patrones/e7-diagramas.md).
+
+### Olor, patrón y prueba
+
+| Olor / responsabilidad | Patrón aplicado | Prueba representativa |
+|---|---|---|
+| Selección de regla por material dentro del servicio de puntos | Strategy + Factory por registro | [test_open_closed_agrega_regla_sin_modificar_servicio](tests/test_patrones.py) |
+| Acoplamiento a formatos distintos de los SDK de mapas | Adapter | [test_adapters_conservan_resultado_del_proveedor](tests/test_patrones.py) |
+| Selección del proveedor de mapas mediante ramas condicionales | Factory por registro | [test_open_closed_agrega_mapa_sin_modificar_solicitudes](tests/test_patrones.py) |
+| Transiciones y guardas distribuidas en condicionales | State | [test_state_recorrido_completo_del_diagrama](tests/test_patrones.py), [test_state_prohibe_transiciones_fuera_del_estado](tests/test_patrones.py) |
+| Avisos agregados manualmente por el servicio | Observer | [test_observer_dos_suscriptores_reciben_despues_de_persistir](tests/test_patrones.py) |
+| Reintentos mezclados con la consulta de mapas | Decorator | [test_decorator_recuperacion_y_limite_de_tres_intentos](tests/test_patrones.py) |
+| Dependencia del clasificador respecto a la interfaz del cliente LLM | Adapter | [test_adapter_traduce_respuesta_del_cliente_al_puerto](tests/test_patrones.py) |
+| Repetición de llamadas para una misma descripción | Decorator de caché | [test_decorator_cachea_resultado_validado_para_entrada_equivalente](tests/test_patrones.py) |
+| Salida de IA libre o fuera del catálogo permitido | Chain of Responsibility | [test_guardrails_bloquean_respuesta_invalida](tests/test_patrones.py), [test_cadena_exige_dos_guardrails_y_detiene_respuesta_vacia](tests/test_patrones.py) |
+
+### Métricas
+
+Las métricas se calcularon con Radon 6.0.1. La comparación del componente E5 se separa porque no tiene una contraparte en la versión inicial.
+
+| Versión / alcance | Bloques Radon | Complejidad promedio | SLOC |
+|---|---:|---:|---:|
+| Antes, E1 | 17 | 5.12 (B) | 150 |
+| Después, E1-E4 | 86 | 2.07 (A) | 300 |
+| Componente nuevo, E5 | 28 | 2.11 (A) | 100 |
+| Después acumulado, E1-E5 | 114 | 2.08 (A) | 400 |
+
+La complejidad de solicitar_recojo bajó de 25 (D) a 15 (C) entre la línea base y E1-E4; acreditar de Puntos/Beneficios bajó de 9 (B) a 1 (A). La reducción por método no elimina toda la lógica del flujo, que ahora está repartida entre estados, reglas y colaboradores. El refactor duplica SLOC en E1-E4 y agrega 100 SLOC para la nueva función E5. Véanse el [detalle de métricas y trade-off](docs/design/patrones/metricas.md) y el [registro de Radon](docs/design/patrones/radon-despues.txt).
+
+### Revisión por pares y entrega
+
+**Estado de la revisión cruzada:** pendiente de revisión de la compañera en los Pull Requests de E5-E8. La revisión debe indicar qué olor elimina el patrón, si existe una prueba que lo demuestre y si el patrón es la solución más simple para el problema. Las observaciones se responderán o corregirán antes de integrar las ramas.
+
+La etiqueta **v0.7-patrones** se creará sobre la versión final, después de revisar e integrar los Pull Requests en `main`. El repositorio se entregará en el Aula Virtual.
