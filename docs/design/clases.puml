@@ -15,7 +15,7 @@ class FabricaReglas <<Factory>>
 package "solicitudes" {
 class ServicioSolicitudes
 class Solicitud <<Context State>>
-interface Estado <<State>>
+class Estado <<State>>
 class SinRegistrar <<Pseudoinicio>>
 class Pendiente <<ConcreteState>>
 class Asignada <<ConcreteState>>

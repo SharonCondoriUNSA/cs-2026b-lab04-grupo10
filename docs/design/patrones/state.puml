@@ -1,7 +1,7 @@
 @startuml state
 title State - ciclo de vida de solicitud
 class Solicitud <<Context>>
-interface Estado <<State>>
+class Estado <<State>>
 class SinRegistrar <<Pseudoinicio>>
 class Pendiente <<ConcreteState>>
 class Asignada <<ConcreteState>>
@@ -9,13 +9,13 @@ class Recogida <<ConcreteState>>
 class Pesada <<ConcreteState>>
 class PuntosAcreditados <<ConcreteState>>
 class Finalizada <<Pseudofinal>>
-Estado <|.. SinRegistrar
-Estado <|.. Pendiente
-Estado <|.. Asignada
-Estado <|.. Recogida
-Estado <|.. Pesada
-Estado <|.. PuntosAcreditados
-Estado <|.. Finalizada
+Estado <|-- SinRegistrar
+Estado <|-- Pendiente
+Estado <|-- Asignada
+Estado <|-- Recogida
+Estado <|-- Pesada
+Estado <|-- PuntosAcreditados
+Estado <|-- Finalizada
 Solicitud o--> Estado : delega transiciones
 note bottom of Estado
 Cada estado permite solo ciertas operaciones;

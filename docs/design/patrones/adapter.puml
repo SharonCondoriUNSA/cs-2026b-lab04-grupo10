@@ -7,11 +7,17 @@ class MapaSDK <<Adaptee>>
 class GeoClient <<Adaptee>>
 interface ProveedorLLM <<Target>>
 class AdaptadorProveedorLLM <<Adapter>>
-class ClienteLLM <<Adaptee>>
+interface "Contrato del cliente externo" as ClienteExterno <<Adaptee>> {
+  + invoke(prompt)
+}
 PuertoMapas <|.. MapaAdapter
 PuertoMapas <|.. GeoAdapter
 MapaAdapter --> MapaSDK : traduce verificar
 GeoAdapter --> GeoClient : traduce check
 ProveedorLLM <|.. AdaptadorProveedorLLM
-AdaptadorProveedorLLM --> ClienteLLM : traduce invoke.content
+AdaptadorProveedorLLM --> ClienteExterno : requiere invoke().content
+note bottom of ClienteExterno
+Contrato esperado por el adaptador, no una clase de produccion.
+En pruebas lo implementa ClienteSimulado.
+end note
 @enduml

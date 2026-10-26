@@ -55,3 +55,11 @@ Se utilizó Codex como apoyo para elaborar propuestas de código y pruebas, revi
 - **Propuesta:** Se prepararon siete diagramas PlantUML, uno por patrón aplicado: Strategy, Adapter, Factory, State, Observer, Decorator y Chain of Responsibility. El diagrama Decorator presenta por separado el envoltorio de reintentos de mapas y la caché del clasificador. Se actualizó docs/design/clases.puml para el código E1-E5, manteniendo los artefactos conceptuales anteriores del Lab05.
 - **Verificación:** PlantUML generó los siete PNG de patrones y la nueva imagen de clases. Pyreverse analizó nueve módulos de implementación; se contrastaron las clases y las jerarquías del diagrama con esa salida y se validaron las asociaciones de uso en el código. Se distinguen del modelo de dominio conceptual de Lab05 las clases efectivamente implementadas en Lab07.
 - **Decisión:** Conservar fuentes PlantUML y PNG juntos en docs/design/patrones/; actualizar la imagen de clases existente. Los adaptadores de LLM reciben un cliente externo por interfaz dinámica, por ello el diagrama los muestra como puerto/adaptador sin afirmar que exista un cliente real en el repositorio.
+
+## Apoyo en revision de E7, 25/10/2026
+
+- **Herramienta:** Codex.
+- **Solicitud:** Revisar y corregir las diferencias de los diagramas respecto del codigo, conservando la estructura de E7.
+- **Ajustes:** Se corrigen los adaptadores concretos de Decorator, la representacion del cliente LLM como contrato externo y la clase base Estado. Se corrige el enlace a la imagen general y se precisa la comprobacion Pyreverse por separado para evitar la colision de los dos archivos servicio.py.
+- **Verificacion:** Pyreverse reconoce siete modulos de Solicitudes y dos de Puntos/Beneficios. Se contrastan las clases y jerarquias, y se conserva un resumen en pyreverse-verificacion.txt. PlantUML comprueba la sintaxis de las fuentes y regenera los cuatro PNG afectados. Se revisan visualmente esas imagenes. No se modifica el codigo funcional ni se atribuye a Pyreverse la inferencia completa de asociaciones dinamicas.
+- **Decision:** Conservar los ajustes de diagramacion y la evidencia de revision, pendientes de la aprobacion de la companera.

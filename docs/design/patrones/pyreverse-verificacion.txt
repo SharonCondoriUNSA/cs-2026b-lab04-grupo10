@@ -1,0 +1,10 @@
+solicitudes: 7 modulos analizados
+Clases: <color:red>EntradaResiduoInvalida</color>, <color:red>RespuestaLLMInvalida</color>, AdaptadorProveedorLLM, Asignada, AvisosInternos, CadenaGuardrails, CategoriaPermitida, Clasificador, ClasificadorResiduo, ConCacheClasificador, ConReintentos, DescripcionDeLongitudPermitida, DescripcionNoVacia, Estado, EventoSolicitud, FabricaMapas, Finalizada, GeoAdapter, Guardrail, MapaAdapter, Pendiente, Pesada, ProveedorLLM, ProyeccionPesajes, PublicadorEventos, PuertoMapas, PuntosAcreditados, Recogida, RespuestaNoVacia, ServicioSolicitudes, SinRegistrar, Solicitud, Suscriptor
+SHA256 de la salida local: 813e33dc4be47bd3707a62a942bdb8558a0a3fc3a2e8256f22558d9f005ba745
+
+puntos: 2 modulos analizados
+Clases: FabricaReglas, PuntosPorPeso, ReglaPuntos, ServicioPuntos
+SHA256 de la salida local: 9909b2e7b9a4e1665a10c66be9fad611dc0efe19b51d1e0ba4deca5b7c440da1
+
+Se identifican ambas clases de servicio sin colision de nombres.
+Se contrastan las jerarquias, las asociaciones dinamicas requieren lectura del codigo.

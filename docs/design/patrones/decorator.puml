@@ -1,9 +1,11 @@
 @startuml decorator
 title Decorator - reintentos y cache
 interface PuertoMapas <<Component>>
-class AdaptadorMapas <<ConcreteComponent>>
+class MapaAdapter <<ConcreteComponent>>
+class GeoAdapter <<ConcreteComponent>>
 class ConReintentos <<Decorator>>
-PuertoMapas <|.. AdaptadorMapas
+PuertoMapas <|.. MapaAdapter
+PuertoMapas <|.. GeoAdapter
 PuertoMapas <|.. ConReintentos
 ConReintentos o--> PuertoMapas : envuelve, agrega reintentos
 interface Clasificador <<Component>>
