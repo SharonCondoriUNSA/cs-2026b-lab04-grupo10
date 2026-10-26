@@ -1,116 +1,87 @@
 @startuml clases-solicitudes
-title EcoRecicla AQP - Solicitud de recojo (E1-E3)
+title EcoRecicla AQP - Clases implementadas (Lab07 E1-E5)
 skinparam classAttributeIconSize 0
 skinparam shadowing false
-skinparam defaultFontName Arial
 skinparam classBackgroundColor #EEF8F2
 skinparam classBorderColor #24634B
-skinparam nodesep 35
-skinparam ranksep 45
 hide empty members
-
-' Supuestos: vecino identificado; peso > 0; catálogo local a Solicitudes.
-' Cobertura se consulta solo por su contrato público, sin entidades compartidas.
-' Mapas es opcional y no bloquea el registro. No se guardan datos de perfil.
-class Vecino {
-  - id: UUID
-  + obtenerId(): UUID
+' Contrastado con pyreverse sobre los modulos de codigo.
+package "puntos_beneficios" {
+class ServicioPuntos
+interface ReglaPuntos <<Strategy>>
+class PuntosPorPeso <<ConcreteStrategy>>
+class FabricaReglas <<Factory>>
 }
-class SolicitudRecojo {
-  - id: UUID
-  - fechaRegistro: DateTime
-  - estado: EstadoSolicitud
-  - ubicacionValidadaPorMapa: Boolean
-  - recicladorId: UUID [0..1]
-  - fechaRecojo: DateTime [0..1]
-  - pesoRealKg: Decimal [0..1]
-  - acreditacionId: UUID [0..1]
-  + validarDatos(): Boolean
-  + calcularPesoEstimadoKg(): Decimal
-  + registrarPendiente(): void
-  + marcarUbicacionValidada(): void
-  + asignarReciclador(recicladorId: UUID): void
-  + registrarRecojo(fechaRecojo: DateTime): void
-  + registrarPesaje(pesoRealKg: Decimal): void
-  + confirmarPuntosAcreditados(acreditacionId: UUID): void
-  + cerrar(): void
+package "solicitudes" {
+class ServicioSolicitudes
+class Solicitud <<Context State>>
+interface Estado <<State>>
+class SinRegistrar <<Pseudoinicio>>
+class Pendiente <<ConcreteState>>
+class Asignada <<ConcreteState>>
+class Recogida <<ConcreteState>>
+class Pesada <<ConcreteState>>
+class PuntosAcreditados <<ConcreteState>>
+class Finalizada <<Pseudofinal>>
+interface PuertoMapas <<Target>>
+class MapaAdapter <<Adapter>>
+class GeoAdapter <<Adapter>>
+class FabricaMapas <<Factory>>
+class ConReintentos <<Decorator>>
+class PublicadorEventos <<Subject>>
+interface Suscriptor <<Observer>>
+class AvisosInternos <<ConcreteObserver>>
+class ProyeccionPesajes <<ConcreteObserver>>
+class EventoSolicitud
+interface ProveedorLLM <<Target>>
+class AdaptadorProveedorLLM <<Adapter>>
+interface Clasificador <<Component>>
+class ClasificadorResiduo <<ConcreteComponent>>
+class ConCacheClasificador <<Decorator>>
+interface Guardrail <<Handler>>
+class CadenaGuardrails <<Chain>>
+class DescripcionNoVacia <<ConcreteHandler>>
+class DescripcionDeLongitudPermitida <<ConcreteHandler>>
+class RespuestaNoVacia <<ConcreteHandler>>
+class CategoriaPermitida <<ConcreteHandler>>
 }
-class DetalleReciclable {
-  - pesoEstimadoKg: Decimal
-  + validar(): Boolean
-}
-class MaterialReciclable {
-  - id: UUID
-  - nombre: String
-  - aceptado: Boolean
-  + esAceptado(): Boolean
-}
-class PuntoRecojo {
-  - codigoDistrito: String
-  - latitud: Decimal
-  - longitud: Decimal
-  + coordenadasValidas(): Boolean
-}
-enum EstadoSolicitud {
-  PENDIENTE
-  ASIGNADA
-  RECOGIDA
-  PESADA
-  PUNTOS_ACREDITADOS
-}
-class ServicioSolicitudes <<aplicacion>> {
-  + solicitarRecojo(vecino: Vecino, punto: PuntoRecojo, detalles: List<DetalleReciclable>): SolicitudRecojo
-}
-class PWA <<presentacion>> {
-  + solicitarRecojo(vecino: Vecino, punto: PuntoRecojo, detalles: List<DetalleReciclable>): void
-}
-class SolicitudController <<controlador>> {
-  + registrarSolicitud(vecino: Vecino, punto: PuntoRecojo, detalles: List<DetalleReciclable>): SolicitudRecojo
-}
-interface NotificadorSolicitud <<puerto aviso interno>> {
-  + confirmarRegistro(solicitudId: UUID): void
-}
-interface RepositorioSolicitudes <<puerto persistencia>> {
-  + guardar(solicitud: SolicitudRecojo): void
-}
-interface CoberturaRecojo <<contrato publico Rutas/Cobertura>> {
-  + atiendeDistrito(codigoDistrito: String): Boolean
-}
-interface ServicioMapas <<puerto externo>> {
-  + validarUbicacion(latitud: Decimal, longitud: Decimal): Boolean
-}
-class AdaptadorMapas <<adaptador HTTPS>> {
-  - tiempoEsperaMs: Integer
-  + validarUbicacion(latitud: Decimal, longitud: Decimal): Boolean
-}
-
-Vecino "1" -- "0..*" SolicitudRecojo : solicita
-SolicitudRecojo "1" *-- "1..*" DetalleReciclable : contiene
-SolicitudRecojo "1" *-- "1" PuntoRecojo : ubica el recojo
-DetalleReciclable "0..*" --> "1" MaterialReciclable : identifica
-SolicitudRecojo ..> EstadoSolicitud : tipo de estado
-ServicioSolicitudes ..> Vecino : identifica
-ServicioSolicitudes ..> PuntoRecojo : valida coordenadas
-ServicioSolicitudes ..> DetalleReciclable : valida pesos y materiales
-ServicioSolicitudes ..> SolicitudRecojo : crea y valida
-ServicioSolicitudes ..> RepositorioSolicitudes : guarda
-ServicioSolicitudes ..> CoberturaRecojo : consulta contrato
-ServicioSolicitudes ..> ServicioMapas : comprueba opcionalmente
-PWA ..> SolicitudController : envia solicitud
-SolicitudController ..> ServicioSolicitudes : delega
-ServicioSolicitudes ..> NotificadorSolicitud : avisa tras persistir
-ServicioMapas <|.. AdaptadorMapas
-
+ServicioPuntos --> FabricaReglas
+ServicioPuntos ..> ReglaPuntos
+FabricaReglas ..> ReglaPuntos
+ReglaPuntos <|.. PuntosPorPeso
+ServicioSolicitudes --> FabricaMapas
+ServicioSolicitudes --> ConReintentos
+FabricaMapas ..> PuertoMapas
+PuertoMapas <|.. MapaAdapter
+PuertoMapas <|.. GeoAdapter
+PuertoMapas <|.. ConReintentos
+ConReintentos o--> PuertoMapas : envuelve
+Solicitud o--> Estado : estado actual
+Estado <|-- SinRegistrar
+Estado <|-- Pendiente
+Estado <|-- Asignada
+Estado <|-- Recogida
+Estado <|-- Pesada
+Estado <|-- PuntosAcreditados
+Estado <|-- Finalizada
+ServicioSolicitudes --> Solicitud
+ServicioSolicitudes --> PublicadorEventos
+PublicadorEventos o--> Suscriptor
+PublicadorEventos ..> EventoSolicitud
+Suscriptor <|.. AvisosInternos
+Suscriptor <|.. ProyeccionPesajes
+ProveedorLLM <|.. AdaptadorProveedorLLM
+Clasificador <|.. ClasificadorResiduo
+Clasificador <|.. ConCacheClasificador
+ConCacheClasificador o--> Clasificador : envuelve
+ClasificadorResiduo --> ProveedorLLM
+ClasificadorResiduo --> CadenaGuardrails
+CadenaGuardrails o--> Guardrail
+Guardrail <|.. DescripcionNoVacia
+Guardrail <|.. DescripcionDeLongitudPermitida
+Guardrail <|.. RespuestaNoVacia
+Guardrail <|.. CategoriaPermitida
 note bottom of ServicioSolicitudes
-  Valida detalles, coordenadas y cobertura antes de guardar.
-  Datos inválidos o sin cobertura: error sin persistencia.
-  Mapas sin respuesta o sin validar: conservar PENDIENTE,
-  informar revisión de ubicación; nunca perder el registro.
-end note
-note bottom of SolicitudRecojo
-  E1 y E2 registran PENDIENTE; E3 define el ciclo completo.
-  Detalles y punto pertenecen exclusivamente a la solicitud.
-  La persistencia pertenece al esquema de Solicitudes.
-  Puntos/Beneficios acredita; Solicitudes solo confirma su referencia.
+Este diagrama refleja clases de codigo Lab07, no el modelo conceptual Lab05.
 end note
 @enduml

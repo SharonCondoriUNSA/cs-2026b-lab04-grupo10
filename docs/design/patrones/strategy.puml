@@ -1,0 +1,14 @@
+@startuml strategy
+title Strategy - calculo de puntos
+interface ReglaPuntos <<Strategy>>
+{
+  + calcular(peso_real_kg): int
+}
+class PuntosPorPeso <<ConcreteStrategy>>
+class ServicioPuntos <<Context>>
+class FabricaReglas <<Factory>>
+ReglaPuntos <|.. PuntosPorPeso
+ServicioPuntos --> FabricaReglas : selecciona regla
+ServicioPuntos --> ReglaPuntos : delega calculo
+FabricaReglas ..> ReglaPuntos : crea
+@enduml

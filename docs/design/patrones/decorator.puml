@@ -1,0 +1,15 @@
+@startuml decorator
+title Decorator - reintentos y cache
+interface PuertoMapas <<Component>>
+class AdaptadorMapas <<ConcreteComponent>>
+class ConReintentos <<Decorator>>
+PuertoMapas <|.. AdaptadorMapas
+PuertoMapas <|.. ConReintentos
+ConReintentos o--> PuertoMapas : envuelve, agrega reintentos
+interface Clasificador <<Component>>
+class ClasificadorResiduo <<ConcreteComponent>>
+class ConCacheClasificador <<Decorator>>
+Clasificador <|.. ClasificadorResiduo
+Clasificador <|.. ConCacheClasificador
+ConCacheClasificador o--> Clasificador : envuelve, agrega cache
+@enduml

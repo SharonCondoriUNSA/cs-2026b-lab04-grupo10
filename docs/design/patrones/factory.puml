@@ -1,0 +1,19 @@
+@startuml factory
+title Factory - registros de constructores
+class FabricaReglas <<Factory>>
+interface ReglaPuntos <<Product>>
+class PuntosPorPeso <<ConcreteProduct>>
+class ServicioPuntos <<Client>>
+class FabricaMapas <<Factory>>
+interface PuertoMapas <<Product>>
+class MapaAdapter <<ConcreteProduct>>
+class GeoAdapter <<ConcreteProduct>>
+class ServicioSolicitudes <<Client>>
+FabricaReglas ..> ReglaPuntos : crea por material
+ReglaPuntos <|.. PuntosPorPeso
+ServicioPuntos --> FabricaReglas
+FabricaMapas ..> PuertoMapas : crea por proveedor
+PuertoMapas <|.. MapaAdapter
+PuertoMapas <|.. GeoAdapter
+ServicioSolicitudes --> FabricaMapas
+@enduml
