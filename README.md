@@ -208,6 +208,6 @@ La complejidad de solicitar_recojo bajó de 25 (D) a 15 (C) entre la línea base
 
 ### Revisión por pares y entrega
 
-**Estado de la revisión cruzada:** pendiente de revisión de la compañera en los Pull Requests de E5-E8. La revisión debe indicar qué olor elimina el patrón, si existe una prueba que lo demuestre y si el patrón es la solución más simple para el problema. Las observaciones se responderán o corregirán antes de integrar las ramas.
+**Estado de la revisión cruzada:** E5, E6 y E7 fueron revisados e integrados en main mediante los PR #29, #30 y #31. La corrección de diagramas de E7 está incluida. E8 queda pendiente de revisión e integración. La revisión por integrante debe responder qué olor elimina el patrón, qué prueba lo demuestra y si es la solución más simple para el problema.
 
 La etiqueta **v0.7-patrones** se creará sobre la versión final, después de revisar e integrar los Pull Requests en `main`. El repositorio se entregará en el Aula Virtual.
