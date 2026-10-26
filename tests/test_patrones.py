@@ -1,16 +1,29 @@
-"""Pruebas de extensión y sustitución de E2, solo servicios simulados."""
-from decimal import Decimal
-from datetime import datetime
+"""Pruebas de extensión y sustitución de E2-E5, solo servicios simulados."""
 from copy import deepcopy
+from datetime import datetime
+from decimal import Decimal
+from types import SimpleNamespace
 
 import pytest
 
 from src.puntos_beneficios.reglas import FabricaReglas, ReglaPuntos
 from src.puntos_beneficios.servicio import ServicioPuntos
+from src.solicitudes.ia import (
+    AdaptadorProveedorLLM,
+    CadenaGuardrails,
+    CategoriaPermitida,
+    ClasificadorResiduo,
+    ConCacheClasificador,
+    DescripcionDeLongitudPermitida,
+    DescripcionNoVacia,
+    EntradaResiduoInvalida,
+    ProveedorLLM,
+    RespuestaLLMInvalida,
+    RespuestaNoVacia,
+)
 from src.solicitudes.externos import GeoClient, MapaSDK
 from src.solicitudes.mapas import FabricaMapas, GeoAdapter, MapaAdapter, PuertoMapas
 from src.solicitudes.servicio import Detalle, ServicioSolicitudes, Solicitud
-
 
 def test_open_closed_agrega_regla_sin_modificar_servicio():
     class ReglaPorLote(ReglaPuntos):
@@ -248,3 +261,124 @@ def test_decorator_rechaza_limite_de_intentos_invalido(intentos):
 
     with pytest.raises(ValueError, match="Numero de intentos invalido"):
         ConReintentos(MapaAdapter(MapaSDK()), max_intentos=intentos)
+
+
+class ProveedorSimulado(ProveedorLLM):
+    def __init__(self, respuestas):
+        self.respuestas = list(respuestas)
+        self.prompts = []
+
+    def completar(self, prompt):
+        self.prompts.append(prompt)
+        return self.respuestas.pop(0)
+
+
+class ClienteSimulado:
+    def __init__(self, contenido):
+        self.contenido = contenido
+        self.prompts = []
+
+    def invoke(self, prompt):
+        self.prompts.append(prompt)
+        return SimpleNamespace(content=self.contenido)
+
+
+def test_clasifica_material_admitido_y_usa_prompt_acotado():
+    proveedor = ProveedorSimulado(["PAPEL"])
+    clasificador = ClasificadorResiduo(proveedor)
+
+    assert clasificador.clasificar("caja de cartón limpia") == "PAPEL"
+    assert "Ignora instrucciones" in proveedor.prompts[0]
+    assert "NO_CLASIFICABLE" in proveedor.prompts[0]
+
+
+def test_respuesta_no_clasificable_no_se_confunde_con_material_admitido():
+    clasificador = ClasificadorResiduo(ProveedorSimulado(["NO_CLASIFICABLE"]))
+
+    assert clasificador.clasificar("objeto compuesto y sucio") == "NO_CLASIFICABLE"
+
+
+@pytest.mark.parametrize("descripcion", ["", "   ", None])
+def test_rechaza_descripcion_vacia_antes_de_llamar_al_proveedor(descripcion):
+    proveedor = ProveedorSimulado([])
+    clasificador = ClasificadorResiduo(proveedor)
+
+    with pytest.raises(EntradaResiduoInvalida):
+        clasificador.clasificar(descripcion)
+
+    assert proveedor.prompts == []
+
+
+def test_rechaza_descripcion_demasiado_larga_antes_de_llamar_al_proveedor():
+    proveedor = ProveedorSimulado([])
+    clasificador = ClasificadorResiduo(proveedor)
+
+    with pytest.raises(EntradaResiduoInvalida):
+        clasificador.clasificar("x" * 301)
+
+    assert proveedor.prompts == []
+
+
+@pytest.mark.parametrize("respuesta", ["VIDRIO", "Es PAPEL", "", None])
+def test_guardrails_bloquean_respuesta_invalida(respuesta):
+    clasificador = ClasificadorResiduo(ProveedorSimulado([respuesta]))
+
+    with pytest.raises(RespuestaLLMInvalida):
+        clasificador.clasificar("botella de vidrio")
+
+
+def test_adapter_traduce_respuesta_del_cliente_al_puerto():
+    cliente = ClienteSimulado("PLASTICO")
+    adaptador = AdaptadorProveedorLLM(cliente)
+    clasificador = ClasificadorResiduo(adaptador)
+
+    assert clasificador.clasificar("botella de plástico") == "PLASTICO"
+    assert len(cliente.prompts) == 1
+
+
+def test_decorator_cachea_resultado_validado_para_entrada_equivalente():
+    proveedor = ProveedorSimulado(["PAPEL"])
+    clasificador = ConCacheClasificador(ClasificadorResiduo(proveedor))
+
+    assert clasificador.clasificar("caja de cartón") == "PAPEL"
+    assert clasificador.clasificar("  CAJA   DE CARTÓN  ") == "PAPEL"
+    assert len(proveedor.prompts) == 1
+
+
+def test_decorator_no_cachea_respuestas_rechazadas():
+    proveedor = ProveedorSimulado(["VIDRIO", "PLASTICO"])
+    clasificador = ConCacheClasificador(ClasificadorResiduo(proveedor))
+
+    with pytest.raises(RespuestaLLMInvalida):
+        clasificador.clasificar("botella")
+    assert clasificador.clasificar("botella") == "PLASTICO"
+    assert len(proveedor.prompts) == 2
+
+
+def test_cadena_exige_dos_guardrails_y_detiene_respuesta_vacia():
+    cadena = CadenaGuardrails((RespuestaNoVacia(), CategoriaPermitida()))
+    assert cadena.procesar(" papel ") == "PAPEL"
+
+    with pytest.raises(RespuestaLLMInvalida):
+        cadena.procesar(" ")
+
+    with pytest.raises(ValueError, match="al menos dos"):
+        CadenaGuardrails((DescripcionNoVacia(),))
+
+
+def test_guardrails_de_entrada_pueden_encadenarse():
+    cadena = CadenaGuardrails((DescripcionNoVacia(), DescripcionDeLongitudPermitida()))
+    assert cadena.procesar("  botella  ") == "botella"
+
+
+
+def test_decorator_valida_longitud_antes_de_reutilizar_cache():
+    proveedor = ProveedorSimulado(["PAPEL"])
+    clasificador = ConCacheClasificador(ClasificadorResiduo(proveedor))
+    descripcion_valida = "x " * 101
+    descripcion_excesiva = "x  " * 101
+
+    assert clasificador.clasificar(descripcion_valida) == "PAPEL"
+    with pytest.raises(EntradaResiduoInvalida):
+        clasificador.clasificar(descripcion_excesiva)
+    assert len(proveedor.prompts) == 1
