@@ -1,0 +1,14 @@
+@startuml observer
+title Observer - avisos locales
+class ServicioSolicitudes <<Publisher Client>>
+class PublicadorEventos <<Subject>>
+interface Suscriptor <<Observer>>
+class AvisosInternos <<ConcreteObserver>>
+class ProyeccionPesajes <<ConcreteObserver>>
+class EventoSolicitud <<Event>>
+ServicioSolicitudes --> PublicadorEventos : publica
+PublicadorEventos o--> Suscriptor : notifica
+Suscriptor <|.. AvisosInternos
+Suscriptor <|.. ProyeccionPesajes
+PublicadorEventos ..> EventoSolicitud
+@enduml

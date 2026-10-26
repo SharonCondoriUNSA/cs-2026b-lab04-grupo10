@@ -1,0 +1,20 @@
+@startuml chain-of-responsibility
+title Chain of Responsibility - guardrails del clasificador
+interface Guardrail <<Handler>>
+class DescripcionNoVacia <<ConcreteHandler>>
+class DescripcionDeLongitudPermitida <<ConcreteHandler>>
+class RespuestaNoVacia <<ConcreteHandler>>
+class CategoriaPermitida <<ConcreteHandler>>
+class CadenaGuardrails <<Client>>
+class ClasificadorResiduo <<Client>>
+Guardrail <|.. DescripcionNoVacia
+Guardrail <|.. DescripcionDeLongitudPermitida
+Guardrail <|.. RespuestaNoVacia
+Guardrail <|.. CategoriaPermitida
+CadenaGuardrails o--> Guardrail : aplica en orden
+ClasificadorResiduo --> CadenaGuardrails : valida entrada y salida
+note bottom of CadenaGuardrails
+La secuencia se mantiene en CadenaGuardrails y se detiene
+ante el primer rechazo; no hay encadenamiento recursivo.
+end note
+@enduml

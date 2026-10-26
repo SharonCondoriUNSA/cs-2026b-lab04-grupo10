@@ -46,3 +46,20 @@ Se utilizó Codex como apoyo para elaborar propuestas de código y pruebas, revi
 - **Corrección detectada por una prueba:** La prueba de caché con descripciones de longitud diferente pero texto equivalente tras normalizar espacios falló inicialmente. La caché consultaba su clave antes de comprobar la longitud de la entrada original. Se movieron los guardrails de entrada antes de la búsqueda en caché; la descripción excesiva ahora se rechaza incluso si su forma normalizada ya existe.
 - **Verificación:** La suite de E1-E5 ejecutada con proveedores simulados terminó con 138 pruebas aprobadas. La prueba de regresión pasa y git diff --check no reportó errores.
 - **Decisión:** Conservar Strategy/Adapter para intercambiar el proveedor, Decorator para cachear solo clasificaciones validadas y la cadena de guardrails para bloquear entradas y salidas inválidas. No se integró un LLM real; no se guardan datos ni claves externas.
+
+
+## E7, diagramas de patrones y clases, 25/10/2026
+
+- **Herramienta:** La inteligencia artificial utilizada fue GPT.
+- **Prompt:** Ayúdame a entender y completar E7 del Lab07 de EcoRecicla AQP. Oriéntame para identificar los patrones GoF realmente aplicados en E2-E5 y diagramar sus clases con estereotipos PlantUML. Ayúdame también a actualizar el diagrama de clases de Lab05 para que represente el código vigente, contrastándolo con Pyreverse; conserva los artefactos anteriores, genera PNG desde los fuentes y señala cualquier diferencia entre el modelo conceptual y las clases implementadas. No inventes clases ni relaciones que no estén en el repositorio.
+- **Propuesta:** Se prepararon siete diagramas PlantUML, uno por patrón aplicado: Strategy, Adapter, Factory, State, Observer, Decorator y Chain of Responsibility. El diagrama Decorator presenta por separado el envoltorio de reintentos de mapas y la caché del clasificador. Se actualizó docs/design/clases.puml para el código E1-E5, manteniendo los artefactos conceptuales anteriores del Lab05.
+- **Verificación:** PlantUML generó los siete PNG de patrones y la nueva imagen de clases. Pyreverse analizó nueve módulos de implementación; se contrastaron las clases y las jerarquías del diagrama con esa salida y se validaron las asociaciones de uso en el código. Se distinguen del modelo de dominio conceptual de Lab05 las clases efectivamente implementadas en Lab07.
+- **Decisión:** Conservar fuentes PlantUML y PNG juntos en docs/design/patrones/; actualizar la imagen de clases existente. Los adaptadores de LLM reciben un cliente externo por interfaz dinámica, por ello el diagrama los muestra como puerto/adaptador sin afirmar que exista un cliente real en el repositorio.
+
+## Apoyo en revision de E7, 25/10/2026
+
+- **Herramienta:** Codex.
+- **Solicitud:** Revisar y corregir las diferencias de los diagramas respecto del codigo, conservando la estructura de E7.
+- **Ajustes:** Se corrigen los adaptadores concretos de Decorator, la representacion del cliente LLM como contrato externo y la clase base Estado. Se corrige el enlace a la imagen general y se precisa la comprobacion Pyreverse por separado para evitar la colision de los dos archivos servicio.py.
+- **Verificacion:** Pyreverse reconoce siete modulos de Solicitudes y dos de Puntos/Beneficios. Se contrastan las clases y jerarquias, y se conserva un resumen en pyreverse-verificacion.txt. PlantUML comprueba la sintaxis de las fuentes y regenera los cuatro PNG afectados. Se revisan visualmente esas imagenes. No se modifica el codigo funcional ni se atribuye a Pyreverse la inferencia completa de asociaciones dinamicas.
+- **Decision:** Conservar los ajustes de diagramacion y la evidencia de revision, pendientes de la aprobacion de la companera.
