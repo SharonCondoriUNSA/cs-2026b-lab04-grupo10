@@ -128,3 +128,16 @@ Se compararon condicionales, configuración versionada, despliegues separados y 
 ## Lab08 · E3 · Preparación, no evaluación realizada (2026-10-31)
 
 El usuario confirmó que el docente aún no asignó otro grupo. Se preparó atam-lite.md con requisitos, enlaces y un prompt para uso posterior. No se ejecutó ese prompt contra otro repositorio ni se enviaron issues. E3 queda pendiente, tal como solicitó el usuario.
+
+
+## Lab08 · E4 · Apoyo en continuidad y aislamiento (2026-10-31)
+
+Instrucción de trabajo aplicada a la iteración 2: «Refina QA-02 y QA-07 conservando PWA y monolito modular. Compara envío directo, reintentos en memoria y buffer persistente con receptor idempotente. Produce evidencia antes/después y una sensibilidad del límite de 30 s. No confundas SQLite local con IndexedDB o PostgreSQL reales».
+
+Se adaptó la idea de experimentación del recurso docente al registro de recojos, sin copiar su flujo de pagos. El primer intento local no pudo abrir SQLite en el temporal del sandbox. La repetición con acceso autorizado ejecutó ambas variantes: 120 efectos únicos, 0 pérdidas y duplicados, 12 ACK perdidos. Con 100 ms por intento el reloj virtual arroja 13.2 s, con 250 ms arroja 33 s y el escenario falla. Se conserva esa sensibilidad, no se ajustaron cifras para ocultar el incumplimiento. La reapertura se describe como cierre normal, no como prueba de corte eléctrico.
+
+Instrucción aplicada a la iteración 3: «Refina QA-04 y QA-05 para doce distritos. Compara alternativas respetando esquemas por módulo y prueba 132 pares cruzados, lecturas, escrituras y ámbitos ausentes. Separa la guarda local de autenticación real y RLS no implementados».
+
+El prototipo denegó 264 operaciones cruzadas y 72 sin ámbito válido, permitió 24 propias y conservó los datos. El control negativo inseguro permite 132 lecturas y 132 escrituras, es sintético y no prueba una vulnerabilidad del Lab07. Se propone contexto autorizado y defensa RLS posterior, sin declarar tokens o políticas SQL ya implementados. No hay riesgo crítico recibido de otro grupo porque E3 sigue pendiente.
+
+Verificaciones realizadas: ejecución de los tres prototipos, cuatro rechazos de configuración inválida, sintaxis Python y enlaces relativos nuevos. Las 138 pruebas de comportamiento y patrones del Lab07 siguen pasando. Se revisaron los resultados JSON y su correspondencia con las tablas ADD. git diff --check sin errores. No se incorpora la carpeta de ejemplos, los cambios anteriores ni entregables E5-E8.
