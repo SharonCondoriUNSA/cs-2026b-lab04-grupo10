@@ -1,0 +1,23 @@
+digraph Utilidad {
+  graph [rankdir=LR, bgcolor="white", pad=0.3, nodesep=0.25, ranksep=0.5, label="EcoRecicla AQP · Lab08 · 3 a 12 distritos", labelloc=t, fontname="Arial"];
+  node [shape=box, style="rounded,filled", fontname="Arial", fontsize=11, fillcolor="#edf4fa", color="#315675", margin="0.14,0.1"];
+  edge [color="#718096"];
+  U [label="Utilidad", fillcolor="#173c59", fontcolor=white];
+  M [label="Modificabilidad"];
+  D [label="Disponibilidad"];
+  S [label="Seguridad"];
+  R [label="Rendimiento"];
+  M1 [label="Configuración distrital"];
+  D1 [label="Continuidad en ruta"];
+  S1 [label="Aislamiento y privilegios"];
+  R1 [label="Latencia y recuperación"];
+  Q1 [label="QA-01 (H,H) · Nuevo distrito\n≤ 2 días-persona, 0 cambios en consumidores"];
+  Q6 [label="QA-06 (H,M) · Cambio de regla u horario\n≤ 1 día-persona, 0 cambios en los otros 11 distritos"];
+  Q2 [label="QA-02 (H,H) · 20 min sin red\n0 perdidos, 0 duplicados, sincroniza ≤ 30 s"];
+  Q4 [label="QA-04 (H,H) · Acceso entre distritos\n0 lecturas/escrituras cruzadas en 132 pares"];
+  Q5 [label="QA-05 (H,M) · Ámbito ausente o falsificado\n100 % rechazados, 0 accesos indebidos"];
+  Q3 [label="QA-03 (H,M) · Rutas a 12 consultas/s\np95 ≤ 2000 ms, 120 s, 4 ejecutores"];
+  Q7 [label="QA-07 (H,M) · Lote de 120 registros\n≤ 30 s, exactamente 120 efectos únicos"];
+  U -> {M D S R}; M -> M1 -> {Q1 Q6}; D -> D1 -> Q2;
+  S -> S1 -> {Q4 Q5}; R -> R1 -> {Q3 Q7};
+}

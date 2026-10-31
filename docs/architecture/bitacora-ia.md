@@ -109,3 +109,11 @@ El uso de IA permitió generar alternativas, revisar decisiones y acelerar la el
 Durante el laboratorio fue necesario contrastar las propuestas con los drivers arquitectónicos, realizar cálculos manuales, ejecutar el código generado y corregir propuestas incompatibles con las herramientas utilizadas.
 
 El caso del nodo de WhatsApp evidenció la importancia de verificar técnicamente las respuestas generadas por IA antes de incorporarlas al proyecto. Por ello, las decisiones finales fueron tomadas por el equipo a partir de los requisitos, restricciones y resultados obtenidos durante las pruebas.
+
+## Lab08 · E1 · Apoyo en escenarios y revisión (2026-10-31)
+
+Prompt IA 1 adaptado y utilizado en esta sesión: «Actúa como arquitecto de EcoRecicla AQP. Usa drivers.md, ADR-001 y ADR-005. El caso crece de 3 a 12 distritos, con puntos y horarios propios. Propón escenarios de seis partes para rendimiento, disponibilidad, seguridad y modificabilidad, con medidas numéricas y calificación importancia/dificultad H/M/L. Respeta un mes, dos integrantes, presupuesto bajo y monolito modular. No propongas soluciones todavía».
+
+Propuesta inicial: QA-01 (H,M) por las fábricas de Lab07. Corrección de la revisión técnica con apoyo de IA: (H,H), las fábricas seleccionan material y no resuelven ámbito distrital ni horarios. Se conservaron QA-01 a QA-03 y se añadieron QA-04 a QA-07 con supuestos explícitos. No se registra aprobación humana ni medición de producción. El árbol y la tabla documentan la propuesta para revisión del equipo.
+
+Verificaciones E1: Graphviz generó arbol.png sin errores, se revisó visualmente el PNG y git diff --check pasó. Los cambios anteriores de despliegue.py y test_solicitudes.py se excluyen del commit.
