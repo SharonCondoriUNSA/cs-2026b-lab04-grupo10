@@ -1,0 +1,17 @@
+{
+  "distritos_antes": 3,
+  "distritos_despues": 12,
+  "altas_rechazadas_antes": 9,
+  "altas_configuradas": 9,
+  "comprobaciones_regla_horario": 24,
+  "archivos_consumidores_modificados": 0,
+  "otros_distritos_alterados": 0,
+  "alta_configuracion_ms": 0.0054,
+  "huellas_consumidores": {
+    "src/solicitudes/servicio.py": "a8e07576c30695128c9b6f024a3efd9993255e56804fdf440fb196e8bce5dc11",
+    "src/puntos_beneficios/servicio.py": "3e6aab09c2fc6d648f51c146baf23b95df77cd9898ad599473367d86a86cfebb",
+    "src/puntos_beneficios/reglas.py": "f024ae23a1cdb0663d05980fbe149561068be5527fbcdb7bcfb2564fc5476683"
+  },
+  "dias_persona": null,
+  "limite": "No se midio esfuerzo humano de integracion"
+}
