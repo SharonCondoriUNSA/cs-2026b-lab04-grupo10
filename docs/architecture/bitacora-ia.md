@@ -124,3 +124,7 @@ Verificaciones E1: Graphviz generó arbol.png sin errores, se revisó visualment
 Prompt IA 2 adaptado y utilizado: «Para QA-01 de EcoRecicla, incorporar distritos con puntos y horario propios en ≤ 2 días-persona sin cambiar consumidores, propón al menos tres conceptos de diseño. Explica qué mejoran y empeoran, coste relativo y complejidad. Respeta dos integrantes, un mes, presupuesto bajo, ADR-001 y patrones ADR-005. Construye evidencia antes/después y distingue medidas de laboratorio de esfuerzo humano».
 
 Se compararon condicionales, configuración versionada, despliegues separados y estrategias por distrito. Se propone configuración para tarifas y franjas representables y se rechazan los despliegues separados. La ejecución real del prototipo incorporó nueve distritos, pasó 24 comprobaciones y mantuvo las huellas de tres archivos consumidores. Cambiar D01 no alteró los otros once. La revisión corrigió una posible conclusión excesiva: ms de ejecución no equivalen a días-persona, QA-01 queda parcialmente verificado. No se modifica código de producción ni se declara una aprobación del equipo. Salida conservada en add/evidencia-1.json.
+
+## Lab08 · E3 · Preparación, no evaluación realizada (2026-10-31)
+
+El usuario confirmó que el docente aún no asignó otro grupo. Se preparó atam-lite.md con requisitos, enlaces y un prompt para uso posterior. No se ejecutó ese prompt contra otro repositorio ni se enviaron issues. E3 queda pendiente, tal como solicitó el usuario.
