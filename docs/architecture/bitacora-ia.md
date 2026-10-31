@@ -127,7 +127,7 @@ Se compararon condicionales, configuración versionada, despliegues separados y 
 
 ## Lab08 · E3 · Preparación, no evaluación realizada (2026-10-31)
 
-El usuario confirmó que el docente aún no asignó otro grupo. Se preparó atam-lite.md con requisitos, enlaces y un prompt para uso posterior. No se ejecutó ese prompt contra otro repositorio ni se enviaron issues. E3 queda pendiente, tal como solicitó el usuario.
+El equipo indicó que el docente realizará la revisión y que no habrá evaluación entre grupos. Se actualizó atam-lite.md para registrar ese procedimiento y preparar la respuesta a las observaciones que envíe. No se abrió un issue a otro grupo ni se ejecutó el Prompt IA 3 como evaluación cruzada. La revisión del docente y la respuesta del equipo siguen pendientes.
 
 
 ## Lab08 · E4 · Apoyo en continuidad y aislamiento (2026-10-31)
