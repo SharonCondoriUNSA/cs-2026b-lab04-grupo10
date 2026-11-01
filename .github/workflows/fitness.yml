@@ -1,0 +1,22 @@
+name: Fitness functions de arquitectura
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  fitness:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtener el repositorio
+        uses: actions/checkout@v4
+      - name: Preparar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar verificadores
+        run: python -m pip install --upgrade pytest import-linter
+      - name: Verificar límites estructurales
+        run: lint-imports
+      - name: Ejecutar fitness functions de calidad
+        run: python -m pytest tests/fitness -q

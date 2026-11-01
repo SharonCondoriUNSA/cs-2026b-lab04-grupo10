@@ -1,0 +1,22 @@
+[importlinter]
+root_package = src
+include_external_packages = True
+
+[importlinter:contract:module-boundary]
+name = Puntos/Beneficios no depende de Solicitudes
+type = forbidden
+source_modules =
+    src.puntos_beneficios
+forbidden_modules =
+    src.solicitudes
+
+[importlinter:contract:llm-adapter]
+name = La clasificación no depende directamente de SDK de proveedores LLM
+type = forbidden
+source_modules =
+    src.solicitudes.ia
+forbidden_modules =
+    openai
+    anthropic
+    langchain
+    google
