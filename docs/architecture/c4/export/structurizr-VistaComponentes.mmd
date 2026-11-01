@@ -12,44 +12,53 @@ graph LR
     subgraph 6 ["EcoRecicla AQP"]
       style 6 fill:#ffffff,stroke:#0b488e,color:#0b488e
 
-      subgraph 8 ["API REST Monolito Modular"]
-        style 8 fill:#ffffff,stroke:#5d82a8,color:#5d82a8
+      subgraph 9 ["API REST Monolito Modular"]
+        style 9 fill:#ffffff,stroke:#5d82a8,color:#5d82a8
 
-        10["<div style='font-weight: bold'>Modulo Rutas y Cobertura</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Gestiona las zonas de<br />cobertura distrital y las<br />rutas asignadas a<br />recicladores.</div>"]
+        10["<div style='font-weight: bold'>Modulo Solicitudes</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Gestiona el registro y ciclo<br />de vida; el diseño propone<br />deduplicar sincronizaciones y<br />validar el ámbito distrital<br />antes del acceso [QA-02,<br />QA-04, QA-05, QA-07].</div>"]
         style 10 fill:#85bbf0,stroke:#5d82a8,color:#000000
-        11["<div style='font-weight: bold'>Modulo Puntos y Beneficios</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Administra la acreditacion y<br />canje de puntos de reciclaje<br />para los vecinos.</div>"]
+        11["<div style='font-weight: bold'>Receptor idempotente de sincronizacion</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python / contrato de Solicitudes]</div><div style='font-size: 80%; margin-top:10px'>Valida el ámbito autenticado,<br />consulta la clave (distrito,<br />identificador) y delega en<br />Solicitudes las operaciones<br />de dominio. Confirma tras<br />persistir efecto y clave en<br />una transacción, sin repetir<br />efectos [QA-02, QA-04, QA-05,<br />QA-07]. Diseño propuesto, no<br />integrado.</div>"]
         style 11 fill:#85bbf0,stroke:#5d82a8,color:#000000
-        12["<div style='font-weight: bold'>Modulo Reportes</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Genera indicadores<br />municipales sobre toneladas<br />recicladas y cobertura.</div>"]
+        12["<div style='font-weight: bold'>Autorizacion de ambito distrital</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python / contexto autenticado propuesto]</div><div style='font-size: 80%; margin-top:10px'>Deriva el distrito desde el<br />contexto autenticado y<br />rechaza ámbito ausente o<br />incompatible antes de leer o<br />escribir [QA-04, QA-05]. JWT<br />y middleware reales siguen<br />pendientes.</div>"]
         style 12 fill:#85bbf0,stroke:#5d82a8,color:#000000
-        13["<div style='font-weight: bold'>Notificaciones (auxiliar de Solicitudes)</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Servicio auxiliar para la<br />composicion y despacho<br />asincrono de avisos.</div>"]
+        13["<div style='font-weight: bold'>Modulo Rutas y Cobertura</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Gestiona cobertura y horarios<br />versionados por distrito<br />mediante su contrato público,<br />sin requerir cambios en los<br />consumidores [QA-01, QA-06].</div>"]
         style 13 fill:#85bbf0,stroke:#5d82a8,color:#000000
-        14["<div style='font-weight: bold'>Compartido</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python / UUID]</div><div style='font-size: 80%; margin-top:10px'>Define IdentificadorSolicitud<br />como alias de UUID, sin<br />entidades de dominio ni<br />acceso a datos.</div>"]
+        14["<div style='font-weight: bold'>Modulo Puntos y Beneficios</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Administra acreditación y<br />canje; mantiene tarifas<br />versionadas por distrito en<br />su propio esquema y usa<br />estrategias para fórmulas<br />variables [QA-01, QA-06].</div>"]
         style 14 fill:#85bbf0,stroke:#5d82a8,color:#000000
-        9["<div style='font-weight: bold'>Modulo Solicitudes</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Gestiona el registro,<br />validacion y ciclo de vida de<br />las solicitudes de recojo.</div>"]
-        style 9 fill:#85bbf0,stroke:#5d82a8,color:#000000
+        15["<div style='font-weight: bold'>Modulo Reportes</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Genera indicadores<br />municipales y debe respetar<br />el ámbito distrital<br />autorizado en cada consulta<br />[QA-04, QA-05].</div>"]
+        style 15 fill:#85bbf0,stroke:#5d82a8,color:#000000
+        16["<div style='font-weight: bold'>Notificaciones (auxiliar de Solicitudes)</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python]</div><div style='font-size: 80%; margin-top:10px'>Servicio auxiliar para la<br />composicion y despacho<br />asincrono de avisos.</div>"]
+        style 16 fill:#85bbf0,stroke:#5d82a8,color:#000000
+        17["<div style='font-weight: bold'>Compartido</div><div style='font-size: 70%; margin-top: 0px'>[Component: Python / UUID]</div><div style='font-size: 80%; margin-top:10px'>Define IdentificadorSolicitud<br />como alias de UUID, sin<br />entidades de dominio ni<br />acceso a datos.</div>"]
+        style 17 fill:#85bbf0,stroke:#5d82a8,color:#000000
       end
 
-      15[("<div style='font-weight: bold'>Base de Datos Relacional</div><div style='font-size: 70%; margin-top: 0px'>[Container: PostgreSQL]</div><div style='font-size: 80%; margin-top:10px'>Almacena la informacion<br />persistente de usuarios,<br />solicitudes, rutas y puntos.</div>")]
-      style 15 fill:#438dd5,stroke:#2e6295,color:#ffffff
-      7["<div style='font-weight: bold'>Aplicacion Web Progresiva (PWA)</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript / Service Worker / IndexedDB]</div><div style='font-size: 80%; margin-top:10px'>Interfaz de usuario accesible<br />desde navegadores moviles y<br />de escritorio con soporte<br />offline parcial.</div>"]
+      18[("<div style='font-weight: bold'>Base de Datos Relacional</div><div style='font-size: 70%; margin-top: 0px'>[Container: PostgreSQL / esquemas por módulo / claves únicas / RLS propuesta]</div><div style='font-size: 80%; margin-top:10px'>PostgreSQL con esquemas por<br />módulo, configuraciones<br />versionadas, clave<br />idempotente y distrito_id<br />[QA-01, QA-02, QA-04, QA-05,<br />QA-06, QA-07]. RLS es<br />propuesta, no configurada ni<br />verificada.</div>")]
+      style 18 fill:#438dd5,stroke:#2e6295,color:#ffffff
+      7["<div style='font-weight: bold'>Aplicacion Web Progresiva (PWA)</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript / Service Worker / IndexedDB]</div><div style='font-size: 80%; margin-top:10px'>Propone conservar pendientes<br />con identificador estable en<br />IndexedDB hasta ACK y<br />reintentarlos al volver la<br />red [QA-02, QA-07]. Falta<br />integración real.</div>"]
       style 7 fill:#438dd5,stroke:#2e6295,color:#ffffff
     end
 
-    7-. "<div>Envia solicitudes de recojo y<br />atenciones</div><div style='font-size: 70%'>[HTTPS / REST JSON]</div>" .->9
-    7-. "<div>Consulta indicadores y<br />reportes</div><div style='font-size: 70%'>[HTTPS / REST JSON]</div>" .->12
-    9-. "<div>Consulta CoberturaRecojo para<br />determinar cobertura<br />distrital</div><div style='font-size: 70%'>[Contrato publico / llamada interna]</div>" .->10
-    9-. "<div>Solicita acreditacion<br />mediante AcreditadorPuntos</div><div style='font-size: 70%'>[Contrato publico / llamada interna]</div>" .->11
-    9-. "<div>Solicita aviso asincrono<br />mediante NotificadorSolicitud</div><div style='font-size: 70%'>[Puerto interno / llamada interna]</div>" .->13
-    12-. "<div>Consulta pesajes confirmados<br />mediante FuentePesajes</div><div style='font-size: 70%'>[Contrato publico / llamada interna]</div>" .->9
-    9-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->14
-    10-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->14
-    11-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->14
-    13-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->14
-    12-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->14
-    9-. "<div>Persiste solicitudes en su<br />esquema</div><div style='font-size: 70%'>[SQL / TCP (port 5432)]</div>" .->15
-    10-. "<div>Persiste rutas y zonas en su<br />esquema</div><div style='font-size: 70%'>[SQL / TCP (port 5432)]</div>" .->15
-    11-. "<div>Persiste puntos y canjes en<br />su esquema</div><div style='font-size: 70%'>[SQL / TCP (port 5432)]</div>" .->15
-    9-. "<div>Valida opcionalmente<br />coordenadas mediante<br />ServicioMapas</div><div style='font-size: 70%'>[HTTPS / REST JSON]</div>" .->4
-    13-. "<div>Despacha avisos de<br />confirmacion de recojo</div><div style='font-size: 70%'>[HTTPS / REST API]</div>" .->5
+    7-. "<div>Envia solicitudes de recojo y<br />atenciones</div><div style='font-size: 70%'>[HTTPS / REST JSON]</div>" .->10
+    7-. "<div>Consulta indicadores y<br />reportes</div><div style='font-size: 70%'>[HTTPS / REST JSON]</div>" .->15
+    7-. "<div>Reintenta el mismo registro<br />pendiente hasta recibir ACK</div><div style='font-size: 70%'>[HTTPS / JSON / identificador estable]</div>" .->11
+    11-. "<div>Exige ámbito autenticado<br />compatible antes de consultar<br />claves o aplicar registros</div><div style='font-size: 70%'>[Contrato interno]</div>" .->12
+    11-. "<div>Delega la deduplicacion y las<br />operaciones de dominio con<br />guardas State, confirma solo<br />tras commit</div><div style='font-size: 70%'>[Contrato publico / transaccion]</div>" .->10
+    10-. "<div>Valida el contexto distrital<br />antes de acceder a datos</div><div style='font-size: 70%'>[Contrato interno]</div>" .->12
+    15-. "<div>Valida el contexto distrital<br />antes de consultar datos</div><div style='font-size: 70%'>[Contrato interno]</div>" .->12
+    10-. "<div>Consulta CoberturaRecojo para<br />determinar cobertura<br />distrital</div><div style='font-size: 70%'>[Contrato publico / llamada interna]</div>" .->13
+    10-. "<div>Solicita acreditacion<br />mediante AcreditadorPuntos</div><div style='font-size: 70%'>[Contrato publico / llamada interna]</div>" .->14
+    10-. "<div>Solicita aviso asincrono<br />mediante NotificadorSolicitud</div><div style='font-size: 70%'>[Puerto interno / llamada interna]</div>" .->16
+    15-. "<div>Consulta pesajes confirmados<br />mediante FuentePesajes</div><div style='font-size: 70%'>[Contrato publico / llamada interna]</div>" .->10
+    10-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->17
+    13-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->17
+    14-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->17
+    16-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->17
+    15-. "<div>Utiliza<br />IdentificadorSolicitud</div><div style='font-size: 70%'>[Tipo compartido UUID]</div>" .->17
+    10-. "<div>Persiste en su esquema efecto<br />y clave distrital de<br />idempotencia en una<br />transaccion antes del ACK</div><div style='font-size: 70%'>[SQL / TCP (port 5432)]</div>" .->18
+    13-. "<div>Persiste rutas y zonas en su<br />esquema</div><div style='font-size: 70%'>[SQL / TCP (port 5432)]</div>" .->18
+    14-. "<div>Persiste puntos y canjes en<br />su esquema</div><div style='font-size: 70%'>[SQL / TCP (port 5432)]</div>" .->18
+    10-. "<div>Valida opcionalmente<br />coordenadas mediante<br />ServicioMapas</div><div style='font-size: 70%'>[HTTPS / REST JSON]</div>" .->4
+    16-. "<div>Despacha avisos de<br />confirmacion de recojo</div><div style='font-size: 70%'>[HTTPS / REST API]</div>" .->5
 
   end

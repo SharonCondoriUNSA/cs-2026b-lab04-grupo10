@@ -142,6 +142,12 @@ El prototipo denegó 264 operaciones cruzadas y 72 sin ámbito válido, permiti�
 
 Verificaciones realizadas: ejecución de los tres prototipos, cuatro rechazos de configuración inválida, sintaxis Python y enlaces relativos nuevos. Las 138 pruebas de comportamiento y patrones del Lab07 siguen pasando. Se revisaron los resultados JSON y su correspondencia con las tablas ADD. git diff --check sin errores. No se incorpora la carpeta de ejemplos, los cambios anteriores ni entregables E5-E8.
 
+### Lab08 · E6 · Apoyo en revisión y corrección (2026-11-01)
+
+Se alineó ADR-006 con la estimación de E2, diferenciando 1.60 días-persona centrales de 2.50 en el caso pesimista, sin presentarlos como tiempo medido. En C4 se corrigió el receptor de sincronización para exigir autorización distrital y delegar en Solicitudes las operaciones de dominio con guardas State, dejando la transacción de efecto y clave dentro del módulo. Se retiró el acceso directo del receptor a la base de datos.
+
+Se ejecutó Structurizr validate y se regeneraron las cinco vistas en C4-PlantUML y Mermaid. Las cinco fuentes PlantUML pasaron checkonly y se renderizaron, se revisaron visualmente los cuatro PNG que cambiaron. Se comprobaron los enlaces de los tres ADR y la ausencia de ciclos entre componentes. Mermaid se exportó, no se renderizó con un motor Mermaid. Estos cambios son de documentación y diseño, no implementan JWT, RLS ni la PWA real. Los archivos ajenos a E6 se conservan fuera de los commits.
+
 ## 4. Interacciones de apoyo y verificación del Lab08
 
 Los prompts siguientes son resúmenes fieles de las solicitudes adaptadas al caso; las respuestas se trataron como propuestas y se contrastaron con los artefactos del repositorio.
@@ -217,3 +223,9 @@ Los prompts siguientes son resúmenes fieles de las solicitudes adaptadas al cas
 - **Propuesta:** Añadir una sección de Lab08 al final del README y dejar explícitos los pasos de cierre que todavía dependen de publicar, revisar e integrar las ramas.
 - **Verificación:** Se cotejaron medidas y límites con los JSON de las tres iteraciones, se comprobaron rutas de los enlaces del repositorio y `git diff --check` pasó. No se declaró una ejecución de GitHub Actions ni un merge que aún no ocurrió.
 - **Decisión:** Incorporar la sección con resultados parciales y pendientes visibles; no crear ahora la etiqueta porque corresponde a la versión final integrada.
+
+### Lab08 · E7 · Apoyo en actualización de hallazgos (2026-11-01)
+
+Se actualizó el análisis de QA-01 y R-04 con la estimación de E2, 1.60 días-persona centrales y 2.50 pesimistas, conservando alcance, supuestos y ausencia de horas medidas. R-04 permanece abierto. Se corrigió R-05 porque las ramas ya estaban publicadas y la captura de Actions compartida por la usuaria mostraba checks verdes de los PR #37 a #40. El pendiente original queda resuelto para esas ejecuciones, el riesgo residual exige comprobar el último commit después de cada corrección, no se atribuye a una captura previa la validación de cambios posteriores.
+
+Se comprobaron los enlaces locales y los seis cálculos de probabilidad por impacto. La corrección solo actualiza documentos, no cambia los prototipos ni registra una nueva revisión del docente.
