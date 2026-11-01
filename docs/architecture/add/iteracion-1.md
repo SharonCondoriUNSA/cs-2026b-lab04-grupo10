@@ -6,7 +6,7 @@
 
 ## 2. Establecer objetivo
 
-Incorporar un distrito en ≤ 2 días-persona con 0 cambios en consumidores. Es la prioridad por modificabilidad del Lab04. Se prueba la parte estructural de la medida y se declara separadamente el esfuerzo humano no medido. QA-06 sirve como comprobación complementaria de independencia.
+Incorporar un distrito en ≤ 2 días-persona con 0 cambios en consumidores. Es la prioridad por modificabilidad del Lab04. Se prueba la parte estructural y se agrega una estimación reproducible del esfuerzo, separada del tiempo de ejecución del prototipo. QA-06 sirve como comprobación complementaria de independencia.
 
 ## 3. Elegir elemento que se refina
 
@@ -40,9 +40,11 @@ Comando desde la raíz: `python -m fitness.distritos`. [Salida real](evidencia-1
 | Comprobaciones de puntos y horario para 12 distritos | No puede atender los nueve nuevos | 24 aprobadas |
 | Archivos consumidores originales modificados durante el experimento | 0 | 0, huellas SHA-256 idénticas |
 | Otros distritos alterados al cambiar D01 | No evaluado | 0 de 11 |
-| Esfuerzo de integración en días-persona | No medido | No medido |
+| Esfuerzo de integración en días-persona | Sin medición ni estimación de la línea base | Estimación central de 1.60 para un alta sobre mecanismos reutilizables, sensibilidad pesimista de 2.50 |
 
-**Resultado: cumplimiento parcial de QA-01.** El prototipo demuestra altas sin editar los tres archivos de código inspeccionados. El tiempo de ejecución registrado en ms solo mide la operación local de alta de configuración, no demuestra ≤ 2 días-persona. Falta cronometrar un alta real incluyendo persistencia, permisos, pruebas y revisión para cerrar ese objetivo. QA-06 también requiere medir trabajo humano.
+**Resultado: evidencia estructural y estimación condicional de QA-01.** El prototipo demuestra altas sin editar los tres archivos de código inspeccionados. La [estimación desglosada](estimacion-esfuerzo-1.md) incluye configuración, integración, permisos, pruebas, revisión y publicación. Con la convención de 8 horas-persona por día-persona, el cálculo PERT más 25 % de reserva da 12.8125 horas-persona, aproximadamente **1.60 días-persona ≤ 2**. El escenario pesimista con reserva llega a **2.50 días-persona**, por lo que no se garantiza el límite.
+
+La estimación corresponde al alta cuando los mecanismos genéricos de persistencia, API y autorización estén disponibles. Su construcción inicial no está incluida ni se considera ya implementada en este prototipo. Para el primer distrito desde el estado actual y para acreditar esfuerzo real sigue pendiente una medición completa. Los 0.0054 ms conservados en evidencia-1.json son únicamente tiempo de alta en memoria, no esfuerzo humano. QA-06 tampoco se da por medido mediante esta estimación de QA-01.
 
 Supuestos: datos sintéticos D01–D12, fórmula lineal por peso ya existente, horarios de una franja por día sin feriados ni franjas nocturnas. No se representan todos los posibles reglamentos municipales. Una fórmula nueva necesita una estrategia y pruebas nuevas. El prototipo no acredita puntos ni sustituye las guardas de State. No se midió PostgreSQL, latencia de red ni carga de producción. Antes y después comparten el mismo catálogo de prueba, no se afirma que Lab07 ya contuviera horarios.
 
