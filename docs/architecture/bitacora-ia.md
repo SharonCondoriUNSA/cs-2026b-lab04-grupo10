@@ -124,3 +124,10 @@ Verificaciones E1: Graphviz generó arbol.png sin errores, se revisó visualment
 Prompt IA 2 adaptado y utilizado: «Para QA-01 de EcoRecicla, incorporar distritos con puntos y horario propios en ≤ 2 días-persona sin cambiar consumidores, propón al menos tres conceptos de diseño. Explica qué mejoran y empeoran, coste relativo y complejidad. Respeta dos integrantes, un mes, presupuesto bajo, ADR-001 y patrones ADR-005. Construye evidencia antes/después y distingue medidas de laboratorio de esfuerzo humano».
 
 Se compararon condicionales, configuración versionada, despliegues separados y estrategias por distrito. Se propone configuración para tarifas y franjas representables y se rechazan los despliegues separados. La ejecución real del prototipo incorporó nueve distritos, pasó 24 comprobaciones y mantuvo las huellas de tres archivos consumidores. Cambiar D01 no alteró los otros once. La revisión corrigió una posible conclusión excesiva: ms de ejecución no equivalen a días-persona, QA-01 queda parcialmente verificado. No se modifica código de producción ni se declara una aprobación del equipo. Salida conservada en add/evidencia-1.json.
+
+
+### Lab08 · E2 · Apoyo en corrección de esfuerzo (2026-11-01)
+
+La compañera observó que QA-01 exige ≤ 2 días-persona y el prototipo solo mide una operación en memoria. Se agregó estimacion-esfuerzo-1.md con siete actividades, estimaciones optimista, más probable y pesimista, fórmula PERT y reserva del 25 %. El cálculo central es 12.8125 horas-persona, 1.60 días-persona con una convención explícita de 8 horas. La sensibilidad pesimista es 2.50 días-persona. Se explica que son estimaciones propuestas para revisión, no horas medidas, y que suponen mecanismos genéricos reutilizables, cuya construcción inicial queda fuera del alta. Se conserva la salida original del experimento sin atribuirle esfuerzo humano.
+
+Se verificaron con Decimal las sumas, PERT, reserva, conversión, margen y sensibilidad, además de los enlaces de ambos documentos. Esta corrección es documental, no cambia servicios ni resultados de pruebas anteriores. Falta contrastar la estimación con un alta real y la revisión del equipo.
