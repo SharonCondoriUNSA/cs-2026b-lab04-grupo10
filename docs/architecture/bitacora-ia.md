@@ -229,3 +229,10 @@ Los prompts siguientes son resúmenes fieles de las solicitudes adaptadas al cas
 Se actualizó el análisis de QA-01 y R-04 con la estimación de E2, 1.60 días-persona centrales y 2.50 pesimistas, conservando alcance, supuestos y ausencia de horas medidas. R-04 permanece abierto. Se corrigió R-05 porque las ramas ya estaban publicadas y la captura de Actions compartida por la usuaria mostraba checks verdes de los PR #37 a #40. El pendiente original queda resuelto para esas ejecuciones, el riesgo residual exige comprobar el último commit después de cada corrección, no se atribuye a una captura previa la validación de cambios posteriores.
 
 Se comprobaron los enlaces locales y los seis cálculos de probabilidad por impacto. La corrección solo actualiza documentos, no cambia los prototipos ni registra una nueva revisión del docente.
+
+
+### Lab08 · E8 · Apoyo en cierre y coherencia de ramas (2026-11-01)
+
+Se incorporaron en la rama E8 las correcciones de E6 y E7 y se resolvió el conflicto de bitácora conservando los tres registros sin duplicarlos. Se actualizó el README con la estimación central de 1.60 días-persona y el caso pesimista de 2.50, los PR publicados y el alcance de los checks anteriores. Se diferencia el plazo original de entrega de una entrega todavía no confirmada.
+
+La consulta de los PR mostró que #38 se integró en la rama E5 y #39 en E6, por lo que no bastaba con verlos cerrados para afirmar que sus correcciones estaban en main. E8 ahora contiene esos commits y queda preparada para que #40 se dirija a main. El cambio de base del PR debe completarse en GitHub, este registro no afirma que ya se hizo. Se verificaron enlaces y ascendencia de los commits, sin crear etiqueta ni fusionar en main.
