@@ -211,3 +211,43 @@ La complejidad de solicitar_recojo bajó de 25 (D) a 15 (C) entre la línea base
 **Estado de la revisión cruzada:** E5, E6, E7 y E8 están integrados en main mediante los PR #29, #30, #31 y #32. La corrección de diagramas de E7 está incluida. La revisión general final comprobó 138 casos aprobados, las métricas de Radon, los enlaces locales y la sintaxis de los diagramas. Las observaciones de revisión por integrante se conservan en los Pull Requests.
 
 La versión de entrega se identifica mediante la etiqueta **v0.7-patrones**, sobre el cierre integrado del Lab07. La publicación de la etiqueta no acredita por sí sola la entrega en el Aula Virtual, cuya confirmación corresponde al equipo.
+
+## Diseño de la arquitectura (Lab 08)
+
+El análisis parte del árbol de utilidad y de tres iteraciones ADD para el crecimiento de EcoRecicla AQP de 3 a 12 distritos. Los resultados distinguen los prototipos de las funciones aún propuestas para integración.
+
+### Árbol de utilidad
+
+![Árbol de utilidad de EcoRecicla AQP](docs/architecture/utilidad/arbol.png)
+
+Consulta también los [escenarios de calidad](docs/architecture/utilidad/escenarios.md) y la [fuente Graphviz](docs/architecture/utilidad/arbol.dot).
+
+### Iteraciones ADD
+
+| Iteración | Escenario | Táctica propuesta | Evidencia | ¿Cumple? |
+|---|---|---|---|---|
+| ADD 1 | QA-01 / QA-06: incorporar o actualizar reglas de puntos y horarios para 12 distritos sin alterar los demás. | Configuración versionada en Puntos/Beneficios y Rutas/Cobertura; Strategy para fórmulas que realmente varían. | [Iteración](docs/architecture/add/iteracion-1.md), [resultado JSON](docs/architecture/add/evidencia-1.json): 9 distritos incorporados, 24 comprobaciones, 0 cambios en los tres consumidores observados y 0 alteraciones en los otros 11. | **Parcial.** El esfuerzo en días-persona no se midió y la persistencia real no se probó. |
+| ADD 2 | QA-02 / QA-07: conservar 120 registros durante 20 min sin red y sincronizar en ≤ 30 s sin pérdidas ni duplicados. | Buffer persistente local con identificadores estables y receptor idempotente en la API. | [Iteración](docs/architecture/add/iteracion-2.md), [resultado JSON](docs/architecture/add/evidencia-2.json): 120 efectos únicos, 0 pérdidas/duplicados y 13.2 s modelados a 100 ms por llamada; 33 s a 250 ms. | **Parcial.** Cumple en el escenario base simulado; la sensibilidad lenta excede 30 s. SQLite sustituye IndexedDB/PostgreSQL y el tiempo es virtual. |
+| ADD 3 | QA-04 / QA-05: impedir lectura/escritura entre distritos y rechazar operaciones sin ámbito confiable. | Ámbito distrital derivado de autenticación, guardas en contratos y RLS como defensa adicional propuesta. | [Iteración](docs/architecture/add/iteracion-3.md), [resultado JSON](docs/architecture/add/evidencia-3.json): 264 accesos cruzados rechazados, 72 operaciones sin ámbito rechazadas y 24 operaciones propias permitidas. | **Parcial.** La guarda pasó en el prototipo; JWT, middleware y RLS reales no están implementados ni probados. |
+
+### Decisiones y modelo C4
+
+- [ADR-006 — Configuración versionada por distrito](docs/architecture/adr/006-configuracion-por-distrito.md)
+- [ADR-007 — Buffer local y sincronización idempotente](docs/architecture/adr/007-sincronizacion-idempotente.md)
+- [ADR-008 — Autorización con ámbito distrital](docs/architecture/adr/008-autorizacion-distrital.md)
+- [Fitness functions E5](docs/architecture/fitness-functions.md) y [workflow de GitHub Actions](.github/workflows/fitness.yml).
+- [Workspace C4 actualizado](docs/architecture/c4/workspace.dsl) y [vista de contenedores exportada](docs/architecture/c4/export/structurizr-VistaContenedores.puml) ([Mermaid](docs/architecture/c4/export/structurizr-VistaContenedores.mmd)).
+- [ATAM-lite y matriz de riesgos](docs/architecture/atam-lite.md) · [Bitácora de IA](docs/architecture/bitacora-ia.md).
+
+### Fitness functions y entrega
+
+[![Fitness functions de arquitectura](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10/actions/workflows/fitness.yml/badge.svg)](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10/actions/workflows/fitness.yml)
+
+El workflow ejecuta los contratos estructurales y las pruebas de calidad en cada Pull Request y push. Las ramas E5–E8 están preparadas localmente; falta publicarlas, abrir y revisar los Pull Requests, y comprobar el estado verde en GitHub antes de aprobarlos.
+
+| Actividad de cierre | Estado | Evidencia / siguiente paso |
+|---|---|---|
+| Pull Requests de los entregables y revisión | Pendiente | Publicar las ramas E5–E8 y abrir un PR por entregable en orden. La revisión y los merges corresponden a la compañera. |
+| Workflow verde antes de aprobar cada PR | Pendiente | Confirmar la ejecución de `fitness.yml` en GitHub para cada PR. |
+| Crear la etiqueta `v0.8-arquitectura` | Pendiente | Crear y publicar después de integrar y revisar los entregables en `main`. |
+| Entregar el enlace del repositorio en Aula Virtual | Pendiente | Registrar la entrega antes del sábado 31/10/2026 a las 23:59. |

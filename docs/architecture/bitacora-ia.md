@@ -208,3 +208,12 @@ Los prompts siguientes son resúmenes fieles de las solicitudes adaptadas al cas
 - **Propuesta:** Señalar la falta de issue entre grupos como posible incumplimiento, además de riesgos de autorización aún no integrada, almacenamiento local real y sincronización lenta.
 - **Verificación:** La observación sobre la falta de issue se contrastó con la indicación del docente comunicada por el equipo y se refutó como falso positivo procedimental. Los riesgos técnicos se vincularon con ADR-006 a ADR-008 y los JSON; el punto de sensibilidad se recalculó como 30/132 ≈ 227 ms por llamada.
 - **Decisión:** Registrar el falso positivo, conservar los riesgos técnicos abiertos y dejar pendiente la respuesta externa del docente.
+
+### Interacción 8 · E8: README y estado de entrega
+
+- **Fecha:** 2026-10-31.
+- **Herramienta:** GPT.
+- **Prompt:** Preparar en el README la sección “Diseño de la arquitectura (Lab 08)” con el árbol de utilidad, la tabla de iteraciones basada en evidencia, enlaces a ADR, badge del workflow y estado real de PR, etiqueta y entrega.
+- **Propuesta:** Añadir una sección de Lab08 al final del README y dejar explícitos los pasos de cierre que todavía dependen de publicar, revisar e integrar las ramas.
+- **Verificación:** Se cotejaron medidas y límites con los JSON de las tres iteraciones, se comprobaron rutas de los enlaces del repositorio y `git diff --check` pasó. No se declaró una ejecución de GitHub Actions ni un merge que aún no ocurrió.
+- **Decisión:** Incorporar la sección con resultados parciales y pendientes visibles; no crear ahora la etiqueta porque corresponde a la versión final integrada.
