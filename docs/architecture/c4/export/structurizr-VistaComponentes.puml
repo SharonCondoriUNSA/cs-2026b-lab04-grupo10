@@ -1,5 +1,5 @@
 @startuml
-title <size:24>Diagrama de Componentes - API REST Monolito Modular</size>\n<size:24>Muestra los cuatro modulos de dominio, Notificaciones como auxiliar de Solicitudes y los tipos compartidos, con dependencias sin ciclos.</size>
+title <size:24>Diagrama de Componentes - API REST Monolito Modular</size>\n<size:24>Muestra cuatro modulos de dominio, auxiliares de notificaciones, sincronizacion y autorizacion propuestas, y tipos compartidos. Sincronizacion valida el ambito y delega en Solicitudes, sin acceso directo a la base de datos.</size>
 
 set separator none
 left to right direction
@@ -30,20 +30,27 @@ System(APIdeNotificacionesWhatsApp, "API de Notificaciones WhatsApp", $descr="Se
 
 System_Boundary("EcoReciclaAQP_boundary", "EcoRecicla AQP", $tags="Software System") {
   Container_Boundary("EcoReciclaAQP.APIRESTMonolitoModular_boundary", "API REST Monolito Modular", $tags="Backend") {
-    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloRutasyCobertura, "Modulo Rutas y Cobertura", $techn="Python", $descr="Gestiona las zonas de cobertura distrital y las rutas asignadas a recicladores.", $tags="Component", $link="")
-    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloPuntosyBeneficios, "Modulo Puntos y Beneficios", $techn="Python", $descr="Administra la acreditacion y canje de puntos de reciclaje para los vecinos.", $tags="Component", $link="")
-    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloReportes, "Modulo Reportes", $techn="Python", $descr="Genera indicadores municipales sobre toneladas recicladas y cobertura.", $tags="Component", $link="")
+    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, "Modulo Solicitudes", $techn="Python", $descr="Gestiona el registro y ciclo de vida; el diseño propone deduplicar sincronizaciones y validar el ámbito distrital antes del acceso [QA-02, QA-04, QA-05, QA-07].", $tags="Component", $link="")
+    Component(EcoReciclaAQP.APIRESTMonolitoModular.Receptoridempotentedesincronizacion, "Receptor idempotente de sincronizacion", $techn="Python / contrato de Solicitudes", $descr="Valida el ámbito autenticado, consulta la clave (distrito, identificador) y delega en Solicitudes las operaciones de dominio. Confirma tras persistir efecto y clave en una transacción, sin repetir efectos [QA-02, QA-04, QA-05, QA-07]. Diseño propuesto, no integrado.", $tags="Component", $link="")
+    Component(EcoReciclaAQP.APIRESTMonolitoModular.Autorizaciondeambitodistrital, "Autorizacion de ambito distrital", $techn="Python / contexto autenticado propuesto", $descr="Deriva el distrito desde el contexto autenticado y rechaza ámbito ausente o incompatible antes de leer o escribir [QA-04, QA-05]. JWT y middleware reales siguen pendientes.", $tags="Component", $link="")
+    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloRutasyCobertura, "Modulo Rutas y Cobertura", $techn="Python", $descr="Gestiona cobertura y horarios versionados por distrito mediante su contrato público, sin requerir cambios en los consumidores [QA-01, QA-06].", $tags="Component", $link="")
+    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloPuntosyBeneficios, "Modulo Puntos y Beneficios", $techn="Python", $descr="Administra acreditación y canje; mantiene tarifas versionadas por distrito en su propio esquema y usa estrategias para fórmulas variables [QA-01, QA-06].", $tags="Component", $link="")
+    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloReportes, "Modulo Reportes", $techn="Python", $descr="Genera indicadores municipales y debe respetar el ámbito distrital autorizado en cada consulta [QA-04, QA-05].", $tags="Component", $link="")
     Component(EcoReciclaAQP.APIRESTMonolitoModular.NotificacionesauxiliardeSolicitudes, "Notificaciones (auxiliar de Solicitudes)", $techn="Python", $descr="Servicio auxiliar para la composicion y despacho asincrono de avisos.", $tags="Component", $link="")
     Component(EcoReciclaAQP.APIRESTMonolitoModular.Compartido, "Compartido", $techn="Python / UUID", $descr="Define IdentificadorSolicitud como alias de UUID, sin entidades de dominio ni acceso a datos.", $tags="Component", $link="")
-    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, "Modulo Solicitudes", $techn="Python", $descr="Gestiona el registro, validacion y ciclo de vida de las solicitudes de recojo.", $tags="Component", $link="")
   }
 
-  ContainerDb(EcoReciclaAQP.BasedeDatosRelacional, "Base de Datos Relacional", $techn="PostgreSQL", $descr="Almacena la informacion persistente de usuarios, solicitudes, rutas y puntos.", $tags="Database", $link="")
-  Container(EcoReciclaAQP.AplicacionWebProgresivaPWA, "Aplicacion Web Progresiva (PWA)", $techn="JavaScript / Service Worker / IndexedDB", $descr="Interfaz de usuario accesible desde navegadores moviles y de escritorio con soporte offline parcial.", $tags="Web Browser", $link="")
+  ContainerDb(EcoReciclaAQP.BasedeDatosRelacional, "Base de Datos Relacional", $techn="PostgreSQL / esquemas por módulo / claves únicas / RLS propuesta", $descr="PostgreSQL con esquemas por módulo, configuraciones versionadas, clave idempotente y distrito_id [QA-01, QA-02, QA-04, QA-05, QA-06, QA-07]. RLS es propuesta, no configurada ni verificada.", $tags="Database", $link="")
+  Container(EcoReciclaAQP.AplicacionWebProgresivaPWA, "Aplicacion Web Progresiva (PWA)", $techn="JavaScript / Service Worker / IndexedDB", $descr="Propone conservar pendientes con identificador estable en IndexedDB hasta ACK y reintentarlos al volver la red [QA-02, QA-07]. Falta integración real.", $tags="Web Browser", $link="")
 }
 
 Rel(EcoReciclaAQP.AplicacionWebProgresivaPWA, EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, "Envia solicitudes de recojo y atenciones", $techn="HTTPS / REST JSON", $tags="Relationship", $link="")
 Rel(EcoReciclaAQP.AplicacionWebProgresivaPWA, EcoReciclaAQP.APIRESTMonolitoModular.ModuloReportes, "Consulta indicadores y reportes", $techn="HTTPS / REST JSON", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.AplicacionWebProgresivaPWA, EcoReciclaAQP.APIRESTMonolitoModular.Receptoridempotentedesincronizacion, "Reintenta el mismo registro pendiente hasta recibir ACK", $techn="HTTPS / JSON / identificador estable", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.APIRESTMonolitoModular.Receptoridempotentedesincronizacion, EcoReciclaAQP.APIRESTMonolitoModular.Autorizaciondeambitodistrital, "Exige ámbito autenticado compatible antes de consultar claves o aplicar registros", $techn="Contrato interno", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.APIRESTMonolitoModular.Receptoridempotentedesincronizacion, EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, "Delega la deduplicacion y las operaciones de dominio con guardas State, confirma solo tras commit", $techn="Contrato publico / transaccion", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, EcoReciclaAQP.APIRESTMonolitoModular.Autorizaciondeambitodistrital, "Valida el contexto distrital antes de acceder a datos", $techn="Contrato interno", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloReportes, EcoReciclaAQP.APIRESTMonolitoModular.Autorizaciondeambitodistrital, "Valida el contexto distrital antes de consultar datos", $techn="Contrato interno", $tags="Relationship", $link="")
 Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, EcoReciclaAQP.APIRESTMonolitoModular.ModuloRutasyCobertura, "Consulta CoberturaRecojo para determinar cobertura distrital", $techn="Contrato publico / llamada interna", $tags="Relationship", $link="")
 Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, EcoReciclaAQP.APIRESTMonolitoModular.ModuloPuntosyBeneficios, "Solicita acreditacion mediante AcreditadorPuntos", $techn="Contrato publico / llamada interna", $tags="Relationship", $link="")
 Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, EcoReciclaAQP.APIRESTMonolitoModular.NotificacionesauxiliardeSolicitudes, "Solicita aviso asincrono mediante NotificadorSolicitud", $techn="Puerto interno / llamada interna", $tags="Relationship", $link="")
@@ -53,7 +60,7 @@ Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloRutasyCobertura, EcoReciclaAQP.AP
 Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloPuntosyBeneficios, EcoReciclaAQP.APIRESTMonolitoModular.Compartido, "Utiliza IdentificadorSolicitud", $techn="Tipo compartido UUID", $tags="Relationship", $link="")
 Rel(EcoReciclaAQP.APIRESTMonolitoModular.NotificacionesauxiliardeSolicitudes, EcoReciclaAQP.APIRESTMonolitoModular.Compartido, "Utiliza IdentificadorSolicitud", $techn="Tipo compartido UUID", $tags="Relationship", $link="")
 Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloReportes, EcoReciclaAQP.APIRESTMonolitoModular.Compartido, "Utiliza IdentificadorSolicitud", $techn="Tipo compartido UUID", $tags="Relationship", $link="")
-Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, EcoReciclaAQP.BasedeDatosRelacional, "Persiste solicitudes en su esquema", $techn="SQL / TCP (port 5432)", $tags="Relationship", $link="")
+Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, EcoReciclaAQP.BasedeDatosRelacional, "Persiste en su esquema efecto y clave distrital de idempotencia en una transaccion antes del ACK", $techn="SQL / TCP (port 5432)", $tags="Relationship", $link="")
 Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloRutasyCobertura, EcoReciclaAQP.BasedeDatosRelacional, "Persiste rutas y zonas en su esquema", $techn="SQL / TCP (port 5432)", $tags="Relationship", $link="")
 Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloPuntosyBeneficios, EcoReciclaAQP.BasedeDatosRelacional, "Persiste puntos y canjes en su esquema", $techn="SQL / TCP (port 5432)", $tags="Relationship", $link="")
 Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, ServiciodeMapasyGeolocalizacion, "Valida opcionalmente coordenadas mediante ServicioMapas", $techn="HTTPS / REST JSON", $tags="Relationship", $link="")

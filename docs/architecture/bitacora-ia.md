@@ -142,6 +142,12 @@ El prototipo denegó 264 operaciones cruzadas y 72 sin ámbito válido, permiti�
 
 Verificaciones realizadas: ejecución de los tres prototipos, cuatro rechazos de configuración inválida, sintaxis Python y enlaces relativos nuevos. Las 138 pruebas de comportamiento y patrones del Lab07 siguen pasando. Se revisaron los resultados JSON y su correspondencia con las tablas ADD. git diff --check sin errores. No se incorpora la carpeta de ejemplos, los cambios anteriores ni entregables E5-E8.
 
+### Lab08 · E6 · Apoyo en revisión y corrección (2026-11-01)
+
+Se alineó ADR-006 con la estimación de E2, diferenciando 1.60 días-persona centrales de 2.50 en el caso pesimista, sin presentarlos como tiempo medido. En C4 se corrigió el receptor de sincronización para exigir autorización distrital y delegar en Solicitudes las operaciones de dominio con guardas State, dejando la transacción de efecto y clave dentro del módulo. Se retiró el acceso directo del receptor a la base de datos.
+
+Se ejecutó Structurizr validate y se regeneraron las cinco vistas en C4-PlantUML y Mermaid. Las cinco fuentes PlantUML pasaron checkonly y se renderizaron, se revisaron visualmente los cuatro PNG que cambiaron. Se comprobaron los enlaces de los tres ADR y la ausencia de ciclos entre componentes. Mermaid se exportó, no se renderizó con un motor Mermaid. Estos cambios son de documentación y diseño, no implementan JWT, RLS ni la PWA real. Los archivos ajenos a E6 se conservan fuera de los commits.
+
 ## 4. Interacciones de apoyo y verificación del Lab08
 
 Los prompts siguientes son resúmenes fieles de las solicitudes adaptadas al caso; las respuestas se trataron como propuestas y se contrastaron con los artefactos del repositorio.
