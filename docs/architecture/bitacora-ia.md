@@ -141,3 +141,98 @@ Instrucción aplicada a la iteración 3: «Refina QA-04 y QA-05 para doce distri
 El prototipo denegó 264 operaciones cruzadas y 72 sin ámbito válido, permitió 24 propias y conservó los datos. El control negativo inseguro permite 132 lecturas y 132 escrituras, es sintético y no prueba una vulnerabilidad del Lab07. Se propone contexto autorizado y defensa RLS posterior, sin declarar tokens o políticas SQL ya implementados. No hay riesgo crítico recibido de otro grupo porque E3 sigue pendiente.
 
 Verificaciones realizadas: ejecución de los tres prototipos, cuatro rechazos de configuración inválida, sintaxis Python y enlaces relativos nuevos. Las 138 pruebas de comportamiento y patrones del Lab07 siguen pasando. Se revisaron los resultados JSON y su correspondencia con las tablas ADD. git diff --check sin errores. No se incorpora la carpeta de ejemplos, los cambios anteriores ni entregables E5-E8.
+
+### Lab08 · E6 · Apoyo en revisión y corrección (2026-11-01)
+
+Se alineó ADR-006 con la estimación de E2, diferenciando 1.60 días-persona centrales de 2.50 en el caso pesimista, sin presentarlos como tiempo medido. En C4 se corrigió el receptor de sincronización para exigir autorización distrital y delegar en Solicitudes las operaciones de dominio con guardas State, dejando la transacción de efecto y clave dentro del módulo. Se retiró el acceso directo del receptor a la base de datos.
+
+Se ejecutó Structurizr validate y se regeneraron las cinco vistas en C4-PlantUML y Mermaid. Las cinco fuentes PlantUML pasaron checkonly y se renderizaron, se revisaron visualmente los cuatro PNG que cambiaron. Se comprobaron los enlaces de los tres ADR y la ausencia de ciclos entre componentes. Mermaid se exportó, no se renderizó con un motor Mermaid. Estos cambios son de documentación y diseño, no implementan JWT, RLS ni la PWA real. Los archivos ajenos a E6 se conservan fuera de los commits.
+
+## 4. Interacciones de apoyo y verificación del Lab08
+
+Los prompts siguientes son resúmenes fieles de las solicitudes adaptadas al caso; las respuestas se trataron como propuestas y se contrastaron con los artefactos del repositorio.
+
+### Interacción 1 · E1: escenarios de calidad
+
+- **Fecha:** 2026-10-31.
+- **Herramienta:** GPT.
+- **Prompt:** A partir de `drivers.md`, ADR-001 y ADR-005, formular escenarios de seis partes para el crecimiento de 3 a 12 distritos, con medidas y prioridad, sin adelantar tácticas.
+- **Propuesta:** Añadir QA-04 a QA-07 y priorizar la incorporación de distritos.
+- **Verificación:** Se contrastaron los escenarios con los drivers y restricciones. Se corrigió la prioridad de QA-01 de H,M a H,H porque los patrones existentes no resuelven por sí solos reglas y horarios distritales. Graphviz generó el árbol.
+- **Decisión:** Conservar siete escenarios con supuestos explícitos; declarar que no son mediciones de producción.
+
+### Interacción 2 · E2: configuración por distrito
+
+- **Fecha:** 2026-10-31.
+- **Herramienta:** GPT.
+- **Prompt:** Comparar al menos tres conceptos para añadir reglas de puntos y horarios distritales en ≤ 2 días-persona sin cambiar consumidores; considerar las restricciones del equipo y respaldar la decisión con evidencia antes/después.
+- **Propuesta:** Usar configuración versionada y estrategias existentes; descartar condicionales repetidos y despliegues por distrito.
+- **Verificación:** El prototipo incorporó 9 distritos, realizó 24 comprobaciones, mantuvo 0 cambios en los consumidores observados y 0 alteraciones en los otros 11 distritos. `dias_persona` quedó sin medir.
+- **Decisión:** Mantener la alternativa como propuesta y reportar QA-01/QA-06 parcialmente verificados.
+
+### Interacción 3 · E3: estado de la revisión docente
+
+- **Fecha:** 2026-10-31.
+- **Herramienta:** GPT.
+- **Prompt:** Actualizar la documentación de E3 para reflejar que, según la indicación del docente comunicada al equipo, no habrá revisión entre grupos y las observaciones del docente siguen pendientes.
+- **Propuesta:** Reemplazar la plantilla de evaluación cruzada por una sección de revisión y respuesta del docente, conservando el estado pendiente.
+- **Verificación:** Se revisó el texto de `atam-lite.md` y la entrada E3 de esta bitácora; `git diff --check` pasó. No se abrió un issue ni se atribuyeron hallazgos al docente.
+- **Decisión:** Registrar la instrucción del curso y no afirmar que E3 recibió revisión externa.
+
+### Interacción 4 · E4: disponibilidad y aislamiento
+
+- **Fecha:** 2026-10-31.
+- **Herramienta:** GPT.
+- **Prompt:** Refinar QA-02/QA-07 y QA-04/QA-05 con prototipos comparables, explicitar supuestos y no presentar SQLite como IndexedDB/PostgreSQL ni una guarda local como autenticación real.
+- **Propuesta:** Buffer persistente con clave idempotente y ámbito distrital confiable con rechazo por defecto.
+- **Verificación:** La simulación procesó 120 registros y 12 ACK perdidos: 120 efectos únicos, 0 pérdidas/duplicados y 13.2 s modelados a 100 ms; a 250 ms dio 33 s. La guarda rechazó 264 accesos cruzados y 72 operaciones sin ámbito.
+- **Decisión:** Mantener ambas propuestas con sus límites y el incumplimiento de sensibilidad documentados.
+
+### Interacción 5 · E5: fitness functions en CI
+
+- **Fecha:** 2026-10-31.
+- **Herramienta:** GPT; verificación local con Import Linter y pytest.
+- **Prompt:** Traducir las reglas de ADR-001/ADR-005 y escenarios de calidad de E1–E4 a contratos estructurales y pruebas automatizadas para cada Pull Request; comprobar una violación temporal y retirarla.
+- **Propuesta:** Dos contratos Import Linter, tres pruebas QA-02/QA-04/QA-05 y `.github/workflows/fitness.yml`.
+- **Verificación:** Los dos contratos quedaron `KEPT`; las tres pruebas aprobaron. Una importación inversa temporal hizo fallar FF-S1 con código 1 y se retiró antes del commit.
+- **Decisión:** Incorporar E5 localmente en `lab08-e5-fitness`; esperar la ejecución remota al publicar el PR.
+
+### Interacción 6 · E6: ADR y modelo C4
+
+- **Fecha:** 2026-10-31.
+- **Herramienta:** GPT; verificación con Structurizr CLI 2025.11.09.
+- **Prompt:** Elaborar ADR-006 a ADR-008 desde la evidencia de ADD y actualizar/exportar la vista de contenedores, preservando el monolito y distinguiendo propuestas de funciones implementadas.
+- **Propuesta:** Mantener PWA, API y PostgreSQL; modelar cola local, receptor idempotente, configuración distrital y ámbito de autorización como decisiones en los módulos existentes.
+- **Verificación:** `structurizr validate -workspace docs/architecture/c4/workspace.dsl` terminó con código 0. Se generaron las exportaciones de contenedores PlantUML y Mermaid; `git diff --check` pasó.
+- **Decisión:** Añadir los tres ADR y actualizar las exportaciones sin declarar IndexedDB, JWT o RLS como integrados.
+
+### Interacción 7 · E7: análisis ATAM-lite y falso positivo
+
+- **Fecha:** 2026-10-31.
+- **Herramienta:** GPT, usando el Prompt IA 3 adaptado como apoyo interno.
+- **Prompt:** Revisar los escenarios (H,*), prototipos, métricas y ADR; identificar sensibilidad, trade-off, riesgos, no-riesgo y evidencia faltante; respetar la instrucción del curso sobre revisión docente.
+- **Propuesta:** Señalar la falta de issue entre grupos como posible incumplimiento, además de riesgos de autorización aún no integrada, almacenamiento local real y sincronización lenta.
+- **Verificación:** La observación sobre la falta de issue se contrastó con la indicación del docente comunicada por el equipo y se refutó como falso positivo procedimental. Los riesgos técnicos se vincularon con ADR-006 a ADR-008 y los JSON; el punto de sensibilidad se recalculó como 30/132 ≈ 227 ms por llamada.
+- **Decisión:** Registrar el falso positivo, conservar los riesgos técnicos abiertos y dejar pendiente la respuesta externa del docente.
+
+### Interacción 8 · E8: README y estado de entrega
+
+- **Fecha:** 2026-10-31.
+- **Herramienta:** GPT.
+- **Prompt:** Preparar en el README la sección “Diseño de la arquitectura (Lab 08)” con el árbol de utilidad, la tabla de iteraciones basada en evidencia, enlaces a ADR, badge del workflow y estado real de PR, etiqueta y entrega.
+- **Propuesta:** Añadir una sección de Lab08 al final del README y dejar explícitos los pasos de cierre que todavía dependen de publicar, revisar e integrar las ramas.
+- **Verificación:** Se cotejaron medidas y límites con los JSON de las tres iteraciones, se comprobaron rutas de los enlaces del repositorio y `git diff --check` pasó. No se declaró una ejecución de GitHub Actions ni un merge que aún no ocurrió.
+- **Decisión:** Incorporar la sección con resultados parciales y pendientes visibles; no crear ahora la etiqueta porque corresponde a la versión final integrada.
+
+### Lab08 · E7 · Apoyo en actualización de hallazgos (2026-11-01)
+
+Se actualizó el análisis de QA-01 y R-04 con la estimación de E2, 1.60 días-persona centrales y 2.50 pesimistas, conservando alcance, supuestos y ausencia de horas medidas. R-04 permanece abierto. Se corrigió R-05 porque las ramas ya estaban publicadas y la captura de Actions compartida por la usuaria mostraba checks verdes de los PR #37 a #40. El pendiente original queda resuelto para esas ejecuciones, el riesgo residual exige comprobar el último commit después de cada corrección, no se atribuye a una captura previa la validación de cambios posteriores.
+
+Se comprobaron los enlaces locales y los seis cálculos de probabilidad por impacto. La corrección solo actualiza documentos, no cambia los prototipos ni registra una nueva revisión del docente.
+
+
+### Lab08 · E8 · Apoyo en cierre y coherencia de ramas (2026-11-01)
+
+Se incorporaron en la rama E8 las correcciones de E6 y E7 y se resolvió el conflicto de bitácora conservando los tres registros sin duplicarlos. Se actualizó el README con la estimación central de 1.60 días-persona y el caso pesimista de 2.50, los PR publicados y el alcance de los checks anteriores. Se diferencia el plazo original de entrega de una entrega todavía no confirmada.
+
+La consulta de los PR mostró que #38 se integró en la rama E5 y #39 en E6, por lo que no bastaba con verlos cerrados para afirmar que sus correcciones estaban en main. E8 ahora contiene esos commits y queda preparada para que #40 se dirija a main. El cambio de base del PR debe completarse en GitHub, este registro no afirma que ya se hizo. Se verificaron enlaces y ascendencia de los commits, sin crear etiqueta ni fusionar en main.
