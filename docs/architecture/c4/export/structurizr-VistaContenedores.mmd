@@ -18,20 +18,20 @@ graph LR
     subgraph 6 ["EcoRecicla AQP"]
       style 6 fill:#ffffff,stroke:#0b488e,color:#0b488e
 
-      15[("<div style='font-weight: bold'>Base de Datos Relacional</div><div style='font-size: 70%; margin-top: 0px'>[Container: PostgreSQL]</div><div style='font-size: 80%; margin-top:10px'>Almacena la informacion<br />persistente de usuarios,<br />solicitudes, rutas y puntos.</div>")]
-      style 15 fill:#438dd5,stroke:#2e6295,color:#ffffff
-      7["<div style='font-weight: bold'>Aplicacion Web Progresiva (PWA)</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript / Service Worker / IndexedDB]</div><div style='font-size: 80%; margin-top:10px'>Interfaz de usuario accesible<br />desde navegadores moviles y<br />de escritorio con soporte<br />offline parcial.</div>"]
+      18[("<div style='font-weight: bold'>Base de Datos Relacional</div><div style='font-size: 70%; margin-top: 0px'>[Container: PostgreSQL / esquemas por módulo / claves únicas / RLS propuesta]</div><div style='font-size: 80%; margin-top:10px'>PostgreSQL con esquemas por<br />módulo, configuraciones<br />versionadas, clave<br />idempotente y distrito_id<br />[QA-01, QA-02, QA-04, QA-05,<br />QA-06, QA-07]. RLS es<br />propuesta, no configurada ni<br />verificada.</div>")]
+      style 18 fill:#438dd5,stroke:#2e6295,color:#ffffff
+      7["<div style='font-weight: bold'>Aplicacion Web Progresiva (PWA)</div><div style='font-size: 70%; margin-top: 0px'>[Container: JavaScript / Service Worker / IndexedDB]</div><div style='font-size: 80%; margin-top:10px'>Propone conservar pendientes<br />con identificador estable en<br />IndexedDB hasta ACK y<br />reintentarlos al volver la<br />red [QA-02, QA-07]. Falta<br />integración real.</div>"]
       style 7 fill:#438dd5,stroke:#2e6295,color:#ffffff
-      8["<div style='font-weight: bold'>API REST Monolito Modular</div><div style='font-size: 70%; margin-top: 0px'>[Container: Python / API REST]</div><div style='font-size: 80%; margin-top:10px'>Ejecuta la logica de negocio,<br />validaciones de dominio y<br />orquestacion de modulos.</div>"]
-      style 8 fill:#85bbf0,stroke:#5d82a8,color:#000000
+      9["<div style='font-weight: bold'>API REST Monolito Modular</div><div style='font-size: 70%; margin-top: 0px'>[Container: Python / API REST]</div><div style='font-size: 80%; margin-top:10px'>Conserva los límites entre<br />módulos. Propone<br />configuración versionada<br />[QA-01, QA-06], recepción<br />idempotente [QA-02, QA-07] y<br />autorización distrital<br />[QA-04, QA-05]; la<br />integración real está<br />pendiente.</div>"]
+      style 9 fill:#85bbf0,stroke:#5d82a8,color:#000000
     end
 
     1-. "<div>Registra solicitudes y<br />consulta puntos</div><div style='font-size: 70%'>[HTTPS / TLS]</div>" .->7
     2-. "<div>Consulta rutas, registra<br />atenciones y pesajes</div><div style='font-size: 70%'>[HTTPS / TLS]</div>" .->7
     3-. "<div>Consulta reportes e<br />indicadores municipales</div><div style='font-size: 70%'>[HTTPS / TLS]</div>" .->7
-    7-. "<div>Consume endpoints REST para<br />solicitudes, rutas y<br />autenticacion</div><div style='font-size: 70%'>[HTTPS / JSON]</div>" .->8
-    8-. "<div>Lee y escribe datos del<br />dominio con integridad<br />transaccional</div><div style='font-size: 70%'>[SQL / TCP (port 5432)]</div>" .->15
-    8-. "<div>Valida coordenadas<br />geograficas de los puntos de<br />recojo</div><div style='font-size: 70%'>[HTTPS / REST JSON]</div>" .->4
-    8-. "<div>Despacha avisos de<br />confirmacion de recojo</div><div style='font-size: 70%'>[HTTPS / REST API]</div>" .->5
+    7-. "<div>Consume endpoints REST para<br />solicitudes, rutas y<br />autenticacion</div><div style='font-size: 70%'>[HTTPS / JSON]</div>" .->9
+    9-. "<div>Lee y escribe datos del<br />dominio con integridad<br />transaccional</div><div style='font-size: 70%'>[SQL / TCP (port 5432)]</div>" .->18
+    9-. "<div>Valida coordenadas<br />geograficas de los puntos de<br />recojo</div><div style='font-size: 70%'>[HTTPS / REST JSON]</div>" .->4
+    9-. "<div>Despacha avisos de<br />confirmacion de recojo</div><div style='font-size: 70%'>[HTTPS / REST API]</div>" .->5
 
   end

@@ -19,19 +19,23 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
         # ==========================================
         ecorecicla = softwareSystem "EcoRecicla AQP" "Plataforma municipal para la gestion integral de recojo, pesaje y acreditacion de reciclaje." {
 
-            pwa = container "Aplicacion Web Progresiva (PWA)" "Interfaz de usuario accesible desde navegadores moviles y de escritorio con soporte offline parcial." "JavaScript / Service Worker / IndexedDB" "Web Browser"
+            pwa = container "Aplicacion Web Progresiva (PWA)" "Propone conservar pendientes con identificador estable en IndexedDB hasta ACK y reintentarlos al volver la red [QA-02, QA-07]. Falta integración real." "JavaScript / Service Worker / IndexedDB" "Web Browser" {
+                bufferLocal = component "Cola local de sincronizacion" "Mantiene cada registro pendiente con un identificador estable y lo conserva hasta el ACK del servidor [QA-02, QA-07]. Diseño propuesto; pendiente de integración en la PWA." "IndexedDB / Service Worker" "Component"
+            }
 
-            api = container "API REST Monolito Modular" "Ejecuta la logica de negocio, validaciones de dominio y orquestacion de modulos." "Python / API REST" "Backend" {
-            solicitudesMod = component "Modulo Solicitudes" "Gestiona el registro, validacion y ciclo de vida de las solicitudes de recojo." "Python" "Component"
-            rutasMod = component "Modulo Rutas y Cobertura" "Gestiona las zonas de cobertura distrital y las rutas asignadas a recicladores." "Python" "Component"
-            puntosMod = component "Modulo Puntos y Beneficios" "Administra la acreditacion y canje de puntos de reciclaje para los vecinos." "Python" "Component"
-            reportesMod = component "Modulo Reportes" "Genera indicadores municipales sobre toneladas recicladas y cobertura." "Python" "Component"
+            api = container "API REST Monolito Modular" "Conserva los límites entre módulos. Propone configuración versionada [QA-01, QA-06], recepción idempotente [QA-02, QA-07] y autorización distrital [QA-04, QA-05]; la integración real está pendiente." "Python / API REST" "Backend" {
+            solicitudesMod = component "Modulo Solicitudes" "Gestiona el registro y ciclo de vida; el diseño propone deduplicar sincronizaciones y validar el ámbito distrital antes del acceso [QA-02, QA-04, QA-05, QA-07]." "Python" "Component"
+            syncReceiver = component "Receptor idempotente de sincronizacion" "Valida el ámbito autenticado, consulta la clave (distrito, identificador) y delega en Solicitudes las operaciones de dominio. Confirma tras persistir efecto y clave en una transacción, sin repetir efectos [QA-02, QA-04, QA-05, QA-07]. Diseño propuesto, no integrado." "Python / contrato de Solicitudes" "Component"
+            authScope = component "Autorizacion de ambito distrital" "Deriva el distrito desde el contexto autenticado y rechaza ámbito ausente o incompatible antes de leer o escribir [QA-04, QA-05]. JWT y middleware reales siguen pendientes." "Python / contexto autenticado propuesto" "Component"
+            rutasMod = component "Modulo Rutas y Cobertura" "Gestiona cobertura y horarios versionados por distrito mediante su contrato público, sin requerir cambios en los consumidores [QA-01, QA-06]." "Python" "Component"
+            puntosMod = component "Modulo Puntos y Beneficios" "Administra acreditación y canje; mantiene tarifas versionadas por distrito en su propio esquema y usa estrategias para fórmulas variables [QA-01, QA-06]." "Python" "Component"
+            reportesMod = component "Modulo Reportes" "Genera indicadores municipales y debe respetar el ámbito distrital autorizado en cada consulta [QA-04, QA-05]." "Python" "Component"
             notifMod = component "Notificaciones (auxiliar de Solicitudes)" "Servicio auxiliar para la composicion y despacho asincrono de avisos." "Python" "Component"
             compartidoMod = component "Compartido" "Define IdentificadorSolicitud como alias de UUID, sin entidades de dominio ni acceso a datos." "Python / UUID" "Component"
         }
 
 
-            bd = container "Base de Datos Relacional" "Almacena la informacion persistente de usuarios, solicitudes, rutas y puntos." "PostgreSQL" "Database"
+            bd = container "Base de Datos Relacional" "PostgreSQL con esquemas por módulo, configuraciones versionadas, clave idempotente y distrito_id [QA-01, QA-02, QA-04, QA-05, QA-06, QA-07]. RLS es propuesta, no configurada ni verificada." "PostgreSQL / esquemas por módulo / claves únicas / RLS propuesta" "Database"
 
         }
 
@@ -64,6 +68,11 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
         # Colaboraciones de los componentes, alineadas con paquetes.puml
         pwa -> solicitudesMod "Envia solicitudes de recojo y atenciones" "HTTPS / REST JSON"
         pwa -> reportesMod "Consulta indicadores y reportes" "HTTPS / REST JSON"
+        bufferLocal -> syncReceiver "Reintenta el mismo registro pendiente hasta recibir ACK" "HTTPS / JSON / identificador estable"
+        syncReceiver -> authScope "Exige ámbito autenticado compatible antes de consultar claves o aplicar registros" "Contrato interno"
+        syncReceiver -> solicitudesMod "Delega la deduplicacion y las operaciones de dominio con guardas State, confirma solo tras commit" "Contrato publico / transaccion"
+        solicitudesMod -> authScope "Valida el contexto distrital antes de acceder a datos" "Contrato interno"
+        reportesMod -> authScope "Valida el contexto distrital antes de consultar datos" "Contrato interno"
         solicitudesMod -> rutasMod "Consulta CoberturaRecojo para determinar cobertura distrital" "Contrato publico / llamada interna"
         solicitudesMod -> puntosMod "Solicita acreditacion mediante AcreditadorPuntos" "Contrato publico / llamada interna"
         solicitudesMod -> notifMod "Solicita aviso asincrono mediante NotificadorSolicitud" "Puerto interno / llamada interna"
@@ -73,7 +82,7 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
         puntosMod -> compartidoMod "Utiliza IdentificadorSolicitud" "Tipo compartido UUID"
         notifMod -> compartidoMod "Utiliza IdentificadorSolicitud" "Tipo compartido UUID"
         reportesMod -> compartidoMod "Utiliza IdentificadorSolicitud" "Tipo compartido UUID"
-        solicitudesMod -> bd "Persiste solicitudes en su esquema" "SQL / TCP (port 5432)"
+        solicitudesMod -> bd "Persiste en su esquema efecto y clave distrital de idempotencia en una transaccion antes del ACK" "SQL / TCP (port 5432)"
         rutasMod -> bd "Persiste rutas y zonas en su esquema" "SQL / TCP (port 5432)"
         puntosMod -> bd "Persiste puntos y canjes en su esquema" "SQL / TCP (port 5432)"
         solicitudesMod -> mapas "Valida opcionalmente coordenadas mediante ServicioMapas" "HTTPS / REST JSON"
@@ -125,7 +134,7 @@ workspace "EcoRecicla AQP - Arquitectura C4" "Modelo de arquitectura C4 para la 
         # VISTA NIVEL 3: Componentes (E3)
         component api "VistaComponentes" "Diagrama de Componentes del contenedor API REST Monolito Modular (Nivel 3 C4)." {
             title "Diagrama de Componentes - API REST Monolito Modular"
-            description "Muestra los cuatro modulos de dominio, Notificaciones como auxiliar de Solicitudes y los tipos compartidos, con dependencias sin ciclos."
+            description "Muestra cuatro modulos de dominio, auxiliares de notificaciones, sincronizacion y autorizacion propuestas, y tipos compartidos. Sincronizacion valida el ambito y delega en Solicitudes, sin acceso directo a la base de datos."
             include *
             autoLayout lr
         }

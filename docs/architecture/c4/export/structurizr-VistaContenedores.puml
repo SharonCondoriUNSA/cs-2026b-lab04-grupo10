@@ -34,9 +34,9 @@ System(ServiciodeMapasyGeolocalizacion, "Servicio de Mapas y Geolocalizacion", $
 System(APIdeNotificacionesWhatsApp, "API de Notificaciones WhatsApp", $descr="Servicio externo para el envio asincrono de mensajes y alertas de confirmacion.", $tags="Software System,Externo", $link="")
 
 System_Boundary("EcoReciclaAQP_boundary", "EcoRecicla AQP", $tags="Software System") {
-  ContainerDb(EcoReciclaAQP.BasedeDatosRelacional, "Base de Datos Relacional", $techn="PostgreSQL", $descr="Almacena la informacion persistente de usuarios, solicitudes, rutas y puntos.", $tags="Database", $link="")
-  Container(EcoReciclaAQP.AplicacionWebProgresivaPWA, "Aplicacion Web Progresiva (PWA)", $techn="JavaScript / Service Worker / IndexedDB", $descr="Interfaz de usuario accesible desde navegadores moviles y de escritorio con soporte offline parcial.", $tags="Web Browser", $link="")
-  Container(EcoReciclaAQP.APIRESTMonolitoModular, "API REST Monolito Modular", $techn="Python / API REST", $descr="Ejecuta la logica de negocio, validaciones de dominio y orquestacion de modulos.", $tags="Backend", $link="")
+  ContainerDb(EcoReciclaAQP.BasedeDatosRelacional, "Base de Datos Relacional", $techn="PostgreSQL / esquemas por módulo / claves únicas / RLS propuesta", $descr="PostgreSQL con esquemas por módulo, configuraciones versionadas, clave idempotente y distrito_id [QA-01, QA-02, QA-04, QA-05, QA-06, QA-07]. RLS es propuesta, no configurada ni verificada.", $tags="Database", $link="")
+  Container(EcoReciclaAQP.AplicacionWebProgresivaPWA, "Aplicacion Web Progresiva (PWA)", $techn="JavaScript / Service Worker / IndexedDB", $descr="Propone conservar pendientes con identificador estable en IndexedDB hasta ACK y reintentarlos al volver la red [QA-02, QA-07]. Falta integración real.", $tags="Web Browser", $link="")
+  Container(EcoReciclaAQP.APIRESTMonolitoModular, "API REST Monolito Modular", $techn="Python / API REST", $descr="Conserva los límites entre módulos. Propone configuración versionada [QA-01, QA-06], recepción idempotente [QA-02, QA-07] y autorización distrital [QA-04, QA-05]; la integración real está pendiente.", $tags="Backend", $link="")
 }
 
 Rel(VecinoCiudadano, EcoReciclaAQP.AplicacionWebProgresivaPWA, "Registra solicitudes y consulta puntos", $techn="HTTPS / TLS", $tags="Relationship", $link="")
