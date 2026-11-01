@@ -208,3 +208,10 @@ Los prompts siguientes son resúmenes fieles de las solicitudes adaptadas al cas
 - **Propuesta:** Señalar la falta de issue entre grupos como posible incumplimiento, además de riesgos de autorización aún no integrada, almacenamiento local real y sincronización lenta.
 - **Verificación:** La observación sobre la falta de issue se contrastó con la indicación del docente comunicada por el equipo y se refutó como falso positivo procedimental. Los riesgos técnicos se vincularon con ADR-006 a ADR-008 y los JSON; el punto de sensibilidad se recalculó como 30/132 ≈ 227 ms por llamada.
 - **Decisión:** Registrar el falso positivo, conservar los riesgos técnicos abiertos y dejar pendiente la respuesta externa del docente.
+
+
+### Lab08 · E7 · Apoyo en actualización de hallazgos (2026-11-01)
+
+Se actualizó el análisis de QA-01 y R-04 con la estimación de E2, 1.60 días-persona centrales y 2.50 pesimistas, conservando alcance, supuestos y ausencia de horas medidas. R-04 permanece abierto. Se corrigió R-05 porque las ramas ya estaban publicadas y la captura de Actions compartida por la usuaria mostraba checks verdes de los PR #37 a #40. El pendiente original queda resuelto para esas ejecuciones, el riesgo residual exige comprobar el último commit después de cada corrección, no se atribuye a una captura previa la validación de cambios posteriores.
+
+Se comprobaron los enlaces locales y los seis cálculos de probabilidad por impacto. La corrección solo actualiza documentos, no cambia los prototipos ni registra una nueva revisión del docente.
