@@ -245,11 +245,11 @@ Consulta también los [escenarios de calidad](docs/architecture/utilidad/escenar
 
 El workflow ejecuta los contratos estructurales y las pruebas de calidad en cada Pull Request y push. Las ramas E5–E8 ya se publicaron y tienen los PR [#37](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10/pull/37), [#38](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10/pull/38), [#39](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10/pull/39) y [#40](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10/pull/40). La captura de Actions compartida por el equipo mostró ejecuciones verdes. Cada corrección posterior necesita comprobar su propio check antes de integrar.
 
-Estado de integración al preparar esta corrección del 01/11/2026: E5 llegó a `main` mediante #37. Los PR #38 y #39 se cerraron al integrar E6 y E7 en ramas intermedias, lo que no llevó esas correcciones a `main`. La rama E8 reúne ahora las correcciones de ambos y prepara su integración conjunta mediante el PR #40 hacia `main`. No se declara completado ese merge ni publicada la etiqueta final.
+Estado de integración actualizado el 01/11/2026: E5 llegó a `main` mediante #37. E6 y E7 se revisaron mediante #38 y #39 sobre ramas intermedias y sus correcciones llegaron finalmente a `main` junto con E8 mediante #40, en el commit `c4bc607`. La revisión final aprobó 141 pruebas y los dos contratos estructurales. [GitHub Actions pasó sobre ese mismo commit](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10/actions/runs/41357223078). La etiqueta final aún no se ha publicado.
 
 | Actividad de cierre | Estado | Evidencia / siguiente paso |
 |---|---|---|
-| Pull Requests de los entregables y revisión | PR publicados, integración final pendiente | #37 integrado en main, #38 y #39 cerrados sobre ramas intermedias. #40 reúne E6–E8 para revisión e integración en main. |
-| Workflow verde antes de aprobar cada PR | Ejecuciones previas verdes, última corrección por comprobar | Revisar `fitness.yml` para el último commit de #40, una captura anterior no acredita cambios posteriores. |
+| Pull Requests de los entregables y revisión | Integrados en main | #37 integró E5 y #40 incorporó E6–E8 con sus correcciones. Las revisiones intermedias se conservan en #38 y #39. |
+| Workflow de la versión integrada | Verde | Ejecución 41357223078 aprobada sobre c4bc607. Cada cambio posterior debe comprobar su propia ejecución antes de etiquetar. |
 | Crear la etiqueta `v0.8-arquitectura` | Pendiente | Crear y publicar después de integrar y revisar los entregables en `main`. |
-| Entregar el enlace del repositorio en Aula Virtual | No confirmado | El plazo original de la guía fue el sábado 31/10/2026 a las 23:59. El equipo debe confirmar la entrega y cualquier indicación posterior del docente. |
+| Presentación del informe y entrega del enlace | Presentación prevista para el 01/11/2026, entrega no confirmada | El equipo indicó que presentará el informe en esta fecha. Confirmar el registro en Aula Virtual cuando se realice, sin darlo por entregado anticipadamente. |
