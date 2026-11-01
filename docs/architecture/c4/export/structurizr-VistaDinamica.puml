@@ -29,18 +29,18 @@ System(ServiciodeMapasyGeolocalizacion, "Servicio de Mapas y Geolocalizacion", $
 
 System_Boundary("EcoReciclaAQP_boundary", "EcoRecicla AQP", $tags="Software System") {
   Container_Boundary("EcoReciclaAQP.APIRESTMonolitoModular_boundary", "API REST Monolito Modular", $tags="Backend") {
-    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloRutasyCobertura, "Modulo Rutas y Cobertura", $techn="Python", $descr="Gestiona las zonas de cobertura distrital y las rutas asignadas a recicladores.", $tags="Component", $link="")
+    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, "Modulo Solicitudes", $techn="Python", $descr="Gestiona el registro y ciclo de vida; el diseño propone deduplicar sincronizaciones y validar el ámbito distrital antes del acceso [QA-02, QA-04, QA-05, QA-07].", $tags="Component", $link="")
+    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloRutasyCobertura, "Modulo Rutas y Cobertura", $techn="Python", $descr="Gestiona cobertura y horarios versionados por distrito mediante su contrato público, sin requerir cambios en los consumidores [QA-01, QA-06].", $tags="Component", $link="")
     Component(EcoReciclaAQP.APIRESTMonolitoModular.NotificacionesauxiliardeSolicitudes, "Notificaciones (auxiliar de Solicitudes)", $techn="Python", $descr="Servicio auxiliar para la composicion y despacho asincrono de avisos.", $tags="Component", $link="")
-    Component(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, "Modulo Solicitudes", $techn="Python", $descr="Gestiona el registro, validacion y ciclo de vida de las solicitudes de recojo.", $tags="Component", $link="")
   }
 
-  ContainerDb(EcoReciclaAQP.BasedeDatosRelacional, "Base de Datos Relacional", $techn="PostgreSQL", $descr="Almacena la informacion persistente de usuarios, solicitudes, rutas y puntos.", $tags="Database", $link="")
-  Container(EcoReciclaAQP.AplicacionWebProgresivaPWA, "Aplicacion Web Progresiva (PWA)", $techn="JavaScript / Service Worker / IndexedDB", $descr="Interfaz de usuario accesible desde navegadores moviles y de escritorio con soporte offline parcial.", $tags="Web Browser", $link="")
+  ContainerDb(EcoReciclaAQP.BasedeDatosRelacional, "Base de Datos Relacional", $techn="PostgreSQL / esquemas por módulo / claves únicas / RLS propuesta", $descr="PostgreSQL con esquemas por módulo, configuraciones versionadas, clave idempotente y distrito_id [QA-01, QA-02, QA-04, QA-05, QA-06, QA-07]. RLS es propuesta, no configurada ni verificada.", $tags="Database", $link="")
+  Container(EcoReciclaAQP.AplicacionWebProgresivaPWA, "Aplicacion Web Progresiva (PWA)", $techn="JavaScript / Service Worker / IndexedDB", $descr="Propone conservar pendientes con identificador estable en IndexedDB hasta ACK y reintentarlos al volver la red [QA-02, QA-07]. Falta integración real.", $tags="Web Browser", $link="")
 }
 
 System(ServiciodeMapasyGeolocalizacion, "Servicio de Mapas y Geolocalizacion", $descr="Servicio externo utilizado para validar coordenadas geograficas de los puntos de recojo.", $tags="Software System,Externo", $link="")
-Container(EcoReciclaAQP.AplicacionWebProgresivaPWA, "Aplicacion Web Progresiva (PWA)", $techn="JavaScript / Service Worker / IndexedDB", $descr="Interfaz de usuario accesible desde navegadores moviles y de escritorio con soporte offline parcial.", $tags="Web Browser", $link="")
-ContainerDb(EcoReciclaAQP.BasedeDatosRelacional, "Base de Datos Relacional", $techn="PostgreSQL", $descr="Almacena la informacion persistente de usuarios, solicitudes, rutas y puntos.", $tags="Database", $link="")
+Container(EcoReciclaAQP.AplicacionWebProgresivaPWA, "Aplicacion Web Progresiva (PWA)", $techn="JavaScript / Service Worker / IndexedDB", $descr="Propone conservar pendientes con identificador estable en IndexedDB hasta ACK y reintentarlos al volver la red [QA-02, QA-07]. Falta integración real.", $tags="Web Browser", $link="")
+ContainerDb(EcoReciclaAQP.BasedeDatosRelacional, "Base de Datos Relacional", $techn="PostgreSQL / esquemas por módulo / claves únicas / RLS propuesta", $descr="PostgreSQL con esquemas por módulo, configuraciones versionadas, clave idempotente y distrito_id [QA-01, QA-02, QA-04, QA-05, QA-06, QA-07]. RLS es propuesta, no configurada ni verificada.", $tags="Database", $link="")
 
 Rel(EcoReciclaAQP.AplicacionWebProgresivaPWA, EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, "1: Envia los datos de la solicitud, que Solicitudes valida", $techn="HTTPS / REST JSON", $tags="Relationship", $link="")
 Rel(EcoReciclaAQP.APIRESTMonolitoModular.ModuloSolicitudes, EcoReciclaAQP.APIRESTMonolitoModular.ModuloRutasyCobertura, "2: Consulta cobertura distrital mediante CoberturaRecojo", $techn="Contrato publico / llamada interna", $tags="Relationship", $link="")
