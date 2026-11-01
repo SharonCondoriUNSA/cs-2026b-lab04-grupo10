@@ -25,7 +25,9 @@ Se propone guardar tarifas versionadas en el esquema de Puntos/Beneficios y hora
 
 En [iteración 1](../add/iteracion-1.md) y [evidencia-1.json](../add/evidencia-1.json), el prototipo pasó de 3 a 12 distritos, incorporó 9 configuraciones, realizó 24 comprobaciones de regla y horario, registró 0 cambios en los tres archivos consumidores observados y 0 alteraciones a los otros 11 distritos al modificar D01.
 
-El experimento valida la estructura en memoria, no la persistencia ni los permisos en PostgreSQL. No se midió el esfuerzo humano de integración: QA-01 y QA-06 aún requieren comprobar sus límites de días-persona. Se acepta el costo de validar y versionar cambios para evitar modificar consumidores; el catálogo experimental no se declara ya integrado al producto.
+El experimento valida la estructura en memoria, no la persistencia ni los permisos en PostgreSQL. La [estimación de esfuerzo de E2](../add/estimacion-esfuerzo-1.md) desglosa siete actividades y aplica PERT más una reserva del 25 %. Con una convención de 8 horas-persona por día-persona, da 12.8125 horas-persona, aproximadamente **1.60 días-persona**, frente al límite de **2 días-persona** de QA-01. El caso pesimista con reserva llega a **2.50 días-persona**, por lo que el límite no está garantizado.
+
+La estimación corresponde al alta sobre mecanismos reutilizables de API, persistencia y autorización, cuya construcción inicial no está incluida. Son valores de planificación propuestos para revisión, no horas medidas ni prueba de cumplimiento desde el estado actual del prototipo. QA-06 requiere su propia comprobación de esfuerzo. Se acepta el costo de validar y versionar cambios para evitar modificar consumidores, el catálogo experimental no se declara ya integrado al producto.
 
 ## Consecuencias
 
