@@ -1,0 +1,12 @@
+{
+  "distritos": 12,
+  "pares_cruzados": 132,
+  "antes_control_inseguro_lecturas": 132,
+  "antes_control_inseguro_escrituras": 132,
+  "despues_lecturas_cruzadas": 0,
+  "despues_escrituras_cruzadas": 0,
+  "operaciones_cruzadas_rechazadas": 264,
+  "operaciones_sin_ambito_rechazadas": 72,
+  "operaciones_propias_permitidas": 24,
+  "datos_originales_conservados": true
+}
