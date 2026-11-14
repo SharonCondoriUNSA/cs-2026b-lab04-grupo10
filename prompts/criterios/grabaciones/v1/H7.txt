@@ -1,0 +1,5 @@
+Criterios de aceptación:
+1. El sistema responde rápidamente a las solicitudes del usuario.
+2. La interfaz debe ser fácil de entender para cualquier persona.
+3. El usuario puede completar sus actividades sin inconvenientes.
+4. El sistema debe estar disponible y funcionar correctamente en todo momento.
