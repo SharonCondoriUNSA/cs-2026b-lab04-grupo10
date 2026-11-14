@@ -1,0 +1,158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Criterios de aceptación generados para EcoRecicla AQP",
+  "description": "Contrato de salida del prompt de la Tarea A del Lab09.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "historia_id",
+    "invest_ok",
+    "preguntas",
+    "escenarios"
+  ],
+  "properties": {
+    "historia_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40
+    },
+    "invest_ok": {
+      "type": "boolean"
+    },
+    "preguntas": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 5,
+        "maxLength": 300
+      }
+    },
+    "escenarios": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "titulo",
+          "tipo",
+          "dado",
+          "cuando",
+          "entonces"
+        ],
+        "properties": {
+          "titulo": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 120
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "exito",
+              "error",
+              "borde"
+            ]
+          },
+          "dado": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 300
+            }
+          },
+          "cuando": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 300
+          },
+          "entonces": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 3,
+              "maxLength": 300
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "invest_ok": {
+            "const": true
+          }
+        },
+        "required": [
+          "invest_ok"
+        ]
+      },
+      "then": {
+        "properties": {
+          "preguntas": {
+            "maxItems": 0
+          },
+          "escenarios": {
+            "minItems": 2,
+            "contains": {
+              "properties": {
+                "tipo": {
+                  "const": "exito"
+                }
+              },
+              "required": [
+                "tipo"
+              ]
+            },
+            "allOf": [
+              {
+                "anyOf": [
+                  {
+                    "contains": {
+                      "properties": {
+                        "tipo": {
+                          "const": "error"
+                        }
+                      },
+                      "required": [
+                        "tipo"
+                      ]
+                    }
+                  },
+                  {
+                    "contains": {
+                      "properties": {
+                        "tipo": {
+                          "const": "borde"
+                        }
+                      },
+                      "required": [
+                        "tipo"
+                      ]
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "preguntas": {
+            "minItems": 1,
+            "maxItems": 3
+          },
+          "escenarios": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ]
+}
