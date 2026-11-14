@@ -3,7 +3,7 @@
 from pathlib import Path
 
 
-BASE = Path(__file__).parent / "grabaciones" / "v1"
+ROOT = Path(__file__).parent
 
 
 def call_api(prompt, options, context):
@@ -12,7 +12,11 @@ def call_api(prompt, options, context):
     if not case_id:
         return {"error": "El caso de prueba debe proporcionar vars.id"}
 
-    recording = BASE / f"{case_id}.txt"
+    version = options.get("config", {}).get("version", "v1")
+    if version not in {"v1", "v2", "v3"}:
+        return {"error": f"Versión de grabación no válida: {version}"}
+
+    recording = ROOT / "grabaciones" / version / f"{case_id}.txt"
     if not recording.is_file():
         return {"error": f"No existe una grabación para {case_id}"}
 
