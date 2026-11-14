@@ -1,0 +1,15 @@
+{
+  "nombre": "calcular",
+  "resumen": "Calcula los puntos a partir del peso real y la tarifa.",
+  "docstring": "Calcula los puntos a partir del peso real y la tarifa.\n\nArgs:\n    peso_real_kg: Peso real en kilogramos, como Decimal finito mayor que cero.\n\nReturns:\n    Devuelve la cantidad de puntos como entero, redondeada hacia abajo.\n\nRaises:\n    ValueError: Si las validaciones del método no se cumplen.",
+  "parametros": [
+    {
+      "nombre": "peso_real_kg",
+      "descripcion": "Peso real en kilogramos, como Decimal finito mayor que cero."
+    }
+  ],
+  "retorno": "Devuelve la cantidad de puntos como entero, redondeada hacia abajo.",
+  "excepciones": [
+    "ValueError"
+  ]
+}

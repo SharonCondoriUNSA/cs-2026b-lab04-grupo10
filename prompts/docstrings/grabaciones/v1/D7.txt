@@ -1,0 +1,1 @@
+"""Calcula los puntos de una solicitud y crea su identificador de acreditación."""

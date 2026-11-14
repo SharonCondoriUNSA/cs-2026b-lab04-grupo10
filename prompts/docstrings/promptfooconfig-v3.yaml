@@ -1,0 +1,42 @@
+description: "Lab09 E4: evaluación de la iteración final v3 de docstrings"
+prompts:
+  - file://v3.txt
+providers:
+  - id: file://proveedor_grabado.py
+    label: grabaciones-v3
+    config:
+      version: v3
+tests: file://casos.yaml
+defaultTest:
+  assert:
+    - type: is-json
+      value: file://contrato.json
+      metric: A1_contrato_json
+    - type: javascript
+      metric: A2_parametros_exactos_sin_self
+      value: |
+        let r; try { r = JSON.parse(output); } catch { return false; }
+        const expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);
+        const actual = (r.parametros || []).map(p => p.nombre);
+        return actual.length === expected.length && expected.every((n, i) => actual[i] === n);
+    - type: javascript
+      metric: A3_descripciones_de_parametros
+      value: |
+        let r; try { r = JSON.parse(output); } catch { return false; }
+        return (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);
+    - type: javascript
+      metric: A4_docstring_sin_fences_y_con_resumen
+      value: |
+        let r; try { r = JSON.parse(output); } catch { return false; }
+        return typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);
+    - type: javascript
+      metric: A5_nombre_de_funcion_exact
+      value: |
+        let r; try { r = JSON.parse(output); } catch { return false; }
+        return r.nombre === context.vars.nombre_esperado;
+    - type: javascript
+      metric: A6_consistencia_none
+      value: |
+        let r; try { r = JSON.parse(output); } catch { return false; }
+        if (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);
+        return typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);

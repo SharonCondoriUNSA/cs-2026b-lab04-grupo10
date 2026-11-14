@@ -1,0 +1,1508 @@
+{
+  "evalId": "eval-5G6-2026-11-14T03:58:08",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-11-14T03:58:08.819Z",
+    "prompts": [
+      {
+        "raw": "Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\n{{funcion}}",
+        "label": "v3.txt: Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\n{{funcion}}",
+        "id": "67e4708d639c1372511a0783037ffbcfc966193de89f555def6fbc2a2ce5c0c8",
+        "provider": "grabaciones-v3",
+        "metrics": {
+          "score": 8,
+          "testPassCount": 8,
+          "testFailCount": 0,
+          "testErrorCount": 0,
+          "assertPassCount": 48,
+          "assertFailCount": 0,
+          "totalLatencyMs": 5812,
+          "tokenUsage": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 8,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0
+            }
+          },
+          "namedScores": {
+            "A1_contrato_json": 8,
+            "A2_parametros_exactos_sin_self": 8,
+            "A3_descripciones_de_parametros": 8,
+            "A4_docstring_sin_fences_y_con_resumen": 8,
+            "A5_nombre_de_funcion_exact": 8,
+            "A6_consistencia_none": 8
+          },
+          "namedScoresCount": {
+            "A1_contrato_json": 8,
+            "A2_parametros_exactos_sin_self": 8,
+            "A3_descripciones_de_parametros": 8,
+            "A4_docstring_sin_fences_y_con_resumen": 8,
+            "A5_nombre_de_funcion_exact": 8,
+            "A6_consistencia_none": 8
+          },
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "A1_contrato_json": 1,
+            "A2_parametros_exactos_sin_self": 1,
+            "A3_descripciones_de_parametros": 1,
+            "A4_docstring_sin_fences_y_con_resumen": 1,
+            "A5_nombre_de_funcion_exact": 1,
+            "A6_consistencia_none": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "ab40d805-50d2-4b13-89ad-0fb57985d5c3",
+        "latencyMs": 710,
+        "namedScores": {
+          "A1_contrato_json": 1,
+          "A2_parametros_exactos_sin_self": 1,
+          "A3_descripciones_de_parametros": 1,
+          "A4_docstring_sin_fences_y_con_resumen": 1,
+          "A5_nombre_de_funcion_exact": 1,
+          "A6_consistencia_none": 1
+        },
+        "prompt": {
+          "raw": "Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\ndef registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE",
+          "label": "v3.txt: Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\n{{funcion}}"
+        },
+        "promptId": "67e4708d639c1372511a0783037ffbcfc966193de89f555def6fbc2a2ce5c0c8",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v3"
+        },
+        "response": {
+          "output": "{\n  \"nombre\": \"registrar_pendiente\",\n  \"resumen\": \"Valida los datos y registra la solicitud en estado pendiente.\",\n  \"docstring\": \"Valida los datos y registra la solicitud en estado pendiente.\\n\\nRaises:\\n    ValueError: Si las validaciones del método no se cumplen.\",\n  \"parametros\": [],\n  \"retorno\": null,\n  \"excepciones\": [\n    \"ValueError\"\n  ]\n}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "id": "D3",
+            "nombre_esperado": "registrar_pendiente",
+            "parametros_esperados": "",
+            "funcion": "def registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "vars": {
+          "id": "D3",
+          "nombre_esperado": "registrar_pendiente",
+          "parametros_esperados": "",
+          "funcion": "def registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE"
+        },
+        "metadata": {},
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "A1_contrato_json": 1,
+            "A2_parametros_exactos_sin_self": 1,
+            "A3_descripciones_de_parametros": 1,
+            "A4_docstring_sin_fences_y_con_resumen": 1,
+            "A5_nombre_de_funcion_exact": 1,
+            "A6_consistencia_none": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "df0e5ae6-50db-4b35-8832-823b869693de",
+        "latencyMs": 878,
+        "namedScores": {
+          "A1_contrato_json": 1,
+          "A2_parametros_exactos_sin_self": 1,
+          "A3_descripciones_de_parametros": 1,
+          "A4_docstring_sin_fences_y_con_resumen": 1,
+          "A5_nombre_de_funcion_exact": 1,
+          "A6_consistencia_none": 1
+        },
+        "prompt": {
+          "raw": "Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\ndef calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))",
+          "label": "v3.txt: Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\n{{funcion}}"
+        },
+        "promptId": "67e4708d639c1372511a0783037ffbcfc966193de89f555def6fbc2a2ce5c0c8",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v3"
+        },
+        "response": {
+          "output": "{\n  \"nombre\": \"calcular_peso_estimado_kg\",\n  \"resumen\": \"Suma los pesos estimados de los detalles de la solicitud.\",\n  \"docstring\": \"Suma los pesos estimados de los detalles de la solicitud.\\n\\nReturns:\\n    Devuelve la suma de los pesos como Decimal. Si no hay detalles, devuelve Decimal('0').\",\n  \"parametros\": [],\n  \"retorno\": \"Devuelve la suma de los pesos como Decimal. Si no hay detalles, devuelve Decimal('0').\",\n  \"excepciones\": []\n}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "id": "D2",
+            "nombre_esperado": "calcular_peso_estimado_kg",
+            "parametros_esperados": "",
+            "funcion": "def calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "id": "D2",
+          "nombre_esperado": "calcular_peso_estimado_kg",
+          "parametros_esperados": "",
+          "funcion": "def calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))"
+        },
+        "metadata": {},
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "A1_contrato_json": 1,
+            "A2_parametros_exactos_sin_self": 1,
+            "A3_descripciones_de_parametros": 1,
+            "A4_docstring_sin_fences_y_con_resumen": 1,
+            "A5_nombre_de_funcion_exact": 1,
+            "A6_consistencia_none": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "651bec88-4f4a-4b26-849a-eba24a7f9c64",
+        "latencyMs": 998,
+        "namedScores": {
+          "A1_contrato_json": 1,
+          "A2_parametros_exactos_sin_self": 1,
+          "A3_descripciones_de_parametros": 1,
+          "A4_docstring_sin_fences_y_con_resumen": 1,
+          "A5_nombre_de_funcion_exact": 1,
+          "A6_consistencia_none": 1
+        },
+        "prompt": {
+          "raw": "Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\ndef coordenadas_validas(self) -> bool:\n    return (\n        isinstance(self.latitud, Decimal) and self.latitud.is_finite()\n        and isinstance(self.longitud, Decimal) and self.longitud.is_finite()\n        and -90 <= self.latitud <= 90 and -180 <= self.longitud <= 180\n    )",
+          "label": "v3.txt: Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\n{{funcion}}"
+        },
+        "promptId": "67e4708d639c1372511a0783037ffbcfc966193de89f555def6fbc2a2ce5c0c8",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v3"
+        },
+        "response": {
+          "output": "{\n  \"nombre\": \"coordenadas_validas\",\n  \"resumen\": \"Comprueba si las coordenadas geográficas son válidas.\",\n  \"docstring\": \"Comprueba si las coordenadas geográficas son válidas.\\n\\nReturns:\\n    Devuelve True si latitud y longitud son valores Decimal finitos dentro de sus rangos geográficos; de lo contrario devuelve False.\",\n  \"parametros\": [],\n  \"retorno\": \"Devuelve True si latitud y longitud son valores Decimal finitos dentro de sus rangos geográficos; de lo contrario devuelve False.\",\n  \"excepciones\": []\n}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "id": "D1",
+            "nombre_esperado": "coordenadas_validas",
+            "parametros_esperados": "",
+            "funcion": "def coordenadas_validas(self) -> bool:\n    return (\n        isinstance(self.latitud, Decimal) and self.latitud.is_finite()\n        and isinstance(self.longitud, Decimal) and self.longitud.is_finite()\n        and -90 <= self.latitud <= 90 and -180 <= self.longitud <= 180\n    )"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "id": "D1",
+          "nombre_esperado": "coordenadas_validas",
+          "parametros_esperados": "",
+          "funcion": "def coordenadas_validas(self) -> bool:\n    return (\n        isinstance(self.latitud, Decimal) and self.latitud.is_finite()\n        and isinstance(self.longitud, Decimal) and self.longitud.is_finite()\n        and -90 <= self.latitud <= 90 and -180 <= self.longitud <= 180\n    )"
+        },
+        "metadata": {},
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "A1_contrato_json": 1,
+            "A2_parametros_exactos_sin_self": 1,
+            "A3_descripciones_de_parametros": 1,
+            "A4_docstring_sin_fences_y_con_resumen": 1,
+            "A5_nombre_de_funcion_exact": 1,
+            "A6_consistencia_none": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "c15c8cfc-9017-4f33-aa2d-fc6814622caf",
+        "latencyMs": 1123,
+        "namedScores": {
+          "A1_contrato_json": 1,
+          "A2_parametros_exactos_sin_self": 1,
+          "A3_descripciones_de_parametros": 1,
+          "A4_docstring_sin_fences_y_con_resumen": 1,
+          "A5_nombre_de_funcion_exact": 1,
+          "A6_consistencia_none": 1
+        },
+        "prompt": {
+          "raw": "Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\ndef asignar_reciclador(self, reciclador_id: UUID) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not isinstance(reciclador_id, UUID) or not reciclador_id.int:\n        raise ValueError(\"Asignación inválida\")\n    self.reciclador_id = reciclador_id\n    self.estado = EstadoSolicitud.ASIGNADA",
+          "label": "v3.txt: Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\n{{funcion}}"
+        },
+        "promptId": "67e4708d639c1372511a0783037ffbcfc966193de89f555def6fbc2a2ce5c0c8",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v3"
+        },
+        "response": {
+          "output": "{\n  \"nombre\": \"asignar_reciclador\",\n  \"resumen\": \"Asigna un reciclador a una solicitud pendiente.\",\n  \"docstring\": \"Asigna un reciclador a una solicitud pendiente.\\n\\nArgs:\\n    reciclador_id: Identificador UUID no nulo del reciclador que se asignará.\\n\\nRaises:\\n    ValueError: Si las validaciones del método no se cumplen.\",\n  \"parametros\": [\n    {\n      \"nombre\": \"reciclador_id\",\n      \"descripcion\": \"Identificador UUID no nulo del reciclador que se asignará.\"\n    }\n  ],\n  \"retorno\": null,\n  \"excepciones\": [\n    \"ValueError\"\n  ]\n}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "id": "D4",
+            "nombre_esperado": "asignar_reciclador",
+            "parametros_esperados": "reciclador_id",
+            "funcion": "def asignar_reciclador(self, reciclador_id: UUID) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not isinstance(reciclador_id, UUID) or not reciclador_id.int:\n        raise ValueError(\"Asignación inválida\")\n    self.reciclador_id = reciclador_id\n    self.estado = EstadoSolicitud.ASIGNADA"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 3,
+        "vars": {
+          "id": "D4",
+          "nombre_esperado": "asignar_reciclador",
+          "parametros_esperados": "reciclador_id",
+          "funcion": "def asignar_reciclador(self, reciclador_id: UUID) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not isinstance(reciclador_id, UUID) or not reciclador_id.int:\n        raise ValueError(\"Asignación inválida\")\n    self.reciclador_id = reciclador_id\n    self.estado = EstadoSolicitud.ASIGNADA"
+        },
+        "metadata": {},
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "A1_contrato_json": 1,
+            "A2_parametros_exactos_sin_self": 1,
+            "A3_descripciones_de_parametros": 1,
+            "A4_docstring_sin_fences_y_con_resumen": 1,
+            "A5_nombre_de_funcion_exact": 1,
+            "A6_consistencia_none": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "eb779ab2-2736-4ac5-bcba-e263af3a129a",
+        "latencyMs": 538,
+        "namedScores": {
+          "A1_contrato_json": 1,
+          "A2_parametros_exactos_sin_self": 1,
+          "A3_descripciones_de_parametros": 1,
+          "A4_docstring_sin_fences_y_con_resumen": 1,
+          "A5_nombre_de_funcion_exact": 1,
+          "A6_consistencia_none": 1
+        },
+        "prompt": {
+          "raw": "Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\ndef registrar_recojo(self, fecha_recojo: datetime) -> None:\n    if self.estado != EstadoSolicitud.ASIGNADA or not isinstance(fecha_recojo, datetime):\n        raise ValueError(\"Recojo inválido\")\n    self.fecha_recojo = fecha_recojo\n    self.estado = EstadoSolicitud.RECOGIDA",
+          "label": "v3.txt: Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\n{{funcion}}"
+        },
+        "promptId": "67e4708d639c1372511a0783037ffbcfc966193de89f555def6fbc2a2ce5c0c8",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v3"
+        },
+        "response": {
+          "output": "{\n  \"nombre\": \"registrar_recojo\",\n  \"resumen\": \"Registra la fecha de recojo de una solicitud asignada.\",\n  \"docstring\": \"Registra la fecha de recojo de una solicitud asignada.\\n\\nArgs:\\n    fecha_recojo: Fecha y hora del recojo, representada por un objeto datetime.\\n\\nRaises:\\n    ValueError: Si las validaciones del método no se cumplen.\",\n  \"parametros\": [\n    {\n      \"nombre\": \"fecha_recojo\",\n      \"descripcion\": \"Fecha y hora del recojo, representada por un objeto datetime.\"\n    }\n  ],\n  \"retorno\": null,\n  \"excepciones\": [\n    \"ValueError\"\n  ]\n}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "id": "D5",
+            "nombre_esperado": "registrar_recojo",
+            "parametros_esperados": "fecha_recojo",
+            "funcion": "def registrar_recojo(self, fecha_recojo: datetime) -> None:\n    if self.estado != EstadoSolicitud.ASIGNADA or not isinstance(fecha_recojo, datetime):\n        raise ValueError(\"Recojo inválido\")\n    self.fecha_recojo = fecha_recojo\n    self.estado = EstadoSolicitud.RECOGIDA"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 4,
+        "vars": {
+          "id": "D5",
+          "nombre_esperado": "registrar_recojo",
+          "parametros_esperados": "fecha_recojo",
+          "funcion": "def registrar_recojo(self, fecha_recojo: datetime) -> None:\n    if self.estado != EstadoSolicitud.ASIGNADA or not isinstance(fecha_recojo, datetime):\n        raise ValueError(\"Recojo inválido\")\n    self.fecha_recojo = fecha_recojo\n    self.estado = EstadoSolicitud.RECOGIDA"
+        },
+        "metadata": {},
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "A1_contrato_json": 1,
+            "A2_parametros_exactos_sin_self": 1,
+            "A3_descripciones_de_parametros": 1,
+            "A4_docstring_sin_fences_y_con_resumen": 1,
+            "A5_nombre_de_funcion_exact": 1,
+            "A6_consistencia_none": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "6aacf2ef-d6d2-4268-896c-2e67fc4050ec",
+        "latencyMs": 528,
+        "namedScores": {
+          "A1_contrato_json": 1,
+          "A2_parametros_exactos_sin_self": 1,
+          "A3_descripciones_de_parametros": 1,
+          "A4_docstring_sin_fences_y_con_resumen": 1,
+          "A5_nombre_de_funcion_exact": 1,
+          "A6_consistencia_none": 1
+        },
+        "prompt": {
+          "raw": "Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\ndef registrar_pesaje(self, peso_real_kg: Decimal) -> None:\n    if (self.estado != EstadoSolicitud.RECOGIDA\n            or not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Pesaje inválido\")\n    self.peso_real_kg = peso_real_kg\n    self.estado = EstadoSolicitud.PESADA",
+          "label": "v3.txt: Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\n{{funcion}}"
+        },
+        "promptId": "67e4708d639c1372511a0783037ffbcfc966193de89f555def6fbc2a2ce5c0c8",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v3"
+        },
+        "response": {
+          "output": "{\n  \"nombre\": \"registrar_pesaje\",\n  \"resumen\": \"Registra el peso real de una solicitud recogida.\",\n  \"docstring\": \"Registra el peso real de una solicitud recogida.\\n\\nArgs:\\n    peso_real_kg: Peso real en kilogramos, como Decimal finito mayor que cero.\\n\\nRaises:\\n    ValueError: Si las validaciones del método no se cumplen.\",\n  \"parametros\": [\n    {\n      \"nombre\": \"peso_real_kg\",\n      \"descripcion\": \"Peso real en kilogramos, como Decimal finito mayor que cero.\"\n    }\n  ],\n  \"retorno\": null,\n  \"excepciones\": [\n    \"ValueError\"\n  ]\n}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "id": "D6",
+            "nombre_esperado": "registrar_pesaje",
+            "parametros_esperados": "peso_real_kg",
+            "funcion": "def registrar_pesaje(self, peso_real_kg: Decimal) -> None:\n    if (self.estado != EstadoSolicitud.RECOGIDA\n            or not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Pesaje inválido\")\n    self.peso_real_kg = peso_real_kg\n    self.estado = EstadoSolicitud.PESADA"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 5,
+        "vars": {
+          "id": "D6",
+          "nombre_esperado": "registrar_pesaje",
+          "parametros_esperados": "peso_real_kg",
+          "funcion": "def registrar_pesaje(self, peso_real_kg: Decimal) -> None:\n    if (self.estado != EstadoSolicitud.RECOGIDA\n            or not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Pesaje inválido\")\n    self.peso_real_kg = peso_real_kg\n    self.estado = EstadoSolicitud.PESADA"
+        },
+        "metadata": {},
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "A1_contrato_json": 1,
+            "A2_parametros_exactos_sin_self": 1,
+            "A3_descripciones_de_parametros": 1,
+            "A4_docstring_sin_fences_y_con_resumen": 1,
+            "A5_nombre_de_funcion_exact": 1,
+            "A6_consistencia_none": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "b4ec1bfe-7fd5-46b3-99d7-195b07d91775",
+        "latencyMs": 525,
+        "namedScores": {
+          "A1_contrato_json": 1,
+          "A2_parametros_exactos_sin_self": 1,
+          "A3_descripciones_de_parametros": 1,
+          "A4_docstring_sin_fences_y_con_resumen": 1,
+          "A5_nombre_de_funcion_exact": 1,
+          "A6_consistencia_none": 1
+        },
+        "prompt": {
+          "raw": "Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\ndef acreditar(self, solicitud_id, material, peso_real_kg):\n    regla = self.fabrica.crear(material, self.tarifas.get(material))\n    puntos = regla.calcular(peso_real_kg)\n    return {\"acreditacion_id\": f\"acreditacion:{solicitud_id}\", \"puntos\": puntos}",
+          "label": "v3.txt: Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\n{{funcion}}"
+        },
+        "promptId": "67e4708d639c1372511a0783037ffbcfc966193de89f555def6fbc2a2ce5c0c8",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v3"
+        },
+        "response": {
+          "output": "{\n  \"nombre\": \"acreditar\",\n  \"resumen\": \"Calcula los puntos y devuelve los datos de acreditación de una solicitud.\",\n  \"docstring\": \"Calcula los puntos y devuelve los datos de acreditación de una solicitud.\\n\\nArgs:\\n    solicitud_id: Identificador de la solicitud a la que corresponde la acreditación.\\n    material: Material usado para seleccionar la regla y la tarifa de puntos.\\n    peso_real_kg: Peso real que se entrega a la regla de cálculo.\\n\\nReturns:\\n    Devuelve un diccionario con las claves acreditacion_id y puntos.\",\n  \"parametros\": [\n    {\n      \"nombre\": \"solicitud_id\",\n      \"descripcion\": \"Identificador de la solicitud a la que corresponde la acreditación.\"\n    },\n    {\n      \"nombre\": \"material\",\n      \"descripcion\": \"Material usado para seleccionar la regla y la tarifa de puntos.\"\n    },\n    {\n      \"nombre\": \"peso_real_kg\",\n      \"descripcion\": \"Peso real que se entrega a la regla de cálculo.\"\n    }\n  ],\n  \"retorno\": \"Devuelve un diccionario con las claves acreditacion_id y puntos.\",\n  \"excepciones\": []\n}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "id": "D7",
+            "nombre_esperado": "acreditar",
+            "parametros_esperados": "solicitud_id,material,peso_real_kg",
+            "funcion": "def acreditar(self, solicitud_id, material, peso_real_kg):\n    regla = self.fabrica.crear(material, self.tarifas.get(material))\n    puntos = regla.calcular(peso_real_kg)\n    return {\"acreditacion_id\": f\"acreditacion:{solicitud_id}\", \"puntos\": puntos}"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 6,
+        "vars": {
+          "id": "D7",
+          "nombre_esperado": "acreditar",
+          "parametros_esperados": "solicitud_id,material,peso_real_kg",
+          "funcion": "def acreditar(self, solicitud_id, material, peso_real_kg):\n    regla = self.fabrica.crear(material, self.tarifas.get(material))\n    puntos = regla.calcular(peso_real_kg)\n    return {\"acreditacion_id\": f\"acreditacion:{solicitud_id}\", \"puntos\": puntos}"
+        },
+        "metadata": {},
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "A1_contrato_json": 1,
+            "A2_parametros_exactos_sin_self": 1,
+            "A3_descripciones_de_parametros": 1,
+            "A4_docstring_sin_fences_y_con_resumen": 1,
+            "A5_nombre_de_funcion_exact": 1,
+            "A6_consistencia_none": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "d978230d-50e9-4a93-a2ca-bfcfd7332e4a",
+        "latencyMs": 512,
+        "namedScores": {
+          "A1_contrato_json": 1,
+          "A2_parametros_exactos_sin_self": 1,
+          "A3_descripciones_de_parametros": 1,
+          "A4_docstring_sin_fences_y_con_resumen": 1,
+          "A5_nombre_de_funcion_exact": 1,
+          "A6_consistencia_none": 1
+        },
+        "prompt": {
+          "raw": "Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\ndef calcular(self, peso_real_kg):\n    if (not isinstance(self.tarifa, Decimal) or not self.tarifa.is_finite()\n            or self.tarifa < 0):\n        raise ValueError(\"Tarifa de puntos invalida\")\n    if (not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Peso real invalido\")\n    return int((peso_real_kg * self.tarifa).to_integral_value(rounding=ROUND_DOWN))",
+          "label": "v3.txt: Actúa como revisora de documentación Python para EcoRecicla AQP. Documenta solamente lo que puede deducirse del código fuente; no agregues reglas, efectos ni excepciones supuestas. La firma y el cuerpo son la fuente de verdad.\n\nDevuelve exactamente un JSON válido, sin bloque Markdown ni texto adicional, con esta forma:\n{\"nombre\":\"nombre exacto de la función\",\"resumen\":\"una oración en español\",\"docstring\":\"docstring completo en español con resumen, Args (si hay parámetros de entrada), Returns (si retorna un valor) y Raises (si el cuerpo lanza excepciones)\",\"parametros\":[{\"nombre\":\"nombre exacto\",\"descripcion\":\"descripción verificable por el cuerpo\"}],\"retorno\":\"descripción verificable\" o null,\"excepciones\":[\"nombre de excepción realmente lanzada\"]}\n\nReglas obligatorias:\n- Lista cada parámetro explícito de la firma exactamente una vez, excepto self o cls; no omitas ninguno ni inventes parámetros.\n- No conviertas atributos de self en parámetros. Los parámetros posicionales y opcionales conservan el nombre de la firma.\n- Si el tipo de retorno es None o la función solo modifica el estado, retorno debe ser null y no agregues Returns al docstring.\n- Nombra únicamente excepciones que el cuerpo lanza explícitamente. No inventes errores posibles de llamadas delegadas.\n- Describe validaciones, efectos y valores de retorno solo cuando aparecen en el código. Mantén los nombres técnicos exactos.\n- El docstring debe reflejar el mismo resumen, parámetros, retorno y excepciones que los campos JSON; usa secciones Args y Raises solo cuando corresponda.\n\nFirma y cuerpo de la función:\n{{funcion}}"
+        },
+        "promptId": "67e4708d639c1372511a0783037ffbcfc966193de89f555def6fbc2a2ce5c0c8",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v3"
+        },
+        "response": {
+          "output": "{\n  \"nombre\": \"calcular\",\n  \"resumen\": \"Calcula los puntos a partir del peso real y la tarifa.\",\n  \"docstring\": \"Calcula los puntos a partir del peso real y la tarifa.\\n\\nArgs:\\n    peso_real_kg: Peso real en kilogramos, como Decimal finito mayor que cero.\\n\\nReturns:\\n    Devuelve la cantidad de puntos como entero, redondeada hacia abajo.\\n\\nRaises:\\n    ValueError: Si las validaciones del método no se cumplen.\",\n  \"parametros\": [\n    {\n      \"nombre\": \"peso_real_kg\",\n      \"descripcion\": \"Peso real en kilogramos, como Decimal finito mayor que cero.\"\n    }\n  ],\n  \"retorno\": \"Devuelve la cantidad de puntos como entero, redondeada hacia abajo.\",\n  \"excepciones\": [\n    \"ValueError\"\n  ]\n}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "id": "D8",
+            "nombre_esperado": "calcular",
+            "parametros_esperados": "peso_real_kg",
+            "funcion": "def calcular(self, peso_real_kg):\n    if (not isinstance(self.tarifa, Decimal) or not self.tarifa.is_finite()\n            or self.tarifa < 0):\n        raise ValueError(\"Tarifa de puntos invalida\")\n    if (not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Peso real invalido\")\n    return int((peso_real_kg * self.tarifa).to_integral_value(rounding=ROUND_DOWN))"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 7,
+        "vars": {
+          "id": "D8",
+          "nombre_esperado": "calcular",
+          "parametros_esperados": "peso_real_kg",
+          "funcion": "def calcular(self, peso_real_kg):\n    if (not isinstance(self.tarifa, Decimal) or not self.tarifa.is_finite()\n            or self.tarifa < 0):\n        raise ValueError(\"Tarifa de puntos invalida\")\n    if (not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Peso real invalido\")\n    return int((peso_real_kg * self.tarifa).to_integral_value(rounding=ROUND_DOWN))"
+        },
+        "metadata": {},
+        "failureReason": 0
+      }
+    ],
+    "stats": {
+      "successes": 8,
+      "failures": 0,
+      "errors": 0,
+      "tokenUsage": {
+        "cached": 0,
+        "completion": 0,
+        "prompt": 0,
+        "total": 0,
+        "numRequests": 8,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0
+        }
+      }
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Lab09 E4: evaluación de la iteración final v3 de docstrings",
+    "prompts": [
+      "file://C:\\Users\\ASUS\\Documents\\Codex\\2026-10-19\\quie\\work\\cs-2026b-lab04-grupo10\\prompts\\docstrings\\v3.txt"
+    ],
+    "providers": [
+      {
+        "id": "file://proveedor_grabado.py",
+        "label": "grabaciones-v3",
+        "config": {
+          "version": "v3"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "id": "D1",
+          "nombre_esperado": "coordenadas_validas",
+          "parametros_esperados": "",
+          "funcion": "def coordenadas_validas(self) -> bool:\n    return (\n        isinstance(self.latitud, Decimal) and self.latitud.is_finite()\n        and isinstance(self.longitud, Decimal) and self.longitud.is_finite()\n        and -90 <= self.latitud <= 90 and -180 <= self.longitud <= 180\n    )\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D2",
+          "nombre_esperado": "calcular_peso_estimado_kg",
+          "parametros_esperados": "",
+          "funcion": "def calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D3",
+          "nombre_esperado": "registrar_pendiente",
+          "parametros_esperados": "",
+          "funcion": "def registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D4",
+          "nombre_esperado": "asignar_reciclador",
+          "parametros_esperados": "reciclador_id",
+          "funcion": "def asignar_reciclador(self, reciclador_id: UUID) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not isinstance(reciclador_id, UUID) or not reciclador_id.int:\n        raise ValueError(\"Asignación inválida\")\n    self.reciclador_id = reciclador_id\n    self.estado = EstadoSolicitud.ASIGNADA\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D5",
+          "nombre_esperado": "registrar_recojo",
+          "parametros_esperados": "fecha_recojo",
+          "funcion": "def registrar_recojo(self, fecha_recojo: datetime) -> None:\n    if self.estado != EstadoSolicitud.ASIGNADA or not isinstance(fecha_recojo, datetime):\n        raise ValueError(\"Recojo inválido\")\n    self.fecha_recojo = fecha_recojo\n    self.estado = EstadoSolicitud.RECOGIDA\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D6",
+          "nombre_esperado": "registrar_pesaje",
+          "parametros_esperados": "peso_real_kg",
+          "funcion": "def registrar_pesaje(self, peso_real_kg: Decimal) -> None:\n    if (self.estado != EstadoSolicitud.RECOGIDA\n            or not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Pesaje inválido\")\n    self.peso_real_kg = peso_real_kg\n    self.estado = EstadoSolicitud.PESADA\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D7",
+          "nombre_esperado": "acreditar",
+          "parametros_esperados": "solicitud_id,material,peso_real_kg",
+          "funcion": "def acreditar(self, solicitud_id, material, peso_real_kg):\n    regla = self.fabrica.crear(material, self.tarifas.get(material))\n    puntos = regla.calcular(peso_real_kg)\n    return {\"acreditacion_id\": f\"acreditacion:{solicitud_id}\", \"puntos\": puntos}\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D8",
+          "nombre_esperado": "calcular",
+          "parametros_esperados": "peso_real_kg",
+          "funcion": "def calcular(self, peso_real_kg):\n    if (not isinstance(self.tarifa, Decimal) or not self.tarifa.is_finite()\n            or self.tarifa < 0):\n        raise ValueError(\"Tarifa de puntos invalida\")\n    if (not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Peso real invalido\")\n    return int((peso_real_kg * self.tarifa).to_integral_value(rounding=ROUND_DOWN))\n"
+        }
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "sharing": true,
+    "defaultTest": {
+      "assert": [
+        {
+          "type": "is-json",
+          "value": "file://contrato.json",
+          "metric": "A1_contrato_json"
+        },
+        {
+          "type": "javascript",
+          "metric": "A2_parametros_exactos_sin_self",
+          "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+        },
+        {
+          "type": "javascript",
+          "metric": "A3_descripciones_de_parametros",
+          "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+        },
+        {
+          "type": "javascript",
+          "metric": "A4_docstring_sin_fences_y_con_resumen",
+          "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+        },
+        {
+          "type": "javascript",
+          "metric": "A5_nombre_de_funcion_exact",
+          "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+        },
+        {
+          "type": "javascript",
+          "metric": "A6_consistencia_none",
+          "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+        }
+      ],
+      "vars": {},
+      "options": {},
+      "metadata": {}
+    },
+    "outputPath": [
+      "resultados-v3.json"
+    ],
+    "extensions": [],
+    "metadata": {}
+  },
+  "shareableUrl": null
+}

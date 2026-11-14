@@ -1,0 +1,15 @@
+{
+  "nombre": "asignar_reciclador",
+  "resumen": "Asigna un reciclador a una solicitud pendiente.",
+  "docstring": "Asigna un reciclador a una solicitud pendiente.\n\nArgs:\n    reciclador_id: Identificador UUID no nulo del reciclador que se asignará.\n\nRaises:\n    ValueError: Si las validaciones del método no se cumplen.",
+  "parametros": [
+    {
+      "nombre": "reciclador_id",
+      "descripcion": "Identificador UUID no nulo del reciclador que se asignará."
+    }
+  ],
+  "retorno": null,
+  "excepciones": [
+    "ValueError"
+  ]
+}

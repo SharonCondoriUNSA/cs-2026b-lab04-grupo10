@@ -1,0 +1,8 @@
+{
+  "nombre": "coordenadas_validas",
+  "resumen": "Comprueba si las coordenadas geográficas son válidas.",
+  "docstring": "Comprueba si las coordenadas geográficas son válidas.\n\nReturns:\n    Devuelve True si latitud y longitud son valores Decimal finitos dentro de sus rangos geográficos; de lo contrario devuelve False.",
+  "parametros": [],
+  "retorno": "Devuelve True si latitud y longitud son valores Decimal finitos dentro de sus rangos geográficos; de lo contrario devuelve False.",
+  "excepciones": []
+}

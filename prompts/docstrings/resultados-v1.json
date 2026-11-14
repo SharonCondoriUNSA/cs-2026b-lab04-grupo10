@@ -1,0 +1,1516 @@
+{
+  "evalId": "eval-h4I-2026-11-14T03:57:48",
+  "results": {
+    "version": 3,
+    "timestamp": "2026-11-14T03:57:48.800Z",
+    "prompts": [
+      {
+        "raw": "Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\n{{funcion}}",
+        "label": "v1.txt: Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\n{{funcion}}",
+        "id": "7ff4b7ef95416b24f471d01ed62eea7911521363f683ef8635b13c496ab0b5e9",
+        "provider": "grabaciones-v1",
+        "metrics": {
+          "score": 0,
+          "testPassCount": 0,
+          "testFailCount": 8,
+          "testErrorCount": 0,
+          "assertPassCount": 0,
+          "assertFailCount": 48,
+          "totalLatencyMs": 5950,
+          "tokenUsage": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0,
+            "numRequests": 8,
+            "completionDetails": {
+              "reasoning": 0,
+              "acceptedPrediction": 0,
+              "rejectedPrediction": 0
+            },
+            "assertions": {
+              "total": 0,
+              "prompt": 0,
+              "completion": 0,
+              "cached": 0
+            }
+          },
+          "namedScores": {
+            "A1_contrato_json": 0,
+            "A2_parametros_exactos_sin_self": 0,
+            "A3_descripciones_de_parametros": 0,
+            "A4_docstring_sin_fences_y_con_resumen": 0,
+            "A5_nombre_de_funcion_exact": 0,
+            "A6_consistencia_none": 0
+          },
+          "namedScoresCount": {
+            "A1_contrato_json": 8,
+            "A2_parametros_exactos_sin_self": 8,
+            "A3_descripciones_de_parametros": 8,
+            "A4_docstring_sin_fences_y_con_resumen": 8,
+            "A5_nombre_de_funcion_exact": 8,
+            "A6_consistencia_none": 8
+          },
+          "cost": 0
+        }
+      }
+    ],
+    "results": [
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+        "gradingResult": {
+          "pass": false,
+          "score": 0,
+          "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+          "namedScores": {
+            "A1_contrato_json": 0,
+            "A2_parametros_exactos_sin_self": 0,
+            "A3_descripciones_de_parametros": 0,
+            "A4_docstring_sin_fences_y_con_resumen": 0,
+            "A5_nombre_de_funcion_exact": 0,
+            "A6_consistencia_none": 0
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Expected output to be valid JSON",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "b7419779-2347-477d-abfb-7a1452536d20",
+        "latencyMs": 786,
+        "namedScores": {
+          "A1_contrato_json": 0,
+          "A2_parametros_exactos_sin_self": 0,
+          "A3_descripciones_de_parametros": 0,
+          "A4_docstring_sin_fences_y_con_resumen": 0,
+          "A5_nombre_de_funcion_exact": 0,
+          "A6_consistencia_none": 0
+        },
+        "prompt": {
+          "raw": "Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\ndef calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))",
+          "label": "v1.txt: Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\n{{funcion}}"
+        },
+        "promptId": "7ff4b7ef95416b24f471d01ed62eea7911521363f683ef8635b13c496ab0b5e9",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v1"
+        },
+        "response": {
+          "output": "\"\"\"Calcula el peso estimado sumando los pesos de los detalles de la solicitud.\"\"\"",
+          "cached": false
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "id": "D2",
+            "nombre_esperado": "calcular_peso_estimado_kg",
+            "parametros_esperados": "",
+            "funcion": "def calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "id": "D2",
+          "nombre_esperado": "calcular_peso_estimado_kg",
+          "parametros_esperados": "",
+          "funcion": "def calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))"
+        },
+        "metadata": {},
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+        "gradingResult": {
+          "pass": false,
+          "score": 0,
+          "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+          "namedScores": {
+            "A1_contrato_json": 0,
+            "A2_parametros_exactos_sin_self": 0,
+            "A3_descripciones_de_parametros": 0,
+            "A4_docstring_sin_fences_y_con_resumen": 0,
+            "A5_nombre_de_funcion_exact": 0,
+            "A6_consistencia_none": 0
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Expected output to be valid JSON",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "2bc1580b-87bc-4d44-b7c9-12949d460e2b",
+        "latencyMs": 903,
+        "namedScores": {
+          "A1_contrato_json": 0,
+          "A2_parametros_exactos_sin_self": 0,
+          "A3_descripciones_de_parametros": 0,
+          "A4_docstring_sin_fences_y_con_resumen": 0,
+          "A5_nombre_de_funcion_exact": 0,
+          "A6_consistencia_none": 0
+        },
+        "prompt": {
+          "raw": "Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\ndef coordenadas_validas(self) -> bool:\n    return (\n        isinstance(self.latitud, Decimal) and self.latitud.is_finite()\n        and isinstance(self.longitud, Decimal) and self.longitud.is_finite()\n        and -90 <= self.latitud <= 90 and -180 <= self.longitud <= 180\n    )",
+          "label": "v1.txt: Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\n{{funcion}}"
+        },
+        "promptId": "7ff4b7ef95416b24f471d01ed62eea7911521363f683ef8635b13c496ab0b5e9",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v1"
+        },
+        "response": {
+          "output": "\"\"\"Comprueba si las coordenadas de la instancia son válidas.\"\"\"",
+          "cached": false
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "id": "D1",
+            "nombre_esperado": "coordenadas_validas",
+            "parametros_esperados": "",
+            "funcion": "def coordenadas_validas(self) -> bool:\n    return (\n        isinstance(self.latitud, Decimal) and self.latitud.is_finite()\n        and isinstance(self.longitud, Decimal) and self.longitud.is_finite()\n        and -90 <= self.latitud <= 90 and -180 <= self.longitud <= 180\n    )"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 0,
+        "vars": {
+          "id": "D1",
+          "nombre_esperado": "coordenadas_validas",
+          "parametros_esperados": "",
+          "funcion": "def coordenadas_validas(self) -> bool:\n    return (\n        isinstance(self.latitud, Decimal) and self.latitud.is_finite()\n        and isinstance(self.longitud, Decimal) and self.longitud.is_finite()\n        and -90 <= self.latitud <= 90 and -180 <= self.longitud <= 180\n    )"
+        },
+        "metadata": {},
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+        "gradingResult": {
+          "pass": false,
+          "score": 0,
+          "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+          "namedScores": {
+            "A1_contrato_json": 0,
+            "A2_parametros_exactos_sin_self": 0,
+            "A3_descripciones_de_parametros": 0,
+            "A4_docstring_sin_fences_y_con_resumen": 0,
+            "A5_nombre_de_funcion_exact": 0,
+            "A6_consistencia_none": 0
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Expected output to be valid JSON",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "be7e0417-73a1-474a-807f-f1fecd19e58e",
+        "latencyMs": 1006,
+        "namedScores": {
+          "A1_contrato_json": 0,
+          "A2_parametros_exactos_sin_self": 0,
+          "A3_descripciones_de_parametros": 0,
+          "A4_docstring_sin_fences_y_con_resumen": 0,
+          "A5_nombre_de_funcion_exact": 0,
+          "A6_consistencia_none": 0
+        },
+        "prompt": {
+          "raw": "Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\ndef registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE",
+          "label": "v1.txt: Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\n{{funcion}}"
+        },
+        "promptId": "7ff4b7ef95416b24f471d01ed62eea7911521363f683ef8635b13c496ab0b5e9",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v1"
+        },
+        "response": {
+          "output": "\"\"\"Registra la solicitud como pendiente si sus datos son válidos.\"\"\"",
+          "cached": false
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "id": "D3",
+            "nombre_esperado": "registrar_pendiente",
+            "parametros_esperados": "",
+            "funcion": "def registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "vars": {
+          "id": "D3",
+          "nombre_esperado": "registrar_pendiente",
+          "parametros_esperados": "",
+          "funcion": "def registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE"
+        },
+        "metadata": {},
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+        "gradingResult": {
+          "pass": false,
+          "score": 0,
+          "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+          "namedScores": {
+            "A1_contrato_json": 0,
+            "A2_parametros_exactos_sin_self": 0,
+            "A3_descripciones_de_parametros": 0,
+            "A4_docstring_sin_fences_y_con_resumen": 0,
+            "A5_nombre_de_funcion_exact": 0,
+            "A6_consistencia_none": 0
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Expected output to be valid JSON",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "9824ac7b-c6fa-4038-970e-41f3ed69599a",
+        "latencyMs": 1132,
+        "namedScores": {
+          "A1_contrato_json": 0,
+          "A2_parametros_exactos_sin_self": 0,
+          "A3_descripciones_de_parametros": 0,
+          "A4_docstring_sin_fences_y_con_resumen": 0,
+          "A5_nombre_de_funcion_exact": 0,
+          "A6_consistencia_none": 0
+        },
+        "prompt": {
+          "raw": "Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\ndef asignar_reciclador(self, reciclador_id: UUID) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not isinstance(reciclador_id, UUID) or not reciclador_id.int:\n        raise ValueError(\"Asignación inválida\")\n    self.reciclador_id = reciclador_id\n    self.estado = EstadoSolicitud.ASIGNADA",
+          "label": "v1.txt: Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\n{{funcion}}"
+        },
+        "promptId": "7ff4b7ef95416b24f471d01ed62eea7911521363f683ef8635b13c496ab0b5e9",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v1"
+        },
+        "response": {
+          "output": "\"\"\"Asigna un reciclador a la solicitud pendiente.\"\"\"",
+          "cached": false
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "id": "D4",
+            "nombre_esperado": "asignar_reciclador",
+            "parametros_esperados": "reciclador_id",
+            "funcion": "def asignar_reciclador(self, reciclador_id: UUID) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not isinstance(reciclador_id, UUID) or not reciclador_id.int:\n        raise ValueError(\"Asignación inválida\")\n    self.reciclador_id = reciclador_id\n    self.estado = EstadoSolicitud.ASIGNADA"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 3,
+        "vars": {
+          "id": "D4",
+          "nombre_esperado": "asignar_reciclador",
+          "parametros_esperados": "reciclador_id",
+          "funcion": "def asignar_reciclador(self, reciclador_id: UUID) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not isinstance(reciclador_id, UUID) or not reciclador_id.int:\n        raise ValueError(\"Asignación inválida\")\n    self.reciclador_id = reciclador_id\n    self.estado = EstadoSolicitud.ASIGNADA"
+        },
+        "metadata": {},
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+        "gradingResult": {
+          "pass": false,
+          "score": 0,
+          "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+          "namedScores": {
+            "A1_contrato_json": 0,
+            "A2_parametros_exactos_sin_self": 0,
+            "A3_descripciones_de_parametros": 0,
+            "A4_docstring_sin_fences_y_con_resumen": 0,
+            "A5_nombre_de_funcion_exact": 0,
+            "A6_consistencia_none": 0
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Expected output to be valid JSON",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "9258f43c-f26b-4f2b-b50e-63bc24c5678a",
+        "latencyMs": 531,
+        "namedScores": {
+          "A1_contrato_json": 0,
+          "A2_parametros_exactos_sin_self": 0,
+          "A3_descripciones_de_parametros": 0,
+          "A4_docstring_sin_fences_y_con_resumen": 0,
+          "A5_nombre_de_funcion_exact": 0,
+          "A6_consistencia_none": 0
+        },
+        "prompt": {
+          "raw": "Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\ndef registrar_recojo(self, fecha_recojo: datetime) -> None:\n    if self.estado != EstadoSolicitud.ASIGNADA or not isinstance(fecha_recojo, datetime):\n        raise ValueError(\"Recojo inválido\")\n    self.fecha_recojo = fecha_recojo\n    self.estado = EstadoSolicitud.RECOGIDA",
+          "label": "v1.txt: Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\n{{funcion}}"
+        },
+        "promptId": "7ff4b7ef95416b24f471d01ed62eea7911521363f683ef8635b13c496ab0b5e9",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v1"
+        },
+        "response": {
+          "output": "\"\"\"Registra la fecha en que se recogió la solicitud.\"\"\"",
+          "cached": false
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "id": "D5",
+            "nombre_esperado": "registrar_recojo",
+            "parametros_esperados": "fecha_recojo",
+            "funcion": "def registrar_recojo(self, fecha_recojo: datetime) -> None:\n    if self.estado != EstadoSolicitud.ASIGNADA or not isinstance(fecha_recojo, datetime):\n        raise ValueError(\"Recojo inválido\")\n    self.fecha_recojo = fecha_recojo\n    self.estado = EstadoSolicitud.RECOGIDA"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 4,
+        "vars": {
+          "id": "D5",
+          "nombre_esperado": "registrar_recojo",
+          "parametros_esperados": "fecha_recojo",
+          "funcion": "def registrar_recojo(self, fecha_recojo: datetime) -> None:\n    if self.estado != EstadoSolicitud.ASIGNADA or not isinstance(fecha_recojo, datetime):\n        raise ValueError(\"Recojo inválido\")\n    self.fecha_recojo = fecha_recojo\n    self.estado = EstadoSolicitud.RECOGIDA"
+        },
+        "metadata": {},
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+        "gradingResult": {
+          "pass": false,
+          "score": 0,
+          "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+          "namedScores": {
+            "A1_contrato_json": 0,
+            "A2_parametros_exactos_sin_self": 0,
+            "A3_descripciones_de_parametros": 0,
+            "A4_docstring_sin_fences_y_con_resumen": 0,
+            "A5_nombre_de_funcion_exact": 0,
+            "A6_consistencia_none": 0
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Expected output to be valid JSON",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "c872d93f-43e6-4614-912c-40ceae26b773",
+        "latencyMs": 533,
+        "namedScores": {
+          "A1_contrato_json": 0,
+          "A2_parametros_exactos_sin_self": 0,
+          "A3_descripciones_de_parametros": 0,
+          "A4_docstring_sin_fences_y_con_resumen": 0,
+          "A5_nombre_de_funcion_exact": 0,
+          "A6_consistencia_none": 0
+        },
+        "prompt": {
+          "raw": "Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\ndef registrar_pesaje(self, peso_real_kg: Decimal) -> None:\n    if (self.estado != EstadoSolicitud.RECOGIDA\n            or not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Pesaje inválido\")\n    self.peso_real_kg = peso_real_kg\n    self.estado = EstadoSolicitud.PESADA",
+          "label": "v1.txt: Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\n{{funcion}}"
+        },
+        "promptId": "7ff4b7ef95416b24f471d01ed62eea7911521363f683ef8635b13c496ab0b5e9",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v1"
+        },
+        "response": {
+          "output": "\"\"\"Registra el peso real de la solicitud recogida.\"\"\"",
+          "cached": false
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "id": "D6",
+            "nombre_esperado": "registrar_pesaje",
+            "parametros_esperados": "peso_real_kg",
+            "funcion": "def registrar_pesaje(self, peso_real_kg: Decimal) -> None:\n    if (self.estado != EstadoSolicitud.RECOGIDA\n            or not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Pesaje inválido\")\n    self.peso_real_kg = peso_real_kg\n    self.estado = EstadoSolicitud.PESADA"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 5,
+        "vars": {
+          "id": "D6",
+          "nombre_esperado": "registrar_pesaje",
+          "parametros_esperados": "peso_real_kg",
+          "funcion": "def registrar_pesaje(self, peso_real_kg: Decimal) -> None:\n    if (self.estado != EstadoSolicitud.RECOGIDA\n            or not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Pesaje inválido\")\n    self.peso_real_kg = peso_real_kg\n    self.estado = EstadoSolicitud.PESADA"
+        },
+        "metadata": {},
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+        "gradingResult": {
+          "pass": false,
+          "score": 0,
+          "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+          "namedScores": {
+            "A1_contrato_json": 0,
+            "A2_parametros_exactos_sin_self": 0,
+            "A3_descripciones_de_parametros": 0,
+            "A4_docstring_sin_fences_y_con_resumen": 0,
+            "A5_nombre_de_funcion_exact": 0,
+            "A6_consistencia_none": 0
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Expected output to be valid JSON",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "135ea6d6-fdf3-4a08-9b6b-95fb6a0f5821",
+        "latencyMs": 540,
+        "namedScores": {
+          "A1_contrato_json": 0,
+          "A2_parametros_exactos_sin_self": 0,
+          "A3_descripciones_de_parametros": 0,
+          "A4_docstring_sin_fences_y_con_resumen": 0,
+          "A5_nombre_de_funcion_exact": 0,
+          "A6_consistencia_none": 0
+        },
+        "prompt": {
+          "raw": "Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\ndef acreditar(self, solicitud_id, material, peso_real_kg):\n    regla = self.fabrica.crear(material, self.tarifas.get(material))\n    puntos = regla.calcular(peso_real_kg)\n    return {\"acreditacion_id\": f\"acreditacion:{solicitud_id}\", \"puntos\": puntos}",
+          "label": "v1.txt: Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\n{{funcion}}"
+        },
+        "promptId": "7ff4b7ef95416b24f471d01ed62eea7911521363f683ef8635b13c496ab0b5e9",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v1"
+        },
+        "response": {
+          "output": "\"\"\"Calcula los puntos de una solicitud y crea su identificador de acreditación.\"\"\"",
+          "cached": false
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "id": "D7",
+            "nombre_esperado": "acreditar",
+            "parametros_esperados": "solicitud_id,material,peso_real_kg",
+            "funcion": "def acreditar(self, solicitud_id, material, peso_real_kg):\n    regla = self.fabrica.crear(material, self.tarifas.get(material))\n    puntos = regla.calcular(peso_real_kg)\n    return {\"acreditacion_id\": f\"acreditacion:{solicitud_id}\", \"puntos\": puntos}"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 6,
+        "vars": {
+          "id": "D7",
+          "nombre_esperado": "acreditar",
+          "parametros_esperados": "solicitud_id,material,peso_real_kg",
+          "funcion": "def acreditar(self, solicitud_id, material, peso_real_kg):\n    regla = self.fabrica.crear(material, self.tarifas.get(material))\n    puntos = regla.calcular(peso_real_kg)\n    return {\"acreditacion_id\": f\"acreditacion:{solicitud_id}\", \"puntos\": puntos}"
+        },
+        "metadata": {},
+        "failureReason": 1
+      },
+      {
+        "cost": 0,
+        "error": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+        "gradingResult": {
+          "pass": false,
+          "score": 0,
+          "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+          "namedScores": {
+            "A1_contrato_json": 0,
+            "A2_parametros_exactos_sin_self": 0,
+            "A3_descripciones_de_parametros": 0,
+            "A4_docstring_sin_fences_y_con_resumen": 0,
+            "A5_nombre_de_funcion_exact": 0,
+            "A6_consistencia_none": 0
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Expected output to be valid JSON",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": false,
+              "score": 0,
+              "reason": "Custom function returned false\nlet r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "d5c2228b-0e92-4ca8-9389-f2b9f7642caa",
+        "latencyMs": 519,
+        "namedScores": {
+          "A1_contrato_json": 0,
+          "A2_parametros_exactos_sin_self": 0,
+          "A3_descripciones_de_parametros": 0,
+          "A4_docstring_sin_fences_y_con_resumen": 0,
+          "A5_nombre_de_funcion_exact": 0,
+          "A6_consistencia_none": 0
+        },
+        "prompt": {
+          "raw": "Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\ndef calcular(self, peso_real_kg):\n    if (not isinstance(self.tarifa, Decimal) or not self.tarifa.is_finite()\n            or self.tarifa < 0):\n        raise ValueError(\"Tarifa de puntos invalida\")\n    if (not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Peso real invalido\")\n    return int((peso_real_kg * self.tarifa).to_integral_value(rounding=ROUND_DOWN))",
+          "label": "v1.txt: Eres un asistente de programación. Escribe un docstring y documentación breve para esta función:\n\n{{funcion}}"
+        },
+        "promptId": "7ff4b7ef95416b24f471d01ed62eea7911521363f683ef8635b13c496ab0b5e9",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v1"
+        },
+        "response": {
+          "output": "\"\"\"Calcula los puntos correspondientes al peso real del material.\"\"\"",
+          "cached": false
+        },
+        "score": 0,
+        "success": false,
+        "testCase": {
+          "vars": {
+            "id": "D8",
+            "nombre_esperado": "calcular",
+            "parametros_esperados": "peso_real_kg",
+            "funcion": "def calcular(self, peso_real_kg):\n    if (not isinstance(self.tarifa, Decimal) or not self.tarifa.is_finite()\n            or self.tarifa < 0):\n        raise ValueError(\"Tarifa de puntos invalida\")\n    if (not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Peso real invalido\")\n    return int((peso_real_kg * self.tarifa).to_integral_value(rounding=ROUND_DOWN))"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 7,
+        "vars": {
+          "id": "D8",
+          "nombre_esperado": "calcular",
+          "parametros_esperados": "peso_real_kg",
+          "funcion": "def calcular(self, peso_real_kg):\n    if (not isinstance(self.tarifa, Decimal) or not self.tarifa.is_finite()\n            or self.tarifa < 0):\n        raise ValueError(\"Tarifa de puntos invalida\")\n    if (not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Peso real invalido\")\n    return int((peso_real_kg * self.tarifa).to_integral_value(rounding=ROUND_DOWN))"
+        },
+        "metadata": {},
+        "failureReason": 1
+      }
+    ],
+    "stats": {
+      "successes": 0,
+      "failures": 8,
+      "errors": 0,
+      "tokenUsage": {
+        "cached": 0,
+        "completion": 0,
+        "prompt": 0,
+        "total": 0,
+        "numRequests": 8,
+        "completionDetails": {
+          "reasoning": 0,
+          "acceptedPrediction": 0,
+          "rejectedPrediction": 0
+        },
+        "assertions": {
+          "total": 0,
+          "prompt": 0,
+          "completion": 0,
+          "cached": 0
+        }
+      }
+    }
+  },
+  "config": {
+    "tags": {},
+    "description": "Lab09 E4: línea base de generación de docstrings v1",
+    "prompts": [
+      "file://C:\\Users\\ASUS\\Documents\\Codex\\2026-10-19\\quie\\work\\cs-2026b-lab04-grupo10\\prompts\\docstrings\\v1.txt"
+    ],
+    "providers": [
+      {
+        "id": "file://proveedor_grabado.py",
+        "label": "grabaciones-v1",
+        "config": {
+          "version": "v1"
+        }
+      }
+    ],
+    "tests": [
+      {
+        "vars": {
+          "id": "D1",
+          "nombre_esperado": "coordenadas_validas",
+          "parametros_esperados": "",
+          "funcion": "def coordenadas_validas(self) -> bool:\n    return (\n        isinstance(self.latitud, Decimal) and self.latitud.is_finite()\n        and isinstance(self.longitud, Decimal) and self.longitud.is_finite()\n        and -90 <= self.latitud <= 90 and -180 <= self.longitud <= 180\n    )\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D2",
+          "nombre_esperado": "calcular_peso_estimado_kg",
+          "parametros_esperados": "",
+          "funcion": "def calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D3",
+          "nombre_esperado": "registrar_pendiente",
+          "parametros_esperados": "",
+          "funcion": "def registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D4",
+          "nombre_esperado": "asignar_reciclador",
+          "parametros_esperados": "reciclador_id",
+          "funcion": "def asignar_reciclador(self, reciclador_id: UUID) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not isinstance(reciclador_id, UUID) or not reciclador_id.int:\n        raise ValueError(\"Asignación inválida\")\n    self.reciclador_id = reciclador_id\n    self.estado = EstadoSolicitud.ASIGNADA\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D5",
+          "nombre_esperado": "registrar_recojo",
+          "parametros_esperados": "fecha_recojo",
+          "funcion": "def registrar_recojo(self, fecha_recojo: datetime) -> None:\n    if self.estado != EstadoSolicitud.ASIGNADA or not isinstance(fecha_recojo, datetime):\n        raise ValueError(\"Recojo inválido\")\n    self.fecha_recojo = fecha_recojo\n    self.estado = EstadoSolicitud.RECOGIDA\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D6",
+          "nombre_esperado": "registrar_pesaje",
+          "parametros_esperados": "peso_real_kg",
+          "funcion": "def registrar_pesaje(self, peso_real_kg: Decimal) -> None:\n    if (self.estado != EstadoSolicitud.RECOGIDA\n            or not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Pesaje inválido\")\n    self.peso_real_kg = peso_real_kg\n    self.estado = EstadoSolicitud.PESADA\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D7",
+          "nombre_esperado": "acreditar",
+          "parametros_esperados": "solicitud_id,material,peso_real_kg",
+          "funcion": "def acreditar(self, solicitud_id, material, peso_real_kg):\n    regla = self.fabrica.crear(material, self.tarifas.get(material))\n    puntos = regla.calcular(peso_real_kg)\n    return {\"acreditacion_id\": f\"acreditacion:{solicitud_id}\", \"puntos\": puntos}\n"
+        }
+      },
+      {
+        "vars": {
+          "id": "D8",
+          "nombre_esperado": "calcular",
+          "parametros_esperados": "peso_real_kg",
+          "funcion": "def calcular(self, peso_real_kg):\n    if (not isinstance(self.tarifa, Decimal) or not self.tarifa.is_finite()\n            or self.tarifa < 0):\n        raise ValueError(\"Tarifa de puntos invalida\")\n    if (not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Peso real invalido\")\n    return int((peso_real_kg * self.tarifa).to_integral_value(rounding=ROUND_DOWN))\n"
+        }
+      }
+    ],
+    "scenarios": [],
+    "env": {},
+    "sharing": true,
+    "defaultTest": {
+      "assert": [
+        {
+          "type": "is-json",
+          "value": "file://contrato.json",
+          "metric": "A1_contrato_json"
+        },
+        {
+          "type": "javascript",
+          "metric": "A2_parametros_exactos_sin_self",
+          "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+        },
+        {
+          "type": "javascript",
+          "metric": "A3_descripciones_de_parametros",
+          "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+        },
+        {
+          "type": "javascript",
+          "metric": "A4_docstring_sin_fences_y_con_resumen",
+          "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+        },
+        {
+          "type": "javascript",
+          "metric": "A5_nombre_de_funcion_exact",
+          "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+        },
+        {
+          "type": "javascript",
+          "metric": "A6_consistencia_none",
+          "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+        }
+      ],
+      "vars": {},
+      "options": {},
+      "metadata": {}
+    },
+    "outputPath": [
+      "resultados-v1.json"
+    ],
+    "extensions": [],
+    "metadata": {}
+  },
+  "shareableUrl": null
+}

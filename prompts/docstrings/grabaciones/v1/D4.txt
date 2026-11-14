@@ -1,0 +1,1 @@
+"""Asigna un reciclador a la solicitud pendiente."""
