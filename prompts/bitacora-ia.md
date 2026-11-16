@@ -56,3 +56,8 @@ El comparador obtuvo tres variantes de JSON para H1, tres para H7 y dos para H8.
 
 
 Aclaración de procedencia del 2026-11-16: la usuaria confirmó que el modelo utilizado fue GPT-6 Instant. Se actualizó el nombre inicialmente no identificado en los metadatos, la comparación y su documentación. No se modificaron las nueve respuestas ni sus resultados, y la temperatura sigue sin conocerse.
+
+
+## E7 · Apoyo en compatibilidad de CI · 2026-11-16
+
+El registro real de Actions mostró que test_grabaciones_originales_se_conservan fallaba en Linux por la conversión automática CRLF/LF de Git. Se añadieron atributos para conservar los bytes originales de las 16 grabaciones de E5 y se comprobaron contra las huellas existentes, sin cambiar contenido, expectativas o hashes. Se habilitó además la carga de la carpeta oculta de reportes como artefacto. La comprobación de integridad permanece activa.

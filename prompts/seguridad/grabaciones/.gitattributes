@@ -1,0 +1,3 @@
+# Preservar los bytes originales comprobados por huellas.json en cualquier SO.
+antes/*.txt -text whitespace=cr-at-eol
+despues/*.txt -text whitespace=cr-at-eol

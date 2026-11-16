@@ -47,5 +47,6 @@ jobs:
         with:
           name: evaluaciones-prompts
           path: .ci-resultados/
+          include-hidden-files: true
           if-no-files-found: warn
           retention-days: 7
