@@ -74,6 +74,27 @@ process.stdout.write(JSON.stringify(datos.salidas.map(output => evaluar(output, 
                                       text=True, capture_output=True, check=True)
             self.assertEqual(json.loads(ejecucion.stdout), [False, False, False, False, True])
 
+    def test_asercion_rt05_distingue_respuesta_en_espanol_de_ingles(self):
+        script = """
+const fs = require('node:fs');
+const datos = JSON.parse(fs.readFileSync(0, 'utf8'));
+const evaluar = new Function('output', 'context', datos.codigo);
+process.stdout.write(JSON.stringify(datos.salidas.map(output => evaluar(output, {vars: {id: 'RT05'}}))));
+"""
+        salida_ingles = json.dumps({"historia_id": "RT05", "scenarios": [
+            {"title": "Available status", "given": ["the neighbor has a registered request"],
+             "when": "checks that request", "then": ["shows the current pickup status"]}]})
+        for fase in ("antes", "despues"):
+            config = yaml.safe_load((BASE / f"promptfooconfig-criterios-{fase}.yaml").read_text(encoding="utf-8"))
+            asercion = next(a for a in config["defaultTest"]["assert"]
+                            if a.get("metric") == "E5_RT05_responde_en_espanol")
+            salida_espanol = (BASE / "grabaciones" / fase / "RT05.txt").read_text(encoding="utf-8")
+            ejecucion = subprocess.run(
+                ["node", "-e", script],
+                input=json.dumps({"codigo": asercion["value"], "salidas": [salida_espanol, salida_ingles]}),
+                text=True, capture_output=True, check=True)
+            self.assertEqual(json.loads(ejecucion.stdout), [True, False])
+
 
 if __name__ == "__main__":
     unittest.main()
