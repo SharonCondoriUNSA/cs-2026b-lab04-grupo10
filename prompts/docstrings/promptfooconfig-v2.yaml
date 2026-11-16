@@ -17,8 +17,33 @@ defaultTest:
       value: |
         let r; try { r = JSON.parse(output); } catch { return false; }
         const expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);
-        const actual = (r.parametros || []).map(p => p.nombre);
-        return actual.length === expected.length && expected.every((n, i) => actual[i] === n);
+        if (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;
+        const actual = r.parametros.map(p => p?.nombre);
+        if (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;
+        const lines = r.docstring.split(/\r?\n/);
+        const headers = lines.flatMap((line, i) => /^Args:[ \t]*$/.test(line) ? [i] : []);
+        if (expected.length === 0) return headers.length === 0;
+        if (headers.length !== 1) return false;
+        const documented = [];
+        let parameterIndent = null;
+        let needsDescription = false;
+        for (const line of lines.slice(headers[0] + 1)) {
+          if (line.trim() === '') continue;
+          if (/^\S/.test(line)) break;
+          const parameter = /^([ \t]+)([A-Za-z_]\w*)(?:[ \t]*\([^)]*\))?:[ \t]*(.*)$/.exec(line);
+          if (parameter) {
+            if (parameterIndent === null) parameterIndent = parameter[1].length;
+            if (parameter[1].length !== parameterIndent || needsDescription) return false;
+            documented.push(parameter[2]);
+            needsDescription = parameter[3].trim().length === 0;
+          } else {
+            const indentation = /^[ \t]*/.exec(line)[0].length;
+            if (parameterIndent === null || indentation <= parameterIndent) return false;
+            needsDescription = false;
+          }
+        }
+        return !needsDescription && documented.length === expected.length &&
+          expected.every((n, i) => documented[i] === n);
     - type: javascript
       metric: A3_descripciones_de_parametros
       value: |
