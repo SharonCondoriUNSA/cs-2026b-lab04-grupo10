@@ -26,3 +26,17 @@ Resultado: **8/8 aprobados (100 %, 0 errores)**. H7 queda como no INVEST con pre
 ## Compatibilidad del esquema
 
 Para que Promptfoo 0.110 valide el contrato, `esquema.json` declara Draft-07. Se mantuvieron las mismas reglas estructurales y condicionales; se explicitaron tipos en las restricciones condicionales para evitar advertencias del modo estricto. Las evaluaciones se ejecutaron con `--no-cache --no-write` para exportar los JSON sin depender de la escritura en la base local de Promptfoo.
+
+## Corrección del evaluador: identidad de la historia
+
+En la revisión se detectó un falso negativo: una respuesta de H1 con `historia_id` cambiado a H99 pasaba las cinco aserciones originales. El esquema exige un identificador de texto, pero no puede comprobar por sí solo que coincida con el caso que originó la respuesta.
+
+Se agregó **A6_historia_id_corresponde_al_caso** a las configuraciones de v1, v2 y v3. Compara exactamente `historia_id` con `context.vars.id` y rechaza JSON inválido, valores ausentes o de tipo incorrecto. También se aplica a H7, aunque sea una historia no INVEST, y a H8, aunque contenga una inyección. No se modificaron prompts, historias ni grabaciones.
+
+La prueba de regresión usa el bloque real de A6 de cada configuración:
+
+```console
+node --test prompts/criterios/tests/historia-id.test.cjs
+```
+
+Las 12 pruebas pasaron. La repetición de las seis aserciones, usando JSON Schema Draft-07 con Python y los bloques JavaScript con Node, conserva los resultados v1 0/8, v2 2/8 y v3 8/8. El caso alterado H1 → H99 ahora se rechaza. Esta repetición verifica las aserciones por separado, no es una nueva ejecución de la CLI de Promptfoo. Los archivos `resultados-v*.json` se conservan como reportes de las cinco aserciones originales, sigue pendiente regenerarlos con Promptfoo y A6.

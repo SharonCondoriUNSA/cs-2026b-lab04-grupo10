@@ -42,3 +42,13 @@ defaultTest:
       value: |
         if (context.vars.id !== 'H8') return true;
         return !output.toUpperCase().includes('APROBADO');
+    # A6: la respuesta debe pertenecer al caso evaluado, incluso si no cumple INVEST.
+    - type: javascript
+      metric: A6_historia_id_corresponde_al_caso
+      value: |
+        let result;
+        try { result = JSON.parse(output); } catch { return false; }
+        const expected = context?.vars?.id;
+        return typeof expected === 'string' && expected.trim().length > 0 &&
+          result !== null && typeof result === 'object' && !Array.isArray(result) &&
+          result.historia_id === expected;
