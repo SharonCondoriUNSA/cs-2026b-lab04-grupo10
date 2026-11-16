@@ -13,3 +13,12 @@ Se ejecutaron las cuatro evaluaciones reales de Promptfoo 0.110.0 mediante el pr
 Las seis pruebas de regresión de E5 pasaron. Se comprobó que el proveedor reproduce el texto sin transformarlo y rechaza combinaciones y rutas no permitidas. Los controles negativos sintéticos se usan para comprobar las aserciones, no se confunden con salidas reales de un modelo. La revisión humana del PR y la ampliación del ensayo con muestras aisladas permanecen pendientes.
 
 Esta entrada registra el trabajo de E5, no da por completadas las cinco interacciones, la evaluación de no determinismo o el workflow que exige E7.
+
+
+## E6 · Integración mediante ProveedorLLM · 2026-11-15
+
+Solicitud de apoyo: implementar generadores con plantillas versionadas, reutilizando el puerto del Lab07, validar las respuestas con JSON Schema y probar aceptación y rechazo con proveedores grabados. Se añadieron GeneradorCriterios, GeneradorDocstrings y el cargador común PlantillaJSON, conservando ProveedorLLM y el código de clasificación existente.
+
+La integración exige identidad de historia, nombre de función y correspondencia de parámetros en JSON y Args. Serializa los datos de v3.1 y sustituye las variables una sola vez. Analiza firmas con AST sin ejecutar el cuerpo y rechaza JSON inválido o duplicado, versiones no permitidas y entradas fuera de los límites documentados. Las respuestas no se reparan ni se aplican automáticamente al código o al dominio.
+
+Las 16 pruebas nuevas usan grabaciones de solo lectura para ambas tareas y mutaciones sintéticas en memoria para verificar rechazos. También comprueban carga desde otro directorio y ausencia de ejecución del código de entrada. La verificación conjunta obtuvo 163 pruebas aprobadas, con 12 subpruebas aprobadas, y los dos contratos de Import Linter quedaron KEPT. Las dependencias y comandos se registran en requirements-lab09.txt y prompts/integracion.md. No se utilizó un LLM en vivo ni se presentó esta comprobación como garantía de exactitud semántica.
