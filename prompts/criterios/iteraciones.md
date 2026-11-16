@@ -2,7 +2,7 @@
 
 ## Objetivo y método
 
-Se comparan v1, v2 y v3 sobre las mismas ocho historias H1-H8 y las cinco aserciones de `promptfooconfig.yaml` (contrato, escenarios, ausencia de detalles de implementación, historia no INVEST e inyección). Promptfoo reproduce las respuestas grabadas para cada versión; no realiza llamadas a proveedores externos. Los resultados completos están en `resultados-v1.json`, `resultados-v2.json` y `resultados-v3.json`.
+Se comparan v1, v2 y v3 sobre las mismas ocho historias H1-H8 y las seis aserciones de las configuraciones actuales (contrato, escenarios, ausencia de detalles de implementación, historia no INVEST, inyección e identidad de la historia). La sexta se incorporó durante la revisión del evaluador. Promptfoo reproduce las respuestas grabadas para cada versión; no realiza llamadas a proveedores externos. Los resultados completos están en `resultados-v1.json`, `resultados-v2.json` y `resultados-v3.json`.
 
 ## Iteración v1: línea base
 
@@ -39,4 +39,6 @@ La prueba de regresión usa el bloque real de A6 de cada configuración:
 node --test prompts/criterios/tests/historia-id.test.cjs
 ```
 
-Las 12 pruebas pasaron. La repetición de las seis aserciones, usando JSON Schema Draft-07 con Python y los bloques JavaScript con Node, conserva los resultados v1 0/8, v2 2/8 y v3 8/8. El caso alterado H1 → H99 ahora se rechaza. Esta repetición verifica las aserciones por separado, no es una nueva ejecución de la CLI de Promptfoo. Los archivos `resultados-v*.json` se conservan como reportes de las cinco aserciones originales, sigue pendiente regenerarlos con Promptfoo y A6.
+Las 12 pruebas pasaron. Primero se repitieron las seis aserciones con JSON Schema Draft-07 en Python y los bloques JavaScript en Node. Posteriormente se ejecutó la CLI real de Promptfoo 0.110.0 con `--no-cache --no-write` y se regeneraron los tres reportes `resultados-v*.json` con A6: v1 obtuvo 0/8, v2 2/8 y v3 8/8, todos con 0 errores de ejecución. El caso alterado H1 → H99 se rechaza en la prueba de regresión. Los códigos de salida 100 de v1 y v2 corresponden a los fallos de evaluación esperados, v3 terminó con código 0.
+
+La herramienta se instaló fuera del repositorio y se indicó explícitamente el ejecutable Python para reproducir las grabaciones. La opción `--no-write` exporta el reporte sin persistir resultados en la base local. Las huellas SHA-256 de las grabaciones se comprobaron antes y después, no se modificaron las respuestas ni se generaron nuevas llamadas a un LLM durante estas evaluaciones.
