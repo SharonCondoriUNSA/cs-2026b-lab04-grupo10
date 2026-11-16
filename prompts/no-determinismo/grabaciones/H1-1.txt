@@ -1,0 +1,10 @@
+{\
+"historia_id": "H1",\
+"invest_ok": false,\
+"preguntas": [\
+"¿Cuáles son los tipos de materiales reciclables aceptados y existe un peso estimado mínimo o máximo permitido por solicitud?",\
+"¿Qué datos exactos se requieren para definir el punto de recojo (por ejemplo, dirección escrita, referencia o coordenadas) y existe una zona geográfica de cobertura específica en Arequipa?",\
+"¿El vecino debe seleccionar una fecha u horario preferido para la recolección o el sistema asigna la gestión sin intervención del usuario?"\
+],\
+"escenarios": []\
+}

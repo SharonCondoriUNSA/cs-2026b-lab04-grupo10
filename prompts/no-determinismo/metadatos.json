@@ -1,0 +1,17 @@
+{
+  "estado": "nueve respuestas recibidas y comparadas, modelo exacto no identificado",
+  "modelo": "ChatGPT, modalidad Instantanea reportada por la usuaria, modelo exacto no identificado",
+  "fecha": "2026-11-16",
+  "interfaz": "ChatGPT web",
+  "temperatura": "No informada ni controlada",
+  "version": "criterios/v3.1",
+  "huellas_entradas": {
+    "H1": "56262c25ef146366fb792c400b4feb000b18252bd11ee5cf6b5e54bf54a8587f",
+    "H7": "798cd2fba2552fcf75c53922d48bedb94539b726806a72cdfa993210eb85e3bc",
+    "H8": "e48142e3f47f346d0928ea34d807ab87486845a721ec13e5689ee343fff40578"
+  },
+  "fecha_alcance": "Fecha de recepcion, sin registro independiente de hora de ejecucion",
+  "origen": "Respuestas pegadas por la usuaria en esta conversacion",
+  "duplicado_h1": "La usuaria confirmo que el cuarto bloque H1 era un duplicado al pegar, no una cuarta ejecucion",
+  "transporte": "Se conserva el texto recibido, con barras de fin de linea y entidades HTML de sangria. Solo se decodifica esa presentacion para analizar JSON, sin corregir contenido."
+}

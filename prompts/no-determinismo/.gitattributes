@@ -1,0 +1,3 @@
+# Conservar los bytes usados en las huellas, tambien entre Windows y Linux.
+entradas/*.txt -text whitespace=cr-at-eol
+grabaciones/*.txt -text whitespace=cr-at-eol

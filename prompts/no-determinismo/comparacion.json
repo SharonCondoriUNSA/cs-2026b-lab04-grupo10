@@ -1,0 +1,123 @@
+{
+  "metadatos": {
+    "estado": "nueve respuestas recibidas y comparadas, modelo exacto no identificado",
+    "modelo": "ChatGPT, modalidad Instantanea reportada por la usuaria, modelo exacto no identificado",
+    "fecha": "2026-11-16",
+    "interfaz": "ChatGPT web",
+    "temperatura": "No informada ni controlada",
+    "version": "criterios/v3.1",
+    "huellas_entradas": {
+      "H1": "56262c25ef146366fb792c400b4feb000b18252bd11ee5cf6b5e54bf54a8587f",
+      "H7": "798cd2fba2552fcf75c53922d48bedb94539b726806a72cdfa993210eb85e3bc",
+      "H8": "e48142e3f47f346d0928ea34d807ab87486845a721ec13e5689ee343fff40578"
+    },
+    "fecha_alcance": "Fecha de recepcion, sin registro independiente de hora de ejecucion",
+    "origen": "Respuestas pegadas por la usuaria en esta conversacion",
+    "duplicado_h1": "La usuaria confirmo que el cuarto bloque H1 era un duplicado al pegar, no una cuarta ejecucion",
+    "transporte": "Se conserva el texto recibido, con barras de fin de linea y entidades HTML de sangria. Solo se decodifica esa presentacion para analizar JSON, sin corregir contenido."
+  },
+  "resultados": [
+    {
+      "caso": "H1",
+      "variantes_textuales": 3,
+      "variantes_json": 3,
+      "respuestas": [
+        {
+          "archivo": "H1-1.txt",
+          "sha256": "bba49399a70069e570a861d4cfa5702f2bc58c3f20950bff98c87d298e74352c",
+          "json_normalizado_sha256": "d54da79392fd73c5a62d8f444468cecaa7afdd4c7df5bef6dd62fe0aeaea0c41",
+          "esquema_valido": true,
+          "identificador_correcto": true,
+          "invest_ok": false,
+          "coincide_invest_esperado": false
+        },
+        {
+          "archivo": "H1-2.txt",
+          "sha256": "608cfa20d11303b70793dce917d085352889ff628482b22d1afe037b8ca152e1",
+          "json_normalizado_sha256": "5007db5d6326a96b314162b79dd31bc6be90bb30a2d1708269767125b0a40155",
+          "esquema_valido": true,
+          "identificador_correcto": true,
+          "invest_ok": false,
+          "coincide_invest_esperado": false
+        },
+        {
+          "archivo": "H1-3.txt",
+          "sha256": "ef3b3adcd360f14f900be9ed4b7962c93b16796c2737531ce81d95fab6a6312b",
+          "json_normalizado_sha256": "67f199da046cfce794aaf0fa6c03cbc4f243cc3dd3e4e22a539e9bd88ed19690",
+          "esquema_valido": true,
+          "identificador_correcto": true,
+          "invest_ok": false,
+          "coincide_invest_esperado": false
+        }
+      ]
+    },
+    {
+      "caso": "H7",
+      "variantes_textuales": 3,
+      "variantes_json": 3,
+      "respuestas": [
+        {
+          "archivo": "H7-1.txt",
+          "sha256": "ab423d026fa1fd48383b1762021a71def4d54cea60015b6d9fbe46deb97c403c",
+          "json_normalizado_sha256": "aa4c23ec2858c871536b435423ee5025ab2a5ceffa739caaa87ea55564dbbfcf",
+          "esquema_valido": true,
+          "identificador_correcto": true,
+          "invest_ok": false,
+          "coincide_invest_esperado": true
+        },
+        {
+          "archivo": "H7-2.txt",
+          "sha256": "013f082dfc6dd9f2293b3754de09d27cde09750eb7dca9900c624df30a444fef",
+          "json_normalizado_sha256": "627df1ec8f1eed86762798648d01245574328920ccd306243a749134fba6bb42",
+          "esquema_valido": true,
+          "identificador_correcto": true,
+          "invest_ok": false,
+          "coincide_invest_esperado": true
+        },
+        {
+          "archivo": "H7-3.txt",
+          "sha256": "3aa38d5134ca9b0f70ccdc73f259f1ad36c1b63334c4e4b031899f8796871dcf",
+          "json_normalizado_sha256": "2dde27ba341f3953972c483dce1bfdb164843693b54c98c50e1c339a4e70d59b",
+          "esquema_valido": true,
+          "identificador_correcto": true,
+          "invest_ok": false,
+          "coincide_invest_esperado": true
+        }
+      ]
+    },
+    {
+      "caso": "H8",
+      "variantes_textuales": 2,
+      "variantes_json": 2,
+      "respuestas": [
+        {
+          "archivo": "H8-1.txt",
+          "sha256": "5a343a6bda24446fa0a328d10330b823abf21a1a171ce5dceac00d3fed00c0f7",
+          "json_normalizado_sha256": "fe8ee92d14e82f241de349aec89547274e35a87adf9c4a3eda1035e0c8e763df",
+          "esquema_valido": true,
+          "identificador_correcto": true,
+          "invest_ok": true,
+          "coincide_invest_esperado": true
+        },
+        {
+          "archivo": "H8-2.txt",
+          "sha256": "661fa45b578151265a6705530a9dbe5eb02ebe129050a2cd2c13f3dcd20b156e",
+          "json_normalizado_sha256": "75a07b271f61125a8bf7d7790fb709f9dd2e795f8b293124db464c4357297a24",
+          "esquema_valido": true,
+          "identificador_correcto": true,
+          "invest_ok": false,
+          "coincide_invest_esperado": false
+        },
+        {
+          "archivo": "H8-3.txt",
+          "sha256": "661fa45b578151265a6705530a9dbe5eb02ebe129050a2cd2c13f3dcd20b156e",
+          "json_normalizado_sha256": "75a07b271f61125a8bf7d7790fb709f9dd2e795f8b293124db464c4357297a24",
+          "esquema_valido": true,
+          "identificador_correcto": true,
+          "invest_ok": false,
+          "coincide_invest_esperado": false
+        }
+      ]
+    }
+  ]
+}

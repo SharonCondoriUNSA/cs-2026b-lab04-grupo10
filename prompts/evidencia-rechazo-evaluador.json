@@ -1,0 +1,7 @@
+{
+  "origen": "Control sintetico para probar aserciones, no respuesta nueva de un LLM",
+  "decision": "Rechazar la propuesta que exige descripcion en la misma linea",
+  "descripcion_multilinea_valida": "Cuenta los elementos de la coleccion de recojos.\n\nArgs:\n    recojos:\n        Coleccion cuya longitud se consulta.",
+  "propuesta_estricta_acepta": false,
+  "evaluador_corregido_acepta": true
+}

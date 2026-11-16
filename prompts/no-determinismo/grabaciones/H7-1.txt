@@ -1,0 +1,10 @@
+{\
+&#x20; "historia_id": "H7",\
+&#x20; "invest_ok": false,\
+&#x20; "preguntas": [\
+&#x20;   "¿Qué operaciones de EcoRecicla AQP deben considerarse rápidas y cuál es el tiempo máximo de respuesta aceptable para cada una?",\
+&#x20;   "¿Qué tareas específicas debe poder realizar el usuario fácilmente y qué criterios observables permitirán evaluar esa facilidad de uso?",\
+&#x20;   "¿En qué dispositivos o condiciones de uso se deben cumplir los criterios de rapidez y facilidad de uso?"\
+&#x20; ],\
+&#x20; "escenarios": []\
+}
