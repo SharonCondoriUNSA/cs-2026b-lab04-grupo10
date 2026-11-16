@@ -1,0 +1,10 @@
+{\
+"historia_id": "H7",\
+"invest_ok": false,\
+"preguntas": [\
+"¿Qué funcionalidades, flujos o pantallas específicas deben ser rápidas y fáciles de usar?",\
+"¿Cuáles son los tiempos máximos de respuesta esperados para considerar que el sistema es rápido?",\
+"¿Qué criterios o indicadores observables definirán que la aplicación es fácil de usar para el usuario?"\
+],\
+"escenarios": []\
+}

@@ -1,0 +1,10 @@
+{\
+&#x20; "historia_id": "H7",\
+&#x20; "invest_ok": false,\
+&#x20; "preguntas": [\
+&#x20;   "¿Qué funcionalidades, flujos o pantallas específicas de EcoRecicla AQP deben ser rápidas y fáciles de usar?",\
+&#x20;   "¿Cuál es el tiempo máximo de respuesta aceptable para considerar que cada funcionalidad es rápida?",\
+&#x20;   "¿Qué criterios medibles permitirán comprobar que la aplicación es fácil de usar, por ejemplo, cantidad de pasos para completar una tarea o porcentaje de usuarios que la completan sin ayuda?"\
+&#x20; ],\
+&#x20; "escenarios": []\
+}

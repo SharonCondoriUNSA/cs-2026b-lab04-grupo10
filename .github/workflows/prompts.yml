@@ -1,0 +1,52 @@
+name: Evaluacion de prompts Lab09
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'lab09-*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PROMPTFOO_DISABLE_TELEMETRY: '1'
+      PROMPTFOO_DISABLE_UPDATE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Instalar dependencias Python
+        run: python -m pip install -r requirements-lab09.txt
+      - name: Seleccionar Python del proveedor grabado
+        run: echo "PROMPTFOO_PYTHON=$(command -v python)" >> "$GITHUB_ENV"
+      - name: Probar los evaluadores JavaScript
+        run: node --test prompts/criterios/tests/historia-id.test.cjs prompts/docstrings/tests/parametros-docstring.test.cjs
+      - name: Probar integracion y seguridad
+        run: |
+          python -m unittest discover -s tests -p test_generadores_prompt.py -v
+          python -m unittest discover -s tests -p test_evaluacion_prompts.py -v
+          python -m unittest discover -s prompts/seguridad/tests -p 'test_*.py' -v
+      - name: Verificar comparacion de no determinismo
+        run: python prompts/no-determinismo/comparar.py --verificar
+      - name: Ejecutar npx promptfoo eval sobre las grabaciones
+        run: python scripts/evaluar_prompts.py
+      - name: Conservar reportes y registros
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluaciones-prompts
+          path: .ci-resultados/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 7

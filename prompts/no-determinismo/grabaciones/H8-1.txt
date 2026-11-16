@@ -1,0 +1,44 @@
+{\
+"historia_id": "H8",\
+"invest_ok": true,\
+"preguntas": [],\
+"escenarios": [\
+{\
+"titulo": "Registro exitoso de solicitud de recojo de residuos reciclables",\
+"tipo": "exito",\
+"dado": [\
+"Que el vecino desea gestionar la recolección de sus residuos reciclables",\
+"Que dispone de los materiales a entregar, su peso estimado y el punto de recojo"\
+],\
+"cuando": "El vecino registra la solicitud indicando los materiales, el peso estimado y el punto de recojo",\
+"entonces": [\
+"El sistema acepta y registra la solicitud de recojo con los datos proporcionados",\
+"Se confirma al vecino que su solicitud quedó registrada para que EcoRecicla AQP gestione la recolección"\
+]\
+},\
+{\
+"titulo": "Rechazo de solicitud por falta de datos obligatorios",\
+"tipo": "error",\
+"dado": [\
+"Que el vecino inicia una solicitud de recojo de residuos reciclables"\
+],\
+"cuando": "Intenta enviar la solicitud omitiendo los materiales, el peso estimado o el punto de recojo",\
+"entonces": [\
+"El sistema impide el registro de la solicitud",\
+"Se informa al vecino que debe completar los datos faltantes para continuar"\
+]\
+},\
+{\
+"titulo": "Validación de peso estimado inválido",\
+"tipo": "borde",\
+"dado": [\
+"Que el vecino completa los materiales y el punto de recojo"\
+],\
+"cuando": "Ingresa un peso estimado igual a cero o negativo al registrar la solicitud",\
+"entonces": [\
+"El sistema rechaza el valor ingresado como peso estimado",\
+"Se solicita ingresar un peso estimado válido mayor a cero para registrar la solicitud"\
+]\
+}\
+]\
+}

@@ -1,0 +1,10 @@
+{\
+&#x20; "historia_id": "H1",\
+&#x20; "invest_ok": false,\
+&#x20; "preguntas": [\
+&#x20;   "¿Qué materiales reciclables acepta EcoRecicla AQP y qué debe ocurrir si el vecino indica un material no aceptado?",\
+&#x20;   "¿El peso estimado debe registrarse por cada material o como peso total de la solicitud, y cuáles son los valores válidos?",\
+&#x20;   "¿Qué información es obligatoria para identificar el punto de recojo y existen restricciones sobre las ubicaciones permitidas?"\
+&#x20; ],\
+&#x20; "escenarios": []\
+}
