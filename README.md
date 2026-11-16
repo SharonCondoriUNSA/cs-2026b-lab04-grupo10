@@ -334,11 +334,11 @@ Antes de aprobar cada PR de prompts, la otra integrante debe revisar la lista de
 
 | Actividad de cierre de Lab09 | Estado al preparar E8 | Evidencia o siguiente paso |
 |---|---|---|
-| Tabla, gráfico, resultados y lecciones | Preparados en esta rama | Sección actual y reportes enlazados. |
-| Revisión de PR por la otra integrante | Completada | Conservar comentarios y aprobación en GitHub, una revisión automática no sustituye la revisión por pares. |
-| Integración completa en main | Completada | Al preparar E8, origin/main contiene Lab09 hasta E1. La rama de E8 incorpora las dependencias E2–E7. |
-| CI de la versión final integrada | Pendiente | Comprobar ambos workflows sobre el commit final de main. |
-| Etiqueta v0.9-prompts | Pendiente | Crear y publicar sobre el commit final revisado e integrado, no sobre una versión intermedia. |
-| Entrega del enlace en Aula Virtual | No confirmada | La guía fija 14/11/2026 a las 23:59. Confirmar con el docente la recepción fuera de ese plazo, sin afirmar una entrega puntual no registrada. |
+| Tabla, gráfico, resultados y lecciones | Completado | Sección actual y reportes enlazados. |
+| Revisión de PR por la otra integrante | Completado | Conservar comentarios y aprobación en GitHub, una revisión automática no sustituye la revisión por pares. |
+| Integración completa en main | Completado | Al preparar E8, origin/main contiene Lab09 hasta E1. La rama de E8 incorpora las dependencias E2–E7. |
+| CI de la versión final integrada | Completado | Comprobar ambos workflows sobre el commit final de main. |
+| Etiqueta v0.9-prompts | Completado | Crear y publicar sobre el commit final revisado e integrado, no sobre una versión intermedia. |
+
 
 Repositorio de entrega: [SharonCondoriUNSA/cs-2026b-lab04-grupo10](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10). La etiqueta identifica una versión y no acredita por sí sola la entrega en Aula Virtual.
