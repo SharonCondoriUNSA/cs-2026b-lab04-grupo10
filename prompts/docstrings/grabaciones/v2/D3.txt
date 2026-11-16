@@ -1,0 +1,10 @@
+{
+  "nombre": "registrar_pendiente",
+  "resumen": "Valida los datos y registra la solicitud en estado pendiente.",
+  "docstring": "Valida los datos y registra la solicitud en estado pendiente.\n\nRaises:\n    ValueError: Si las validaciones del método no se cumplen.",
+  "parametros": [],
+  "retorno": null,
+  "excepciones": [
+    "ValueError"
+  ]
+}

@@ -1,0 +1,1 @@
+"""Comprueba si las coordenadas de la instancia son válidas."""

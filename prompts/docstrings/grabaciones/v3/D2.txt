@@ -1,0 +1,8 @@
+{
+  "nombre": "calcular_peso_estimado_kg",
+  "resumen": "Suma los pesos estimados de los detalles de la solicitud.",
+  "docstring": "Suma los pesos estimados de los detalles de la solicitud.\n\nReturns:\n    Devuelve la suma de los pesos como Decimal. Si no hay detalles, devuelve Decimal('0').",
+  "parametros": [],
+  "retorno": "Devuelve la suma de los pesos como Decimal. Si no hay detalles, devuelve Decimal('0').",
+  "excepciones": []
+}
