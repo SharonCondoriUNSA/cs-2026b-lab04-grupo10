@@ -31,6 +31,6 @@ La opción `--cli-node` permite indicar una instalación ya disponible de la mis
 
 - Workflow preparado y ejecutor comprobado localmente.
 - [Bitácora](bitacora-ia.md) con seis interacciones reales y una propuesta rechazada con [evidencia](evidencia-rechazo-evaluador.json).
-- [No determinismo](no-determinismo/README.md) documentado con nueve respuestas proporcionadas por la usuaria, comparación y reflexión de cinco líneas. Se informa el modelo exacto no identificado, el transporte del pegado y la diferencia entre esquema (9/9) y decisión INVEST esperada (4/9).
+- [No determinismo](no-determinismo/README.md) documentado con nueve respuestas proporcionadas por la usuaria, comparación y reflexión de cinco líneas. Se registra GPT-6 Instant según la confirmación de la usuaria, el transporte del pegado y la diferencia entre esquema (9/9) y decisión INVEST esperada (4/9).
 
 La preparación local de E7 está completa. Falta publicar la rama y comprobar la ejecución remota de Actions. El workflow también verifica la integridad de la comparación de no determinismo, sin exigir una tasa funcional perfecta ni ocultar las discrepancias observadas.

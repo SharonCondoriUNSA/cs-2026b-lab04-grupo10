@@ -1,6 +1,6 @@
 {
-  "estado": "nueve respuestas recibidas y comparadas, modelo exacto no identificado",
-  "modelo": "ChatGPT, modalidad Instantanea reportada por la usuaria, modelo exacto no identificado",
+  "estado": "nueve respuestas recibidas y comparadas",
+  "modelo": "GPT-6 Instant",
   "fecha": "2026-11-16",
   "interfaz": "ChatGPT web",
   "temperatura": "No informada ni controlada",
@@ -13,5 +13,6 @@
   "fecha_alcance": "Fecha de recepcion, sin registro independiente de hora de ejecucion",
   "origen": "Respuestas pegadas por la usuaria en esta conversacion",
   "duplicado_h1": "La usuaria confirmo que el cuarto bloque H1 era un duplicado al pegar, no una cuarta ejecucion",
-  "transporte": "Se conserva el texto recibido, con barras de fin de linea y entidades HTML de sangria. Solo se decodifica esa presentacion para analizar JSON, sin corregir contenido."
+  "transporte": "Se conserva el texto recibido, con barras de fin de linea y entidades HTML de sangria. Solo se decodifica esa presentacion para analizar JSON, sin corregir contenido.",
+  "modelo_fuente": "Nombre confirmado por la usuaria el 2026-11-16, sin verificacion independiente de la interfaz"
 }

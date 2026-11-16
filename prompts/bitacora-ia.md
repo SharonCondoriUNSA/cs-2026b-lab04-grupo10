@@ -53,3 +53,6 @@ Verificación local del ejecutor de CI completada el 2026-11-16: diez evaluacion
 La usuaria compartió las respuestas de ChatGPT y confirmó que el cuarto H1 era un duplicado al pegar. Se conservaron nueve bloques y se registró la modalidad visible «Instantánea», sin inventar una versión de modelo. La fecha registrada es la de recepción. Solo se decodifican escapes de presentación del chat para analizar JSON, sin modificar los textos conservados ni corregir las respuestas.
 
 El comparador obtuvo tres variantes de JSON para H1, tres para H7 y dos para H8. Las nueve respuestas cumplen esquema e identidad, pero solo cuatro coinciden con la decisión INVEST esperada del dataset. H8 alterna entre true y false. Se documentaron estas discrepancias, los límites del contexto no verificado y una reflexión de cinco líneas. No se ajustaron expectativas ni grabaciones para producir una tasa superior. La comprobación remota de CI continúa pendiente de publicación.
+
+
+Aclaración de procedencia del 2026-11-16: la usuaria confirmó que el modelo utilizado fue GPT-6 Instant. Se actualizó el nombre inicialmente no identificado en los metadatos, la comparación y su documentación. No se modificaron las nueve respuestas ni sus resultados, y la temperatura sigue sin conocerse.
