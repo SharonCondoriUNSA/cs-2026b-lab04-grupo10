@@ -37,7 +37,9 @@ class RedTeamTests(unittest.TestCase):
         huellas = json.loads((BASE / "grabaciones" / "huellas.json").read_text(encoding="utf-8"))
         self.assertEqual(len(huellas), 16)
         for nombre,esperada in huellas.items():
-            self.assertEqual(sha256((BASE / "grabaciones" / nombre).read_bytes()).hexdigest(), esperada)
+            # Git puede entregar estos archivos con LF o CRLF según el sistema operativo.
+            contenido = (BASE / "grabaciones" / nombre).read_bytes().replace(b"\r\n", b"\n")
+            self.assertEqual(sha256(contenido).hexdigest(), esperada)
 
     def test_proveedor_reproduce_cada_texto_sin_transformarlo(self):
         for tarea,identificadores in proveedor.IDS.items():
