@@ -253,3 +253,92 @@ Estado de integración actualizado el 01/11/2026: E5 llegó a `main` mediante #3
 | Workflow de la versión integrada | Verde | Ejecución 41357223078 aprobada sobre c4bc607. Cada cambio posterior debe comprobar su propia ejecución antes de etiquetar. |
 | Crear la etiqueta `v0.8-arquitectura` | Pendiente | Crear y publicar después de integrar y revisar los entregables en `main`. |
 | Presentación del informe y entrega del enlace | Presentación prevista para el 01/11/2026, entrega no confirmada | El equipo indicó que presentará el informe en esta fecha. Confirmar el registro en Aula Virtual cuando se realice, sin darlo por entregado anticipadamente. |
+
+
+## Prompt engineering (Lab 09)
+
+EcoRecicla AQP aplica prompts versionados a dos tareas del equipo: **A, generar criterios de aceptación en JSON**, y **B, generar docstrings y documentación de funciones existentes**. Los recursos de AgroConecta se usaron como referencia metodológica, los datasets y contratos corresponden a este caso.
+
+### Versiones y tasas de aprobación
+
+Las siguientes tasas provienen de los reportes reales de Promptfoo 0.110.0 con proveedores grabados y las aserciones corregidas. Cada versión se compara sobre los mismos ocho casos de su tarea. Aprobar significa satisfacer esas aserciones, no acreditar toda la corrección semántica de la respuesta.
+
+| Tarea | Versión y cambio principal | Casos aprobados | Tasa | Reporte |
+|---|---|---:|---:|---|
+| A · Criterios | [v1](prompts/criterios/v1.txt), solicitud abierta | 0/8 | 0 % | [JSON v1](prompts/criterios/resultados-v1.json) |
+| A · Criterios | [v2](prompts/criterios/v2.txt), rol y estructura JSON | 2/8 | 25 % | [JSON v2](prompts/criterios/resultados-v2.json) |
+| A · Criterios | [v3](prompts/criterios/v3.txt), INVEST, restricciones y ejemplo | 8/8 | 100 % | [JSON v3](prompts/criterios/resultados-v3.json) |
+| B · Docstrings | [v1](prompts/docstrings/v1.txt), solicitud abierta | 0/8 | 0 % | [JSON v1](prompts/docstrings/resultados-v1.json) |
+| B · Docstrings | [v2](prompts/docstrings/v2.txt), contrato y argumentos explícitos | 8/8 | 100 % | [JSON v2](prompts/docstrings/resultados-v2.json) |
+| B · Docstrings | [v3](prompts/docstrings/v3.txt), restricciones y verificación de firma | 8/8 | 100 % | [JSON v3](prompts/docstrings/resultados-v3.json) |
+
+Los seis reportes tienen **cero errores de ejecución**. Criterios supera el umbral de 85 % con v3. En docstrings v3 conserva el resultado de v2, sin atribuirle una mejora de tasa inexistente. Las decisiones se explican en las [iteraciones de criterios](prompts/criterios/iteraciones.md) y de [docstrings](prompts/docstrings/iteraciones.md).
+
+![Casos aprobados por versión y tarea, con ocho casos por tarea](prompts/img/resultados-versiones.png)
+
+*Figura. Tasas de aprobación de las versiones v1–v3 sobre respuestas grabadas de EcoRecicla AQP.* El gráfico se genera directamente desde los seis reportes JSON. No representa latencia, costo ni una comparación entre modelos. Para regenerarlo, instalar Matplotlib como dependencia opcional de documentación y ejecutar `python prompts/graficar_resultados.py`.
+
+### Seguridad y repetición de respuestas
+
+La versión [v3.1 de criterios](prompts/criterios/v3.1.txt) y la [v3.1 de docstrings](prompts/docstrings/v3.1.txt) añaden serialización de datos, límites de confianza, idioma, formato y no revelación. E5 usa otro conjunto, con seis ataques y dos controles distribuidos entre ambas tareas:
+
+| Evaluación de seguridad | Antes, v3 | Después, v3.1 | Evidencia |
+|---|---:|---:|---|
+| Criterios, tres ataques y un control | 4/4, 100 % | 4/4, 100 % | [Antes](prompts/seguridad/resultados-criterios-antes.json) · [Después](prompts/seguridad/resultados-criterios-despues.json) |
+| Docstrings, tres ataques y un control | 4/4, 100 % | 4/4, 100 % | [Antes](prompts/seguridad/resultados-docstrings-antes.json) · [Después](prompts/seguridad/resultados-docstrings-despues.json) |
+
+No se mezcla este conjunto con los ocho casos de cada tarea ni se presenta v3.1 como una mejora cuantitativa demostrada. La [tabla de ataques y defensas](prompts/seguridad/red-team.md) y la [procedencia de las respuestas](prompts/seguridad/grabaciones/ORIGEN.md) explican el alcance de la generación asistida por lotes.
+
+En E7, la usuaria aportó tres repeticiones de H1, H7 y H8 con **GPT-6 Instant**, según su confirmación. Las nueve respuestas cumplen esquema e identidad después de decodificar los escapes del pegado, pero solo **4/9** coinciden con la decisión INVEST esperada. H8 cambia entre aceptar la historia y pedir aclaraciones. Esta medida de INVEST es distinta de la aprobación de todas las aserciones de la tabla anterior. El [análisis de no determinismo](prompts/no-determinismo/README.md) conserva los textos recibidos, hashes, comparación y reflexión, y declara las limitaciones de temperatura y contexto no verificados.
+
+### Contratos, integración y reproducción
+
+- E1: [dataset de historias](prompts/criterios/casos.yaml) y [JSON Schema](prompts/criterios/esquema.json). La adaptación de HU al caso y su trazabilidad se documentan en los archivos del entregable, sin presentarlas como un backlog Scrum original que no se tuvo disponible.
+- E4: [dataset de funciones](prompts/docstrings/casos.yaml) y [contrato de docstrings](prompts/docstrings/contrato.json).
+- E6: [integración y límites](prompts/integracion.md), [GeneradorCriterios](src/solicitudes/generador_criterios.py), [GeneradorDocstrings](src/solicitudes/generador_docstrings.py) y [pruebas con ProveedorLLM grabado](tests/test_generadores_prompt.py).
+- E7: [workflow de evaluación](.github/workflows/prompts.yml), [método y tasas esperadas de CI](prompts/evaluacion-ci.md) y [bitácora de apoyo de IA](prompts/bitacora-ia.md), con propuestas aceptadas y una rechazada con evidencia.
+
+Desde la raíz del repositorio, con Python, Node y npm disponibles:
+
+```console
+python -m pip install -r requirements-lab09.txt
+node --test prompts/criterios/tests/historia-id.test.cjs prompts/docstrings/tests/parametros-docstring.test.cjs
+python -m unittest discover -s tests -p test_generadores_prompt.py -v
+python -m unittest discover -s tests -p test_evaluacion_prompts.py -v
+python -m unittest discover -s prompts/seguridad/tests -p "test_*.py" -v
+python prompts/no-determinismo/comparar.py --verificar
+python scripts/evaluar_prompts.py --salida .ci-resultados/reproduccion
+```
+
+El último comando ejecuta diez configuraciones con `npx --yes promptfoo@0.110.0 eval --no-cache --no-write`, procesa 64 casos y exige las tasas de referencia y cero errores. Necesita acceso para descargar la herramienta si no está disponible. Usar una carpeta de salida nueva en cada ejecución. Los fallos esperados de las líneas base se comprueban, no se ocultan con `continue-on-error`. Los generadores validan las respuestas antes de usarlas, sin ejecutar ni aplicar código producido por el modelo.
+
+### Lecciones aprendidas
+
+1. Un contrato JSON y una regla INVEST explícita permiten comprobar resultados, mientras una solicitud abierta deja decisiones sin especificar.
+2. Los evaluadores también pueden fallar. Se corrigieron la identidad de historia y la correspondencia de parámetros dentro del docstring, con regresiones que no modifican las grabaciones.
+3. Un 100 % sobre ocho respuestas grabadas no garantiza el mismo comportamiento en consultas nuevas. El experimento de E7 mostró decisiones INVEST discrepantes pese al formato válido.
+4. Las defensas deben cubrir instrucciones directas, comentarios y rupturas de delimitadores. Un conjunto limitado sin ataques exitosos no prueba seguridad general ni superioridad causal de una versión.
+5. Las huellas y los atributos de Git deben conservar los bytes entre Windows y Linux. CI pasó después de corregir la conversión de saltos de línea, manteniendo activa la comprobación de integridad.
+
+### Revisión por pares y cierre
+
+La [ejecución de E7 sobre 2b84a6e](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10/actions/runs/43857185655) aprobó los evaluadores, integración, seguridad, comparación y diez evaluaciones de Promptfoo. Esa evidencia pertenece a ese commit, cada cambio posterior debe pasar su propia ejecución.
+
+Antes de aprobar cada PR de prompts, la otra integrante debe revisar la lista del Paso 9 de la guía:
+
+- El diff explica el cambio y enlaza el caso que lo motivó.
+- No hay regresiones en los casos que antes aprobaban.
+- El dataset conserva al menos un adversario y este sigue pasando.
+- Prompts y grabaciones no incluyen datos personales reales, credenciales ni información confidencial.
+- La salida se valida contra el esquema antes de usarse en el código.
+
+| Actividad de cierre de Lab09 | Estado al preparar E8 | Evidencia o siguiente paso |
+|---|---|---|
+| Tabla, gráfico, resultados y lecciones | Preparados en esta rama | Sección actual y reportes enlazados. |
+| Revisión de PR por la otra integrante | Pendiente de confirmar el cierre de todos | Conservar comentarios y aprobación en GitHub, una revisión automática no sustituye la revisión por pares. |
+| Integración completa en main | Pendiente | Al preparar E8, origin/main contiene Lab09 hasta E1. La rama de E8 incorpora las dependencias E2–E7. |
+| CI de la versión final integrada | Pendiente | Comprobar ambos workflows sobre el commit final de main. |
+| Etiqueta v0.9-prompts | Pendiente | Crear y publicar sobre el commit final revisado e integrado, no sobre una versión intermedia. |
+| Entrega del enlace en Aula Virtual | No confirmada | La guía fija 14/11/2026 a las 23:59. Confirmar con el docente la recepción fuera de ese plazo, sin afirmar una entrega puntual no registrada. |
+
+Repositorio de entrega: [SharonCondoriUNSA/cs-2026b-lab04-grupo10](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10). La etiqueta identifica una versión y no acredita por sí sola la entrega en Aula Virtual.
