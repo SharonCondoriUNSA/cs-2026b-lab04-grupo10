@@ -8,6 +8,40 @@
 
 Como vecino, quiero solicitar el recojo de mis residuos reciclables indicando los materiales, su peso estimado y el punto de recojo, para que EcoRecicla AQP pueda gestionar su recolección.
 
+## Historias complementarias para el dataset de E1
+
+Las seis historias de este conjunto siguen la secuencia de avance del caso EcoRecicla AQP trabajada en los laboratorios. HU-01 corresponde a la solicitud de recojo; H2-H6 se formularon a partir de los requisitos funcionales, escenarios de calidad y decisiones de arquitectura desarrollados para el mismo caso. Cada historia incluye su trazabilidad y expectativas observables para preparar los casos de E1.
+
+### H2 — Consultar la ruta diaria
+
+Como reciclador, quiero consultar la ruta del día y la lista ordenada de recojos asignados, para organizar las atenciones de mi jornada.
+
+**Trazabilidad:** RF-02 y QA-03 en `docs/architecture/drivers.md`. La consulta debe devolver la lista ordenada; QA-03 fija p95 ≤ 2 segundos en hora pico.
+
+### H3 — Validar entregas y registrar el pesaje
+
+Como reciclador, quiero confirmar la entrega y registrar el peso real de los materiales recolectados, para validar el recojo y contabilizar lo reciclado.
+
+**Trazabilidad:** RF-03 en `docs/architecture/drivers.md` y estados RECOGIDA/PESADA en E3 de este documento. El peso real debe ser positivo; no sustituye el peso estimado de la solicitud.
+
+### H4 — Consultar puntos acumulados
+
+Como vecino, quiero consultar los puntos canjeables que he acumulado por recojos verificados, para conocer los beneficios disponibles.
+
+**Trazabilidad:** RF-04 en `docs/architecture/drivers.md`. Las solicitudes pendientes no cuentan como recojos verificados.
+
+### H5 — Consultar reportes por distrito
+
+Como representante municipal, quiero consultar reportes consolidados de toneladas recicladas por distrito, para revisar los resultados del programa.
+
+**Trazabilidad:** RF-05 en `docs/architecture/drivers.md`. Los totales se agrupan por distrito y periodo consultado; no se presupone una herramienta de visualización específica.
+
+### H6 — Registrar recojos sin conexión
+
+Como reciclador, quiero conservar los registros de recojo mientras no haya conexión y sincronizarlos al recuperarla, para evitar perder entregas realizadas durante la ruta.
+
+**Trazabilidad:** QA-02/QA-07, ADR-003 y ADR-007. El comportamiento esperado se limita a los umbrales documentados (hasta 120 registros durante 20 minutos y sincronización en ≤ 30 s bajo el escenario especificado), sin afirmar que la integración de producción ya esté implementada.
+
 ## Criterios de aceptación
 
 - **CA-01 (éxito):** Dado un vecino identificado, un punto de recojo en un distrito con cobertura y al menos un material aceptado con peso estimado mayor que cero, cuando solicita el recojo, entonces se guarda una solicitud con identificador único, estado PENDIENTE, punto de recojo y detalle de materiales, y se devuelve su identificador como confirmación.
