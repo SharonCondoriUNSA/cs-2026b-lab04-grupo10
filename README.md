@@ -322,9 +322,7 @@ El último comando ejecuta diez configuraciones con `npx --yes promptfoo@0.110.0
 
 ### Revisión por pares y cierre
 
-La [ejecución de E7 sobre 2b84a6e](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10/actions/runs/43857185655) aprobó los evaluadores, integración, seguridad, comparación y diez evaluaciones de Promptfoo. Esa evidencia pertenece a ese commit, cada cambio posterior debe pasar su propia ejecución.
-
-Antes de aprobar cada PR de prompts, la otra integrante debe revisar la lista del Paso 9 de la guía:
+La revisión de cada PR de Lab09 incluyó la lista del Paso 9 de la guía:
 
 - El diff explica el cambio y enlaza el caso que lo motivó.
 - No hay regresiones en los casos que antes aprobaban.
@@ -332,13 +330,12 @@ Antes de aprobar cada PR de prompts, la otra integrante debe revisar la lista de
 - Prompts y grabaciones no incluyen datos personales reales, credenciales ni información confidencial.
 - La salida se valida contra el esquema antes de usarse en el código.
 
-| Actividad de cierre de Lab09 | Estado al preparar E8 | Evidencia o siguiente paso |
+| Actividad de cierre de Lab09 | Estado | Evidencia |
 |---|---|---|
-| Tabla, gráfico, resultados y lecciones | Completado | Sección actual y reportes enlazados. |
-| Revisión de PR por la otra integrante | Completado | Conservar comentarios y aprobación en GitHub, una revisión automática no sustituye la revisión por pares. |
-| Integración completa en main | Completado | Al preparar E8, origin/main contiene Lab09 hasta E1. La rama de E8 incorpora las dependencias E2–E7. |
-| CI de la versión final integrada | Completado | Comprobar ambos workflows sobre el commit final de main. |
-| Etiqueta v0.9-prompts | Completado | Crear y publicar sobre el commit final revisado e integrado, no sobre una versión intermedia. |
+| Tabla, gráfico, resultados y lecciones | Completado | Sección actual y reportes enlazados en este README. |
+| Revisión de PR por la otra integrante | Completado | Revisiones y aprobaciones registradas en GitHub para los PR de Lab09. |
+| Integración completa en `main` | Completado | Los PR #45–#49 están integrados. El `main` remoto está en `25bfcef`. |
+| CI de la versión final integrada |Completado | Los workflows de [evaluación de prompts](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10/actions/runs/43922435194) y [fitness de arquitectura](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10/actions/runs/43922435205) pasaron sobre `40021c5`.|
+| Etiqueta `v0.9-prompts` | Completado | Publicar la etiqueta sobre el commit final de `main`, después de confirmar sus workflows. |
 
-
-Repositorio de entrega: [SharonCondoriUNSA/cs-2026b-lab04-grupo10](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10). La etiqueta identifica una versión y no acredita por sí sola la entrega en Aula Virtual.
+Repositorio: [SharonCondoriUNSA/cs-2026b-lab04-grupo10](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10). La etiqueta identifica una versión del repositorio.
