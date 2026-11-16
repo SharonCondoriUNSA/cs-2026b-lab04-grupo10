@@ -1,0 +1,15 @@
+{
+  "nombre": "registrar_recojo",
+  "resumen": "Registra la fecha de recojo de una solicitud asignada.",
+  "docstring": "Registra la fecha de recojo de una solicitud asignada.\n\nArgs:\n    fecha_recojo: Fecha y hora del recojo, representada por un objeto datetime.\n\nRaises:\n    ValueError: Si las validaciones del método no se cumplen.",
+  "parametros": [
+    {
+      "nombre": "fecha_recojo",
+      "descripcion": "Fecha y hora del recojo, representada por un objeto datetime."
+    }
+  ],
+  "retorno": null,
+  "excepciones": [
+    "ValueError"
+  ]
+}

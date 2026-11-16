@@ -1,0 +1,6 @@
+Criterios de aceptación:
+1. El reciclador puede seleccionar la fecha de su jornada y consultar los recojos que tiene asignados.
+2. La aplicación muestra la dirección, el distrito y los datos de cada parada en una lista.
+3. El sistema envía las coordenadas de las paradas a Google Maps para calcular la ruta más corta.
+4. El reciclador puede abrir la ruta optimizada en el mapa desde su celular.
+5. Si no tiene recojos asignados para ese día, se muestra un mensaje indicando que la lista está vacía.

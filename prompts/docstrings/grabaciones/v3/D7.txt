@@ -1,0 +1,21 @@
+{
+  "nombre": "acreditar",
+  "resumen": "Calcula los puntos y devuelve los datos de acreditación de una solicitud.",
+  "docstring": "Calcula los puntos y devuelve los datos de acreditación de una solicitud.\n\nArgs:\n    solicitud_id: Identificador de la solicitud a la que corresponde la acreditación.\n    material: Material usado para seleccionar la regla y la tarifa de puntos.\n    peso_real_kg: Peso real que se entrega a la regla de cálculo.\n\nReturns:\n    Devuelve un diccionario con las claves acreditacion_id y puntos.",
+  "parametros": [
+    {
+      "nombre": "solicitud_id",
+      "descripcion": "Identificador de la solicitud a la que corresponde la acreditación."
+    },
+    {
+      "nombre": "material",
+      "descripcion": "Material usado para seleccionar la regla y la tarifa de puntos."
+    },
+    {
+      "nombre": "peso_real_kg",
+      "descripcion": "Peso real que se entrega a la regla de cálculo."
+    }
+  ],
+  "retorno": "Devuelve un diccionario con las claves acreditacion_id y puntos.",
+  "excepciones": []
+}

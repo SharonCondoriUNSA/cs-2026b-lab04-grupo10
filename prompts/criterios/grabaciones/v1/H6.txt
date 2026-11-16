@@ -1,0 +1,6 @@
+Criterios de aceptación:
+1. Cuando el reciclador registra un recojo sin conexión, la PWA guarda los datos localmente en IndexedDB.
+2. La aplicación muestra cuáles registros están pendientes de sincronización.
+3. Cuando vuelve la conexión, el Service Worker envía los registros pendientes al endpoint de sincronización.
+4. El servidor utiliza una clave de idempotencia en PostgreSQL para evitar duplicar el registro si se reintenta el envío.
+5. Una vez recibido el ACK del servidor, el registro deja de aparecer como pendiente en la aplicación.

@@ -1,0 +1,15 @@
+{
+  "nombre": "registrar_pesaje",
+  "resumen": "Registra el peso real de una solicitud recogida.",
+  "docstring": "Registra el peso real de una solicitud recogida.\n\nArgs:\n    peso_real_kg: Peso real en kilogramos, como Decimal finito mayor que cero.\n\nRaises:\n    ValueError: Si las validaciones del método no se cumplen.",
+  "parametros": [
+    {
+      "nombre": "peso_real_kg",
+      "descripcion": "Peso real en kilogramos, como Decimal finito mayor que cero."
+    }
+  ],
+  "retorno": null,
+  "excepciones": [
+    "ValueError"
+  ]
+}

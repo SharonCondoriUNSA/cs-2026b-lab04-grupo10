@@ -1,0 +1,1 @@
+"""Registra el peso real de la solicitud recogida."""

@@ -1,0 +1,81 @@
+- vars:
+    id: D1
+    nombre_esperado: coordenadas_validas
+    parametros_esperados: ""
+    funcion: |
+      def coordenadas_validas(self) -> bool:
+          return (
+              isinstance(self.latitud, Decimal) and self.latitud.is_finite()
+              and isinstance(self.longitud, Decimal) and self.longitud.is_finite()
+              and -90 <= self.latitud <= 90 and -180 <= self.longitud <= 180
+          )
+- vars:
+    id: D2
+    nombre_esperado: calcular_peso_estimado_kg
+    parametros_esperados: ""
+    funcion: |
+      def calcular_peso_estimado_kg(self) -> Decimal:
+          return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))
+- vars:
+    id: D3
+    nombre_esperado: registrar_pendiente
+    parametros_esperados: ""
+    funcion: |
+      def registrar_pendiente(self) -> None:
+          if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():
+              raise ValueError("No se puede registrar como pendiente")
+          self.estado = EstadoSolicitud.PENDIENTE
+- vars:
+    id: D4
+    nombre_esperado: asignar_reciclador
+    parametros_esperados: "reciclador_id"
+    funcion: |
+      def asignar_reciclador(self, reciclador_id: UUID) -> None:
+          if self.estado != EstadoSolicitud.PENDIENTE or not isinstance(reciclador_id, UUID) or not reciclador_id.int:
+              raise ValueError("Asignación inválida")
+          self.reciclador_id = reciclador_id
+          self.estado = EstadoSolicitud.ASIGNADA
+- vars:
+    id: D5
+    nombre_esperado: registrar_recojo
+    parametros_esperados: "fecha_recojo"
+    funcion: |
+      def registrar_recojo(self, fecha_recojo: datetime) -> None:
+          if self.estado != EstadoSolicitud.ASIGNADA or not isinstance(fecha_recojo, datetime):
+              raise ValueError("Recojo inválido")
+          self.fecha_recojo = fecha_recojo
+          self.estado = EstadoSolicitud.RECOGIDA
+- vars:
+    id: D6
+    nombre_esperado: registrar_pesaje
+    parametros_esperados: "peso_real_kg"
+    funcion: |
+      def registrar_pesaje(self, peso_real_kg: Decimal) -> None:
+          if (self.estado != EstadoSolicitud.RECOGIDA
+                  or not isinstance(peso_real_kg, Decimal)
+                  or not peso_real_kg.is_finite() or peso_real_kg <= 0):
+              raise ValueError("Pesaje inválido")
+          self.peso_real_kg = peso_real_kg
+          self.estado = EstadoSolicitud.PESADA
+- vars:
+    id: D7
+    nombre_esperado: acreditar
+    parametros_esperados: "solicitud_id,material,peso_real_kg"
+    funcion: |
+      def acreditar(self, solicitud_id, material, peso_real_kg):
+          regla = self.fabrica.crear(material, self.tarifas.get(material))
+          puntos = regla.calcular(peso_real_kg)
+          return {"acreditacion_id": f"acreditacion:{solicitud_id}", "puntos": puntos}
+- vars:
+    id: D8
+    nombre_esperado: calcular
+    parametros_esperados: "peso_real_kg"
+    funcion: |
+      def calcular(self, peso_real_kg):
+          if (not isinstance(self.tarifa, Decimal) or not self.tarifa.is_finite()
+                  or self.tarifa < 0):
+              raise ValueError("Tarifa de puntos invalida")
+          if (not isinstance(peso_real_kg, Decimal)
+                  or not peso_real_kg.is_finite() or peso_real_kg <= 0):
+              raise ValueError("Peso real invalido")
+          return int((peso_real_kg * self.tarifa).to_integral_value(rounding=ROUND_DOWN))

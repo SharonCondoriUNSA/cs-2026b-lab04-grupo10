@@ -1,0 +1,6 @@
+Criterios de aceptación:
+1. El vecino puede seleccionar los materiales reciclables, ingresar su peso estimado y señalar el punto de recojo.
+2. El sistema valida que se haya seleccionado al menos un material y que el peso ingresado sea mayor que cero.
+3. Al confirmar, el sistema registra la solicitud en PostgreSQL con estado PENDIENTE y genera un identificador único.
+4. El sistema consulta la API de Rutas para comprobar si el distrito tiene cobertura.
+5. Si los datos son válidos, el vecino recibe la confirmación con el identificador de su solicitud.

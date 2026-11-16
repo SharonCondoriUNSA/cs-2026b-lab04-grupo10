@@ -1,0 +1,4 @@
+Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.
+
+Función:
+{{funcion}}
