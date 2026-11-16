@@ -1,0 +1,3 @@
+```json
+{"historia_id":"H5","invest_ok":true,"preguntas":[],"escenarios":[{"titulo":"Reporte por distrito","tipo":"exito","dado":["hay registros de recojos"],"cuando":"el representante municipal consulta el reporte","entonces":["ve los totales de toneladas agrupados por distrito"]},{"titulo":"Distrito sin datos","tipo":"borde","dado":["un distrito no tiene registros"],"cuando":"se genera el reporte","entonces":["no se inventan toneladas para ese distrito"]}]}
+```

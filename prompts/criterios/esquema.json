@@ -1,5 +1,5 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "Criterios de aceptación generados para EcoRecicla AQP",
   "description": "Contrato de salida del prompt de la Tarea A del Lab09.",
   "type": "object",
@@ -83,6 +83,7 @@
   "allOf": [
     {
       "if": {
+        "type": "object",
         "properties": {
           "invest_ok": {
             "const": true
@@ -93,13 +94,17 @@
         ]
       },
       "then": {
+        "type": "object",
         "properties": {
           "preguntas": {
+            "type": "array",
             "maxItems": 0
           },
           "escenarios": {
+            "type": "array",
             "minItems": 2,
             "contains": {
+              "type": "object",
               "properties": {
                 "tipo": {
                   "const": "exito"
@@ -114,6 +119,7 @@
                 "anyOf": [
                   {
                     "contains": {
+                      "type": "object",
                       "properties": {
                         "tipo": {
                           "const": "error"
@@ -126,6 +132,7 @@
                   },
                   {
                     "contains": {
+                      "type": "object",
                       "properties": {
                         "tipo": {
                           "const": "borde"
@@ -143,12 +150,15 @@
         }
       },
       "else": {
+        "type": "object",
         "properties": {
           "preguntas": {
+            "type": "array",
             "minItems": 1,
             "maxItems": 3
           },
           "escenarios": {
+            "type": "array",
             "maxItems": 0
           }
         }

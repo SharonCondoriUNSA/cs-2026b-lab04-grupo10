@@ -1,0 +1,1 @@
+{"historia_id":"H7","invest_ok":false,"preguntas":["¿Qué operación concreta debe ser rápida y cuál es el tiempo máximo de respuesta aceptable?","¿Qué tarea debe resultar fácil de usar y cómo se comprobará que se completó correctamente?"],"escenarios":[]}
