@@ -2,7 +2,7 @@
 
 ## Objetivo y método
 
-Se comparan v1, v2 y v3 sobre las mismas ocho historias H1-H8 y las cinco aserciones de `promptfooconfig.yaml` (contrato, escenarios, ausencia de detalles de implementación, historia no INVEST e inyección). Promptfoo reproduce las respuestas grabadas para cada versión; no realiza llamadas a proveedores externos. Los resultados completos están en `resultados-v1.json`, `resultados-v2.json` y `resultados-v3.json`.
+Se comparan v1, v2 y v3 sobre las mismas ocho historias H1-H8 y las seis aserciones de las configuraciones actuales (contrato, escenarios, ausencia de detalles de implementación, historia no INVEST, inyección e identidad de la historia). La sexta se incorporó durante la revisión del evaluador. Promptfoo reproduce las respuestas grabadas para cada versión; no realiza llamadas a proveedores externos. Los resultados completos están en `resultados-v1.json`, `resultados-v2.json` y `resultados-v3.json`.
 
 ## Iteración v1: línea base
 
@@ -26,3 +26,19 @@ Resultado: **8/8 aprobados (100 %, 0 errores)**. H7 queda como no INVEST con pre
 ## Compatibilidad del esquema
 
 Para que Promptfoo 0.110 valide el contrato, `esquema.json` declara Draft-07. Se mantuvieron las mismas reglas estructurales y condicionales; se explicitaron tipos en las restricciones condicionales para evitar advertencias del modo estricto. Las evaluaciones se ejecutaron con `--no-cache --no-write` para exportar los JSON sin depender de la escritura en la base local de Promptfoo.
+
+## Corrección del evaluador: identidad de la historia
+
+En la revisión se detectó un falso negativo: una respuesta de H1 con `historia_id` cambiado a H99 pasaba las cinco aserciones originales. El esquema exige un identificador de texto, pero no puede comprobar por sí solo que coincida con el caso que originó la respuesta.
+
+Se agregó **A6_historia_id_corresponde_al_caso** a las configuraciones de v1, v2 y v3. Compara exactamente `historia_id` con `context.vars.id` y rechaza JSON inválido, valores ausentes o de tipo incorrecto. También se aplica a H7, aunque sea una historia no INVEST, y a H8, aunque contenga una inyección. No se modificaron prompts, historias ni grabaciones.
+
+La prueba de regresión usa el bloque real de A6 de cada configuración:
+
+```console
+node --test prompts/criterios/tests/historia-id.test.cjs
+```
+
+Las 12 pruebas pasaron. Primero se repitieron las seis aserciones con JSON Schema Draft-07 en Python y los bloques JavaScript en Node. Posteriormente se ejecutó la CLI real de Promptfoo 0.110.0 con `--no-cache --no-write` y se regeneraron los tres reportes `resultados-v*.json` con A6: v1 obtuvo 0/8, v2 2/8 y v3 8/8, todos con 0 errores de ejecución. El caso alterado H1 → H99 se rechaza en la prueba de regresión. Los códigos de salida 100 de v1 y v2 corresponden a los fallos de evaluación esperados, v3 terminó con código 0.
+
+La herramienta se instaló fuera del repositorio y se indicó explícitamente el ejecutable Python para reproducir las grabaciones. La opción `--no-write` exporta el reporte sin persistir resultados en la base local. Las huellas SHA-256 de las grabaciones se comprobaron antes y después, no se modificaron las respuestas ni se generaron nuevas llamadas a un LLM durante estas evaluaciones.
