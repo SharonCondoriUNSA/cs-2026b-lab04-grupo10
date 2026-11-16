@@ -1,0 +1,6 @@
+Criterios de aceptación:
+1. El reciclador puede seleccionar una solicitud asignada y registrar si la entrega de materiales se realizó.
+2. Cuando confirma la entrega, ingresa el peso real de los materiales recolectados en kilogramos.
+3. El sistema valida que el peso real sea mayor que cero.
+4. Si el peso es válido, se guarda en la base de datos y el estado de la solicitud cambia a PESADA.
+5. Si el peso es cero o negativo, el sistema muestra un mensaje de error y no actualiza la solicitud.

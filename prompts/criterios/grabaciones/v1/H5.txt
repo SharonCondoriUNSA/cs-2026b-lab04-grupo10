@@ -1,0 +1,6 @@
+Criterios de aceptación:
+1. El representante municipal puede seleccionar un distrito y un periodo de consulta.
+2. El sistema consulta PostgreSQL y agrupa los registros de recojo por distrito.
+3. El reporte muestra el total de toneladas recicladas para cada distrito del periodo seleccionado.
+4. Los resultados se presentan en una tabla y un gráfico de barras.
+5. El representante municipal puede descargar el reporte en PDF.
