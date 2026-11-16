@@ -61,3 +61,10 @@ Aclaración de procedencia del 2026-11-16: la usuaria confirmó que el modelo ut
 ## E7 · Apoyo en compatibilidad de CI · 2026-11-16
 
 El registro real de Actions mostró que test_grabaciones_originales_se_conservan fallaba en Linux por la conversión automática CRLF/LF de Git. Se añadieron atributos para conservar los bytes originales de las 16 grabaciones de E5 y se comprobaron contra las huellas existentes, sin cambiar contenido, expectativas o hashes. Se habilitó además la carga de la carpeta oculta de reportes como artefacto. La comprobación de integridad permanece activa.
+
+
+## E8 · Apoyo en documentación de resultados y cierre · 2026-11-16
+
+Solicitud: preparar E8 en una rama propia siguiendo la guía y los recursos de AgroConecta. Se añadió la sección Prompt engineering (Lab 09), con tasas de los seis reportes reales y un gráfico generado desde esos JSON. Se distinguieron los datasets principales, el red teaming y la comparación de no determinismo para evitar presentar medidas diferentes como una sola tasa.
+
+Se enlazaron contratos, integración, bitácora, CI y la lista del Paso 9 para revisión por pares. La etiqueta y la entrega se registran pendientes, sin inventar aprobaciones, integración final o cumplimiento del plazo. El script del gráfico requiere Matplotlib únicamente para regenerar documentación. No se modificaron prompts, grabaciones ni expectativas.
