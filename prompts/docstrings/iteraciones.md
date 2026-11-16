@@ -47,9 +47,9 @@ v1 falla porque devuelve solo un docstring en texto libre y no puede satisfacer 
 Desde esta carpeta, con Promptfoo 0.110.0:
 
 ```powershell
-npx --yes promptfoo@0.110.0 eval --no-cache -c promptfooconfig-v1.yaml -o resultados-v1.json
-npx --yes promptfoo@0.110.0 eval --no-cache -c promptfooconfig-v2.yaml -o resultados-v2.json
-npx --yes promptfoo@0.110.0 eval --no-cache -c promptfooconfig-v3.yaml -o resultados-v3.json
+npx --yes promptfoo@0.110.0 eval --no-cache --no-write -c promptfooconfig-v1.yaml -o resultados-v1.json
+npx --yes promptfoo@0.110.0 eval --no-cache --no-write -c promptfooconfig-v2.yaml -o resultados-v2.json
+npx --yes promptfoo@0.110.0 eval --no-cache --no-write -c promptfooconfig-v3.yaml -o resultados-v3.json
 ```
 
 v1 termina con estado distinto de cero porque las salidas libres no cumplen el contrato; v2 y v3 terminan correctamente. Las respuestas D1–D8 de cada versión fueron generadas por GPT en esta sesión aplicando el prompt correspondiente a cada fragmento y se guardaron sin edición posterior. El proveedor `proveedor_grabado.py` reproduce esas respuestas para que Promptfoo evalúe el mismo texto de forma determinista; no es una llamada en vivo durante `promptfoo eval`. La procedencia está registrada en cada `grabaciones/<versión>/ORIGEN.md`.
@@ -64,4 +64,6 @@ Se corrigió A2 en las tres versiones para verificar ambos lugares. Se exige una
 node --test prompts/docstrings/tests/parametros-docstring.test.cjs
 ```
 
-Las 21 pruebas de regresión pasaron, incluyendo parámetros inventados, omitidos, duplicados, orden incorrecto, self, secciones duplicadas y descripciones vacías, además de respuestas válidas y descripciones multilínea. La repetición con JSON Schema en Python y las aserciones JavaScript en Node conserva las tasas v1 0/8, v2 8/8 y v3 8/8. No es una ejecución completa de Promptfoo. Los reportes `resultados-v*.json` se conservan como evidencia histórica anterior a esta corrección y deben regenerarse con la CLI cuando esté disponible. No se modificaron los prompts ni las grabaciones.
+Las 21 pruebas de regresión pasaron, incluyendo parámetros inventados, omitidos, duplicados, orden incorrecto, self, secciones duplicadas y descripciones vacías, además de respuestas válidas y descripciones multilínea. Primero se comprobaron las aserciones por separado con JSON Schema en Python y JavaScript en Node. Después se ejecutó la CLI real de Promptfoo 0.110.0 con `--no-cache --no-write` y se regeneraron los tres reportes `resultados-v*.json` con A2 corregida: v1 obtuvo 0/8, v2 8/8 y v3 8/8, todos con 0 errores de ejecución. El código de salida 100 de v1 corresponde a sus ocho fallos de evaluación esperados, v2 y v3 terminaron con código 0.
+
+La herramienta se instaló fuera del repositorio y se indicó explícitamente el ejecutable Python para el proveedor grabado. `--no-write` permite exportar reportes sin persistir resultados en la base local de Promptfoo. Las huellas SHA-256 de las grabaciones se comprobaron antes y después, no se modificaron los prompts ni las respuestas guardadas. Estas ejecuciones reproducen fixtures, no son llamadas nuevas a un LLM.

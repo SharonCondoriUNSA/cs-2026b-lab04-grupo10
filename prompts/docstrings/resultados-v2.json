@@ -1,13 +1,13 @@
 {
-  "evalId": "eval-Dy2-2026-11-14T03:57:58",
+  "evalId": "eval-P4h-2026-11-16T02:58:00",
   "results": {
     "version": 3,
-    "timestamp": "2026-11-14T03:57:58.822Z",
+    "timestamp": "2026-11-16T02:58:00.554Z",
     "prompts": [
       {
-        "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\n{{funcion}}",
-        "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\n{{funcion}}",
-        "id": "9f5ba874a4e1439ea79fc87c9847e8f54f778b748b443efcd1c4dab27c8969b7",
+        "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\n{{funcion}}",
+        "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\n{{funcion}}",
+        "id": "5a9f44518a47313cca15e446d44c08981a0fb9a5a3a53eafafa92369a063c03f",
         "provider": "grabaciones-v2",
         "metrics": {
           "score": 8,
@@ -16,7 +16,7 @@
           "testErrorCount": 0,
           "assertPassCount": 48,
           "assertFailCount": 0,
-          "totalLatencyMs": 6001,
+          "totalLatencyMs": 4662,
           "tokenUsage": {
             "total": 0,
             "prompt": 0,
@@ -94,7 +94,7 @@
               "assertion": {
                 "type": "javascript",
                 "metric": "A2_parametros_exactos_sin_self",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
               }
             },
             {
@@ -140,8 +140,8 @@
           ],
           "assertion": null
         },
-        "id": "88493e9e-e5ff-4ccb-9355-f023259d6434",
-        "latencyMs": 706,
+        "id": "492ae0bd-6f30-4a48-bba1-aefc37f14c92",
+        "latencyMs": 596,
         "namedScores": {
           "A1_contrato_json": 1,
           "A2_parametros_exactos_sin_self": 1,
@@ -151,334 +151,10 @@
           "A6_consistencia_none": 1
         },
         "prompt": {
-          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\ndef registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE",
-          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\n{{funcion}}"
+          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\ndef coordenadas_validas(self) -> bool:\n    return (\n        isinstance(self.latitud, Decimal) and self.latitud.is_finite()\n        and isinstance(self.longitud, Decimal) and self.longitud.is_finite()\n        and -90 <= self.latitud <= 90 and -180 <= self.longitud <= 180\n    )",
+          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\n{{funcion}}"
         },
-        "promptId": "9f5ba874a4e1439ea79fc87c9847e8f54f778b748b443efcd1c4dab27c8969b7",
-        "promptIdx": 0,
-        "provider": {
-          "id": "file://proveedor_grabado.py",
-          "label": "grabaciones-v2"
-        },
-        "response": {
-          "output": "{\n  \"nombre\": \"registrar_pendiente\",\n  \"resumen\": \"Valida los datos y registra la solicitud en estado pendiente.\",\n  \"docstring\": \"Valida los datos y registra la solicitud en estado pendiente.\\n\\nRaises:\\n    ValueError: Si las validaciones del método no se cumplen.\",\n  \"parametros\": [],\n  \"retorno\": null,\n  \"excepciones\": [\n    \"ValueError\"\n  ]\n}",
-          "cached": false
-        },
-        "score": 1,
-        "success": true,
-        "testCase": {
-          "vars": {
-            "id": "D3",
-            "nombre_esperado": "registrar_pendiente",
-            "parametros_esperados": "",
-            "funcion": "def registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE"
-          },
-          "assert": [
-            {
-              "type": "is-json",
-              "value": "file://contrato.json",
-              "metric": "A1_contrato_json"
-            },
-            {
-              "type": "javascript",
-              "metric": "A2_parametros_exactos_sin_self",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
-            },
-            {
-              "type": "javascript",
-              "metric": "A3_descripciones_de_parametros",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
-            },
-            {
-              "type": "javascript",
-              "metric": "A4_docstring_sin_fences_y_con_resumen",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
-            },
-            {
-              "type": "javascript",
-              "metric": "A5_nombre_de_funcion_exact",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
-            },
-            {
-              "type": "javascript",
-              "metric": "A6_consistencia_none",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
-            }
-          ],
-          "options": {},
-          "metadata": {}
-        },
-        "testIdx": 2,
-        "vars": {
-          "id": "D3",
-          "nombre_esperado": "registrar_pendiente",
-          "parametros_esperados": "",
-          "funcion": "def registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE"
-        },
-        "metadata": {},
-        "failureReason": 0
-      },
-      {
-        "cost": 0,
-        "gradingResult": {
-          "pass": true,
-          "score": 1,
-          "reason": "All assertions passed",
-          "namedScores": {
-            "A1_contrato_json": 1,
-            "A2_parametros_exactos_sin_self": 1,
-            "A3_descripciones_de_parametros": 1,
-            "A4_docstring_sin_fences_y_con_resumen": 1,
-            "A5_nombre_de_funcion_exact": 1,
-            "A6_consistencia_none": 1
-          },
-          "tokensUsed": {
-            "total": 0,
-            "prompt": 0,
-            "completion": 0,
-            "cached": 0
-          },
-          "componentResults": [
-            {
-              "pass": true,
-              "score": 1,
-              "reason": "Assertion passed",
-              "assertion": {
-                "type": "is-json",
-                "value": "file://contrato.json",
-                "metric": "A1_contrato_json"
-              }
-            },
-            {
-              "pass": true,
-              "score": 1,
-              "reason": "Assertion passed",
-              "assertion": {
-                "type": "javascript",
-                "metric": "A2_parametros_exactos_sin_self",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
-              }
-            },
-            {
-              "pass": true,
-              "score": 1,
-              "reason": "Assertion passed",
-              "assertion": {
-                "type": "javascript",
-                "metric": "A3_descripciones_de_parametros",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
-              }
-            },
-            {
-              "pass": true,
-              "score": 1,
-              "reason": "Assertion passed",
-              "assertion": {
-                "type": "javascript",
-                "metric": "A4_docstring_sin_fences_y_con_resumen",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
-              }
-            },
-            {
-              "pass": true,
-              "score": 1,
-              "reason": "Assertion passed",
-              "assertion": {
-                "type": "javascript",
-                "metric": "A5_nombre_de_funcion_exact",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
-              }
-            },
-            {
-              "pass": true,
-              "score": 1,
-              "reason": "Assertion passed",
-              "assertion": {
-                "type": "javascript",
-                "metric": "A6_consistencia_none",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
-              }
-            }
-          ],
-          "assertion": null
-        },
-        "id": "c2ad02de-a3e3-46e7-bce5-1352dabf2776",
-        "latencyMs": 870,
-        "namedScores": {
-          "A1_contrato_json": 1,
-          "A2_parametros_exactos_sin_self": 1,
-          "A3_descripciones_de_parametros": 1,
-          "A4_docstring_sin_fences_y_con_resumen": 1,
-          "A5_nombre_de_funcion_exact": 1,
-          "A6_consistencia_none": 1
-        },
-        "prompt": {
-          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\ndef calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))",
-          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\n{{funcion}}"
-        },
-        "promptId": "9f5ba874a4e1439ea79fc87c9847e8f54f778b748b443efcd1c4dab27c8969b7",
-        "promptIdx": 0,
-        "provider": {
-          "id": "file://proveedor_grabado.py",
-          "label": "grabaciones-v2"
-        },
-        "response": {
-          "output": "{\n  \"nombre\": \"calcular_peso_estimado_kg\",\n  \"resumen\": \"Suma los pesos estimados de los detalles de la solicitud.\",\n  \"docstring\": \"Suma los pesos estimados de los detalles de la solicitud.\\n\\nReturns:\\n    Devuelve la suma de los pesos como Decimal. Si no hay detalles, devuelve Decimal('0').\",\n  \"parametros\": [],\n  \"retorno\": \"Devuelve la suma de los pesos como Decimal. Si no hay detalles, devuelve Decimal('0').\",\n  \"excepciones\": []\n}",
-          "cached": false
-        },
-        "score": 1,
-        "success": true,
-        "testCase": {
-          "vars": {
-            "id": "D2",
-            "nombre_esperado": "calcular_peso_estimado_kg",
-            "parametros_esperados": "",
-            "funcion": "def calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))"
-          },
-          "assert": [
-            {
-              "type": "is-json",
-              "value": "file://contrato.json",
-              "metric": "A1_contrato_json"
-            },
-            {
-              "type": "javascript",
-              "metric": "A2_parametros_exactos_sin_self",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
-            },
-            {
-              "type": "javascript",
-              "metric": "A3_descripciones_de_parametros",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
-            },
-            {
-              "type": "javascript",
-              "metric": "A4_docstring_sin_fences_y_con_resumen",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
-            },
-            {
-              "type": "javascript",
-              "metric": "A5_nombre_de_funcion_exact",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
-            },
-            {
-              "type": "javascript",
-              "metric": "A6_consistencia_none",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
-            }
-          ],
-          "options": {},
-          "metadata": {}
-        },
-        "testIdx": 1,
-        "vars": {
-          "id": "D2",
-          "nombre_esperado": "calcular_peso_estimado_kg",
-          "parametros_esperados": "",
-          "funcion": "def calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))"
-        },
-        "metadata": {},
-        "failureReason": 0
-      },
-      {
-        "cost": 0,
-        "gradingResult": {
-          "pass": true,
-          "score": 1,
-          "reason": "All assertions passed",
-          "namedScores": {
-            "A1_contrato_json": 1,
-            "A2_parametros_exactos_sin_self": 1,
-            "A3_descripciones_de_parametros": 1,
-            "A4_docstring_sin_fences_y_con_resumen": 1,
-            "A5_nombre_de_funcion_exact": 1,
-            "A6_consistencia_none": 1
-          },
-          "tokensUsed": {
-            "total": 0,
-            "prompt": 0,
-            "completion": 0,
-            "cached": 0
-          },
-          "componentResults": [
-            {
-              "pass": true,
-              "score": 1,
-              "reason": "Assertion passed",
-              "assertion": {
-                "type": "is-json",
-                "value": "file://contrato.json",
-                "metric": "A1_contrato_json"
-              }
-            },
-            {
-              "pass": true,
-              "score": 1,
-              "reason": "Assertion passed",
-              "assertion": {
-                "type": "javascript",
-                "metric": "A2_parametros_exactos_sin_self",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
-              }
-            },
-            {
-              "pass": true,
-              "score": 1,
-              "reason": "Assertion passed",
-              "assertion": {
-                "type": "javascript",
-                "metric": "A3_descripciones_de_parametros",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
-              }
-            },
-            {
-              "pass": true,
-              "score": 1,
-              "reason": "Assertion passed",
-              "assertion": {
-                "type": "javascript",
-                "metric": "A4_docstring_sin_fences_y_con_resumen",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
-              }
-            },
-            {
-              "pass": true,
-              "score": 1,
-              "reason": "Assertion passed",
-              "assertion": {
-                "type": "javascript",
-                "metric": "A5_nombre_de_funcion_exact",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
-              }
-            },
-            {
-              "pass": true,
-              "score": 1,
-              "reason": "Assertion passed",
-              "assertion": {
-                "type": "javascript",
-                "metric": "A6_consistencia_none",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
-              }
-            }
-          ],
-          "assertion": null
-        },
-        "id": "48d22041-9094-4491-acbe-843d8dfc1b84",
-        "latencyMs": 1036,
-        "namedScores": {
-          "A1_contrato_json": 1,
-          "A2_parametros_exactos_sin_self": 1,
-          "A3_descripciones_de_parametros": 1,
-          "A4_docstring_sin_fences_y_con_resumen": 1,
-          "A5_nombre_de_funcion_exact": 1,
-          "A6_consistencia_none": 1
-        },
-        "prompt": {
-          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\ndef coordenadas_validas(self) -> bool:\n    return (\n        isinstance(self.latitud, Decimal) and self.latitud.is_finite()\n        and isinstance(self.longitud, Decimal) and self.longitud.is_finite()\n        and -90 <= self.latitud <= 90 and -180 <= self.longitud <= 180\n    )",
-          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\n{{funcion}}"
-        },
-        "promptId": "9f5ba874a4e1439ea79fc87c9847e8f54f778b748b443efcd1c4dab27c8969b7",
+        "promptId": "5a9f44518a47313cca15e446d44c08981a0fb9a5a3a53eafafa92369a063c03f",
         "promptIdx": 0,
         "provider": {
           "id": "file://proveedor_grabado.py",
@@ -506,7 +182,7 @@
             {
               "type": "javascript",
               "metric": "A2_parametros_exactos_sin_self",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
             },
             {
               "type": "javascript",
@@ -580,7 +256,7 @@
               "assertion": {
                 "type": "javascript",
                 "metric": "A2_parametros_exactos_sin_self",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
               }
             },
             {
@@ -626,8 +302,8 @@
           ],
           "assertion": null
         },
-        "id": "63f66be6-0330-492b-a071-cef22e60be0c",
-        "latencyMs": 1174,
+        "id": "86a830cc-8a2a-4dae-9d57-b51a8342d8fb",
+        "latencyMs": 724,
         "namedScores": {
           "A1_contrato_json": 1,
           "A2_parametros_exactos_sin_self": 1,
@@ -637,10 +313,334 @@
           "A6_consistencia_none": 1
         },
         "prompt": {
-          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\ndef asignar_reciclador(self, reciclador_id: UUID) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not isinstance(reciclador_id, UUID) or not reciclador_id.int:\n        raise ValueError(\"Asignación inválida\")\n    self.reciclador_id = reciclador_id\n    self.estado = EstadoSolicitud.ASIGNADA",
-          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\n{{funcion}}"
+          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\ndef registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE",
+          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\n{{funcion}}"
         },
-        "promptId": "9f5ba874a4e1439ea79fc87c9847e8f54f778b748b443efcd1c4dab27c8969b7",
+        "promptId": "5a9f44518a47313cca15e446d44c08981a0fb9a5a3a53eafafa92369a063c03f",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v2"
+        },
+        "response": {
+          "output": "{\n  \"nombre\": \"registrar_pendiente\",\n  \"resumen\": \"Valida los datos y registra la solicitud en estado pendiente.\",\n  \"docstring\": \"Valida los datos y registra la solicitud en estado pendiente.\\n\\nRaises:\\n    ValueError: Si las validaciones del método no se cumplen.\",\n  \"parametros\": [],\n  \"retorno\": null,\n  \"excepciones\": [\n    \"ValueError\"\n  ]\n}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "id": "D3",
+            "nombre_esperado": "registrar_pendiente",
+            "parametros_esperados": "",
+            "funcion": "def registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 2,
+        "vars": {
+          "id": "D3",
+          "nombre_esperado": "registrar_pendiente",
+          "parametros_esperados": "",
+          "funcion": "def registrar_pendiente(self) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not self.validar_datos():\n        raise ValueError(\"No se puede registrar como pendiente\")\n    self.estado = EstadoSolicitud.PENDIENTE"
+        },
+        "metadata": {},
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "A1_contrato_json": 1,
+            "A2_parametros_exactos_sin_self": 1,
+            "A3_descripciones_de_parametros": 1,
+            "A4_docstring_sin_fences_y_con_resumen": 1,
+            "A5_nombre_de_funcion_exact": 1,
+            "A6_consistencia_none": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "acf074e2-abf3-4807-9e6f-4e30973416ff",
+        "latencyMs": 785,
+        "namedScores": {
+          "A1_contrato_json": 1,
+          "A2_parametros_exactos_sin_self": 1,
+          "A3_descripciones_de_parametros": 1,
+          "A4_docstring_sin_fences_y_con_resumen": 1,
+          "A5_nombre_de_funcion_exact": 1,
+          "A6_consistencia_none": 1
+        },
+        "prompt": {
+          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\ndef calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))",
+          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\n{{funcion}}"
+        },
+        "promptId": "5a9f44518a47313cca15e446d44c08981a0fb9a5a3a53eafafa92369a063c03f",
+        "promptIdx": 0,
+        "provider": {
+          "id": "file://proveedor_grabado.py",
+          "label": "grabaciones-v2"
+        },
+        "response": {
+          "output": "{\n  \"nombre\": \"calcular_peso_estimado_kg\",\n  \"resumen\": \"Suma los pesos estimados de los detalles de la solicitud.\",\n  \"docstring\": \"Suma los pesos estimados de los detalles de la solicitud.\\n\\nReturns:\\n    Devuelve la suma de los pesos como Decimal. Si no hay detalles, devuelve Decimal('0').\",\n  \"parametros\": [],\n  \"retorno\": \"Devuelve la suma de los pesos como Decimal. Si no hay detalles, devuelve Decimal('0').\",\n  \"excepciones\": []\n}",
+          "cached": false
+        },
+        "score": 1,
+        "success": true,
+        "testCase": {
+          "vars": {
+            "id": "D2",
+            "nombre_esperado": "calcular_peso_estimado_kg",
+            "parametros_esperados": "",
+            "funcion": "def calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))"
+          },
+          "assert": [
+            {
+              "type": "is-json",
+              "value": "file://contrato.json",
+              "metric": "A1_contrato_json"
+            },
+            {
+              "type": "javascript",
+              "metric": "A2_parametros_exactos_sin_self",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A3_descripciones_de_parametros",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A4_docstring_sin_fences_y_con_resumen",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A5_nombre_de_funcion_exact",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+            },
+            {
+              "type": "javascript",
+              "metric": "A6_consistencia_none",
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+            }
+          ],
+          "options": {},
+          "metadata": {}
+        },
+        "testIdx": 1,
+        "vars": {
+          "id": "D2",
+          "nombre_esperado": "calcular_peso_estimado_kg",
+          "parametros_esperados": "",
+          "funcion": "def calcular_peso_estimado_kg(self) -> Decimal:\n    return sum((d.peso_estimado_kg for d in self.detalles), Decimal('0'))"
+        },
+        "metadata": {},
+        "failureReason": 0
+      },
+      {
+        "cost": 0,
+        "gradingResult": {
+          "pass": true,
+          "score": 1,
+          "reason": "All assertions passed",
+          "namedScores": {
+            "A1_contrato_json": 1,
+            "A2_parametros_exactos_sin_self": 1,
+            "A3_descripciones_de_parametros": 1,
+            "A4_docstring_sin_fences_y_con_resumen": 1,
+            "A5_nombre_de_funcion_exact": 1,
+            "A6_consistencia_none": 1
+          },
+          "tokensUsed": {
+            "total": 0,
+            "prompt": 0,
+            "completion": 0,
+            "cached": 0
+          },
+          "componentResults": [
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "is-json",
+                "value": "file://contrato.json",
+                "metric": "A1_contrato_json"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A2_parametros_exactos_sin_self",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A3_descripciones_de_parametros",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn (r.parametros || []).every(p => typeof p.descripcion === 'string' && p.descripcion.trim().length >= 5);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A4_docstring_sin_fences_y_con_resumen",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn typeof r.docstring === 'string' && !r.docstring.includes('```') && r.docstring.includes(r.resumen);\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A5_nombre_de_funcion_exact",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nreturn r.nombre === context.vars.nombre_esperado;\n"
+              }
+            },
+            {
+              "pass": true,
+              "score": 1,
+              "reason": "Assertion passed",
+              "assertion": {
+                "type": "javascript",
+                "metric": "A6_consistencia_none",
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nif (['D3','D4','D5','D6'].includes(context.vars.id)) return r.retorno === null && !/Returns:/i.test(r.docstring);\nreturn typeof r.retorno === 'string' && /Returns:/i.test(r.docstring);\n"
+              }
+            }
+          ],
+          "assertion": null
+        },
+        "id": "a58770f8-8a36-4ad4-ab41-66d7dcffc75b",
+        "latencyMs": 837,
+        "namedScores": {
+          "A1_contrato_json": 1,
+          "A2_parametros_exactos_sin_self": 1,
+          "A3_descripciones_de_parametros": 1,
+          "A4_docstring_sin_fences_y_con_resumen": 1,
+          "A5_nombre_de_funcion_exact": 1,
+          "A6_consistencia_none": 1
+        },
+        "prompt": {
+          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\ndef asignar_reciclador(self, reciclador_id: UUID) -> None:\n    if self.estado != EstadoSolicitud.PENDIENTE or not isinstance(reciclador_id, UUID) or not reciclador_id.int:\n        raise ValueError(\"Asignación inválida\")\n    self.reciclador_id = reciclador_id\n    self.estado = EstadoSolicitud.ASIGNADA",
+          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\n{{funcion}}"
+        },
+        "promptId": "5a9f44518a47313cca15e446d44c08981a0fb9a5a3a53eafafa92369a063c03f",
         "promptIdx": 0,
         "provider": {
           "id": "file://proveedor_grabado.py",
@@ -668,7 +668,7 @@
             {
               "type": "javascript",
               "metric": "A2_parametros_exactos_sin_self",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
             },
             {
               "type": "javascript",
@@ -742,7 +742,7 @@
               "assertion": {
                 "type": "javascript",
                 "metric": "A2_parametros_exactos_sin_self",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
               }
             },
             {
@@ -788,8 +788,8 @@
           ],
           "assertion": null
         },
-        "id": "dc9631a6-86c9-4a2f-b3a7-295f4baf46e4",
-        "latencyMs": 576,
+        "id": "2e53bb0c-b83f-46a8-a449-a23234f89ad5",
+        "latencyMs": 432,
         "namedScores": {
           "A1_contrato_json": 1,
           "A2_parametros_exactos_sin_self": 1,
@@ -799,10 +799,10 @@
           "A6_consistencia_none": 1
         },
         "prompt": {
-          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\ndef registrar_recojo(self, fecha_recojo: datetime) -> None:\n    if self.estado != EstadoSolicitud.ASIGNADA or not isinstance(fecha_recojo, datetime):\n        raise ValueError(\"Recojo inválido\")\n    self.fecha_recojo = fecha_recojo\n    self.estado = EstadoSolicitud.RECOGIDA",
-          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\n{{funcion}}"
+          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\ndef registrar_recojo(self, fecha_recojo: datetime) -> None:\n    if self.estado != EstadoSolicitud.ASIGNADA or not isinstance(fecha_recojo, datetime):\n        raise ValueError(\"Recojo inválido\")\n    self.fecha_recojo = fecha_recojo\n    self.estado = EstadoSolicitud.RECOGIDA",
+          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\n{{funcion}}"
         },
-        "promptId": "9f5ba874a4e1439ea79fc87c9847e8f54f778b748b443efcd1c4dab27c8969b7",
+        "promptId": "5a9f44518a47313cca15e446d44c08981a0fb9a5a3a53eafafa92369a063c03f",
         "promptIdx": 0,
         "provider": {
           "id": "file://proveedor_grabado.py",
@@ -830,7 +830,7 @@
             {
               "type": "javascript",
               "metric": "A2_parametros_exactos_sin_self",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
             },
             {
               "type": "javascript",
@@ -904,7 +904,7 @@
               "assertion": {
                 "type": "javascript",
                 "metric": "A2_parametros_exactos_sin_self",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
               }
             },
             {
@@ -950,8 +950,8 @@
           ],
           "assertion": null
         },
-        "id": "0e92a98f-b8ff-46df-bd42-1961fba3c0f2",
-        "latencyMs": 581,
+        "id": "0b0846eb-05ba-4176-861a-d0a87080e92c",
+        "latencyMs": 427,
         "namedScores": {
           "A1_contrato_json": 1,
           "A2_parametros_exactos_sin_self": 1,
@@ -961,10 +961,10 @@
           "A6_consistencia_none": 1
         },
         "prompt": {
-          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\ndef registrar_pesaje(self, peso_real_kg: Decimal) -> None:\n    if (self.estado != EstadoSolicitud.RECOGIDA\n            or not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Pesaje inválido\")\n    self.peso_real_kg = peso_real_kg\n    self.estado = EstadoSolicitud.PESADA",
-          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\n{{funcion}}"
+          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\ndef registrar_pesaje(self, peso_real_kg: Decimal) -> None:\n    if (self.estado != EstadoSolicitud.RECOGIDA\n            or not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Pesaje inválido\")\n    self.peso_real_kg = peso_real_kg\n    self.estado = EstadoSolicitud.PESADA",
+          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\n{{funcion}}"
         },
-        "promptId": "9f5ba874a4e1439ea79fc87c9847e8f54f778b748b443efcd1c4dab27c8969b7",
+        "promptId": "5a9f44518a47313cca15e446d44c08981a0fb9a5a3a53eafafa92369a063c03f",
         "promptIdx": 0,
         "provider": {
           "id": "file://proveedor_grabado.py",
@@ -992,7 +992,7 @@
             {
               "type": "javascript",
               "metric": "A2_parametros_exactos_sin_self",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
             },
             {
               "type": "javascript",
@@ -1066,7 +1066,7 @@
               "assertion": {
                 "type": "javascript",
                 "metric": "A2_parametros_exactos_sin_self",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
               }
             },
             {
@@ -1112,8 +1112,8 @@
           ],
           "assertion": null
         },
-        "id": "6b874af3-f95d-4b62-9f7f-cffacc254223",
-        "latencyMs": 537,
+        "id": "33b6d357-fb51-4bf8-a22a-ddb655ca07a3",
+        "latencyMs": 428,
         "namedScores": {
           "A1_contrato_json": 1,
           "A2_parametros_exactos_sin_self": 1,
@@ -1123,10 +1123,10 @@
           "A6_consistencia_none": 1
         },
         "prompt": {
-          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\ndef acreditar(self, solicitud_id, material, peso_real_kg):\n    regla = self.fabrica.crear(material, self.tarifas.get(material))\n    puntos = regla.calcular(peso_real_kg)\n    return {\"acreditacion_id\": f\"acreditacion:{solicitud_id}\", \"puntos\": puntos}",
-          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\n{{funcion}}"
+          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\ndef acreditar(self, solicitud_id, material, peso_real_kg):\n    regla = self.fabrica.crear(material, self.tarifas.get(material))\n    puntos = regla.calcular(peso_real_kg)\n    return {\"acreditacion_id\": f\"acreditacion:{solicitud_id}\", \"puntos\": puntos}",
+          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\n{{funcion}}"
         },
-        "promptId": "9f5ba874a4e1439ea79fc87c9847e8f54f778b748b443efcd1c4dab27c8969b7",
+        "promptId": "5a9f44518a47313cca15e446d44c08981a0fb9a5a3a53eafafa92369a063c03f",
         "promptIdx": 0,
         "provider": {
           "id": "file://proveedor_grabado.py",
@@ -1154,7 +1154,7 @@
             {
               "type": "javascript",
               "metric": "A2_parametros_exactos_sin_self",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
             },
             {
               "type": "javascript",
@@ -1228,7 +1228,7 @@
               "assertion": {
                 "type": "javascript",
                 "metric": "A2_parametros_exactos_sin_self",
-                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+                "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
               }
             },
             {
@@ -1274,8 +1274,8 @@
           ],
           "assertion": null
         },
-        "id": "e8df30f4-6f79-430c-8f1a-cd483654a6e6",
-        "latencyMs": 521,
+        "id": "4ac7a124-af9d-4656-b68a-3bd9d87146f3",
+        "latencyMs": 433,
         "namedScores": {
           "A1_contrato_json": 1,
           "A2_parametros_exactos_sin_self": 1,
@@ -1285,10 +1285,10 @@
           "A6_consistencia_none": 1
         },
         "prompt": {
-          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\ndef calcular(self, peso_real_kg):\n    if (not isinstance(self.tarifa, Decimal) or not self.tarifa.is_finite()\n            or self.tarifa < 0):\n        raise ValueError(\"Tarifa de puntos invalida\")\n    if (not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Peso real invalido\")\n    return int((peso_real_kg * self.tarifa).to_integral_value(rounding=ROUND_DOWN))",
-          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\n\nFunción:\n{{funcion}}"
+          "raw": "Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\ndef calcular(self, peso_real_kg):\n    if (not isinstance(self.tarifa, Decimal) or not self.tarifa.is_finite()\n            or self.tarifa < 0):\n        raise ValueError(\"Tarifa de puntos invalida\")\n    if (not isinstance(peso_real_kg, Decimal)\n            or not peso_real_kg.is_finite() or peso_real_kg <= 0):\n        raise ValueError(\"Peso real invalido\")\n    return int((peso_real_kg * self.tarifa).to_integral_value(rounding=ROUND_DOWN))",
+          "label": "v2.txt: Documenta en español la función Python recibida. Devuelve únicamente un objeto JSON, sin Markdown, con las claves nombre, resumen, docstring, parametros, retorno y excepciones. Cada elemento de parametros debe contener nombre y descripcion. Incluye todos los parámetros y no inventes otros. No incluyas self ni cls como parámetros documentados. Indica el retorno y las excepciones visibles en el código; si no retorna un valor, usa null.\r\n\r\nFunción:\r\n{{funcion}}"
         },
-        "promptId": "9f5ba874a4e1439ea79fc87c9847e8f54f778b748b443efcd1c4dab27c8969b7",
+        "promptId": "5a9f44518a47313cca15e446d44c08981a0fb9a5a3a53eafafa92369a063c03f",
         "promptIdx": 0,
         "provider": {
           "id": "file://proveedor_grabado.py",
@@ -1316,7 +1316,7 @@
             {
               "type": "javascript",
               "metric": "A2_parametros_exactos_sin_self",
-              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+              "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
             },
             {
               "type": "javascript",
@@ -1381,7 +1381,7 @@
     "tags": {},
     "description": "Lab09 E4: evaluación de iteración v2 de generación de docstrings",
     "prompts": [
-      "file://C:\\Users\\ASUS\\Documents\\Codex\\2026-10-19\\quie\\work\\cs-2026b-lab04-grupo10\\prompts\\docstrings\\v2.txt"
+      "file://C:\\Users\\USUARIO\\OneDrive\\Documentos\\LaboratorioCS\\cs-2026b-lab04-grupo10\\prompts\\docstrings\\v2.txt"
     ],
     "providers": [
       {
@@ -1471,7 +1471,7 @@
         {
           "type": "javascript",
           "metric": "A2_parametros_exactos_sin_self",
-          "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nconst actual = (r.parametros || []).map(p => p.nombre);\nreturn actual.length === expected.length && expected.every((n, i) => actual[i] === n);\n"
+          "value": "let r; try { r = JSON.parse(output); } catch { return false; }\nconst expected = (context.vars.parametros_esperados || '').split(',').filter(Boolean);\nif (!r || !Array.isArray(r.parametros) || typeof r.docstring !== 'string') return false;\nconst actual = r.parametros.map(p => p?.nombre);\nif (actual.length !== expected.length || !expected.every((n, i) => actual[i] === n)) return false;\nconst lines = r.docstring.split(/\\r?\\n/);\nconst headers = lines.flatMap((line, i) => /^Args:[ \\t]*$/.test(line) ? [i] : []);\nif (expected.length === 0) return headers.length === 0;\nif (headers.length !== 1) return false;\nconst documented = [];\nlet parameterIndent = null;\nlet needsDescription = false;\nfor (const line of lines.slice(headers[0] + 1)) {\n  if (line.trim() === '') continue;\n  if (/^\\S/.test(line)) break;\n  const parameter = /^([ \\t]+)([A-Za-z_]\\w*)(?:[ \\t]*\\([^)]*\\))?:[ \\t]*(.*)$/.exec(line);\n  if (parameter) {\n    if (parameterIndent === null) parameterIndent = parameter[1].length;\n    if (parameter[1].length !== parameterIndent || needsDescription) return false;\n    documented.push(parameter[2]);\n    needsDescription = parameter[3].trim().length === 0;\n  } else {\n    const indentation = /^[ \\t]*/.exec(line)[0].length;\n    if (parameterIndent === null || indentation <= parameterIndent) return false;\n    needsDescription = false;\n  }\n}\nreturn !needsDescription && documented.length === expected.length &&\n  expected.every((n, i) => documented[i] === n);\n"
         },
         {
           "type": "javascript",
