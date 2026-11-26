@@ -1,0 +1,61 @@
+Ejecucion real de E1 del Lab10, 2026-11-26.
+Pytest invocado desde Python 3.12 con dependencias instaladas fuera del repositorio.
+Equivalente con requirements-lab10.txt instalado:
+python -m pytest tests/test_issue_01.py tests/test_issue_02.py tests/test_issue_03.py -q --color=no -p no:cacheprovider
+
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+___________ test_issue_01_reintentar_acreditacion_no_duplica_saldo ____________
+
+    def test_issue_01_reintentar_acreditacion_no_duplica_saldo():
+        libro = LibroPuntos({"PLASTICO": Decimal("10")})
+        primero = libro.acreditar("SOL-01", "PLASTICO", Decimal("2"))
+        repetido = libro.acreditar("SOL-01", "PLASTICO", Decimal("2"))
+    
+        assert primero == repetido
+>       assert libro.saldo == 20
+E       assert 40 == 20
+E        +  where 40 = <src.lab10.operaciones.LibroPuntos object at 0x000001AF0832BE00>.saldo
+
+tests\test_issue_01.py:13: AssertionError
+___________ test_issue_02_ruta_excluye_canceladas_y_conserva_orden ____________
+
+    def test_issue_02_ruta_excluye_canceladas_y_conserva_orden():
+        pendientes = [Parada("SOL-01", "ASIGNADA"), Parada("SOL-02", "CANCELADA"),
+                      Parada("SOL-03", "ASIGNADA")]
+        original = list(pendientes)
+    
+        ruta = preparar_ruta(pendientes)
+    
+>       assert [parada.solicitud_id for parada in ruta] == ["SOL-01", "SOL-03"]
+E       AssertionError: assert ['SOL-01', 'SOL-02', 'SOL-03'] == ['SOL-01', 'SOL-03']
+E         
+E         At index 1 diff: 'SOL-02' != 'SOL-03'
+E         Left contains one more item: 'SOL-03'
+E         Use -v to get more diff
+
+tests\test_issue_02.py:12: AssertionError
+__________ test_issue_03_actualizar_d01_no_cambia_los_puntos_de_d02 ___________
+
+    def test_issue_03_actualizar_d01_no_cambia_los_puntos_de_d02():
+        tarifas_entrada = {"PLASTICO": Decimal("10"), "PAPEL": Decimal("5")}
+        catalogo = TarifasDistritales(["D01", "D02"], tarifas_entrada)
+        assert catalogo.calcular("D02", "PLASTICO", Decimal("2")) == 20
+    
+        catalogo.actualizar("D01", "PLASTICO", Decimal("15"))
+    
+        assert catalogo.calcular("D01", "PLASTICO", Decimal("2")) == 30
+>       assert catalogo.calcular("D02", "PLASTICO", Decimal("2")) == 20
+E       AssertionError: assert 30 == 20
+E        +  where 30 = calcular('D02', 'PLASTICO', Decimal('2'))
+E        +    where calcular = <src.lab10.operaciones.TarifasDistritales object at 0x000001AF0834F920>.calcular
+E        +    and   Decimal('2') = Decimal('2')
+
+tests\test_issue_03.py:15: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_issue_01.py::test_issue_01_reintentar_acreditacion_no_duplica_saldo
+FAILED tests/test_issue_02.py::test_issue_02_ruta_excluye_canceladas_y_conserva_orden
+FAILED tests/test_issue_03.py::test_issue_03_actualizar_d01_no_cambia_los_puntos_de_d02
+3 failed in 0.65s
+
+Codigo de salida: 1
