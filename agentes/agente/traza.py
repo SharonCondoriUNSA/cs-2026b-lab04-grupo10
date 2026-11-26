@@ -15,6 +15,12 @@ def resumir(evento):
         return obs
     if evento["accion"] == "leer_archivo":
         return Path(evento["args"]["ruta"]).name
+    if evento["accion"] == "mapa_repo":
+        archivos = sum(linea.endswith(".py") and not linea.startswith(" ") for linea in obs.splitlines())
+        return f"Mapa de {archivos} archivos Python"
+    if evento["accion"] == "leer_notas":
+        cantidad = sum(linea.startswith("- ") for linea in obs.splitlines())
+        return f"Notas recuperadas: {cantidad}"
     if evento["accion"] == "ver_cambios" and obs.startswith("---"):
         return f"Diff de {len(obs.splitlines())} líneas"
     return obs.splitlines()[-1] if obs else "(sin salida)"

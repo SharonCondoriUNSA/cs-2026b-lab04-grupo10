@@ -1,0 +1,2 @@
+- Revisado: issues/ISSUE-03.md y mapa de src/lab10/operaciones.py. D02 da 30 en vez de 20. Hipótesis: los distritos comparten un diccionario de tarifas.
+- Verificado en src/lab10/operaciones.py: dict.fromkeys compartía el mismo diccionario. Con una copia por distrito, la prueba del issue 3 pasa: D01 da 30 y D02 conserva 20.
