@@ -1,0 +1,51 @@
+[
+  {
+    "pensamiento": "Leer los criterios de aceptación.",
+    "accion": "leer_archivo",
+    "args": {
+      "ruta": "issues/ISSUE-01.md"
+    }
+  },
+  {
+    "pensamiento": "Reproducir el saldo duplicado.",
+    "accion": "ejecutar_pruebas",
+    "args": {}
+  },
+  {
+    "pensamiento": "Inspeccionar el registro de movimientos.",
+    "accion": "leer_archivo",
+    "args": {
+      "ruta": "src/lab10/operaciones.py"
+    }
+  },
+  {
+    "pensamiento": "Comprobar cómo se identifica una acreditación.",
+    "accion": "leer_archivo",
+    "args": {
+      "ruta": "src/puntos_beneficios/servicio.py"
+    }
+  },
+  {
+    "pensamiento": "Conservar el primer movimiento de cada acreditación.",
+    "accion": "editar_archivo",
+    "args": {
+      "ruta": "src/lab10/operaciones.py",
+      "antes": "        self.movimientos.append(resultado)",
+      "despues": "        for movimiento in self.movimientos:\n            if movimiento[\"acreditacion_id\"] == resultado[\"acreditacion_id\"]:\n                return dict(movimiento)\n        self.movimientos.append(resultado)"
+    }
+  },
+  {
+    "pensamiento": "Verificar saldo, reintento y segunda solicitud.",
+    "accion": "ejecutar_pruebas",
+    "args": {}
+  },
+  {
+    "pensamiento": "Revisar el cambio que pasará al PR.",
+    "accion": "ver_cambios",
+    "args": {}
+  },
+  {
+    "pensamiento": "Entregar el cambio a revisión.",
+    "final": "ISSUE-01 corregido en la copia. El reintento conserva el movimiento original y la segunda solicitud suma sus puntos. La prueba pasó tras modificar únicamente LibroPuntos.acreditar."
+  }
+]
