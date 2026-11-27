@@ -4,8 +4,8 @@
 def aprobar_edicion_en_consola(args: dict) -> bool:
     """Muestra la sustitución exacta y exige aprobación explícita en cada edición.
 
-    La respuesta afirmativa es ``s``, ``si`` o ``sí``. Cualquier otra respuesta,
-    incluida EOF, deniega la edición para fallar de forma segura.
+    Solo ``s`` y ``n`` son respuestas válidas. EOF o una interrupción deniega la
+    edición para fallar de forma segura.
     """
     print("\n=== Solicitud de aprobación humana ===")
     print(f"Archivo: {args.get('ruta', '(sin ruta)')}")
@@ -14,8 +14,11 @@ def aprobar_edicion_en_consola(args: dict) -> bool:
     print("--- Texto propuesto ---")
     print(args.get("despues", ""))
     try:
-        respuesta = input("¿Autoriza esta edición? [s/N]: ").strip().casefold()
+        while True:
+            respuesta = input("¿Autoriza esta edición? [s/n]: ").strip().casefold()
+            if respuesta in {"s", "n"}:
+                return respuesta == "s"
+            print("Respuesta inválida. Escriba únicamente s o n.")
     except (EOFError, KeyboardInterrupt):
         print("Aprobación no recibida; se deniega la edición.")
         return False
-    return respuesta in {"s", "si", "sí"}

@@ -30,15 +30,17 @@ def test_consola_acepta_s_y_muestra_el_cambio(monkeypatch, capsys):
     assert EDICION["despues"] in salida
 
 
-def test_consola_acepta_si_con_acentos(monkeypatch):
-    monkeypatch.setattr("builtins.input", lambda _: "SÍ")
+def test_consola_acepta_n(monkeypatch):
+    monkeypatch.setattr("builtins.input", lambda _: "n")
+    assert not aprobar_edicion_en_consola(EDICION)
+
+
+def test_consola_rechaza_entrada_no_valida_y_vuelve_a_preguntar(monkeypatch, capsys):
+    respuestas = iter(("sí", "s"))
+    monkeypatch.setattr("builtins.input", lambda _: next(respuestas))
+
     assert aprobar_edicion_en_consola(EDICION)
-
-
-def test_consola_deniega_respuesta_negativa_o_ambigua(monkeypatch):
-    for respuesta in ("n", "no", "quizá", ""):
-        monkeypatch.setattr("builtins.input", lambda _, valor=respuesta: valor)
-        assert not aprobar_edicion_en_consola(EDICION)
+    assert "Respuesta inválida" in capsys.readouterr().out
 
 
 def test_consola_deniega_si_no_hay_entrada(monkeypatch):
@@ -62,7 +64,7 @@ def test_politica_solicita_aprobacion_en_cada_edicion():
 
 
 def test_politica_predeterminada_pide_aprobacion_en_consola(monkeypatch):
-    monkeypatch.setattr("builtins.input", lambda _: "sí")
+    monkeypatch.setattr("builtins.input", lambda _: "s")
 
     decision = Politica().evaluar("editar_archivo", EDICION, 1)
 
