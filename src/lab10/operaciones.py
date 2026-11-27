@@ -20,6 +20,9 @@ class LibroPuntos:
 
     def acreditar(self, solicitud_id, material, peso_real_kg):
         resultado = self.servicio.acreditar(solicitud_id, material, peso_real_kg)
+        for movimiento in self.movimientos:
+            if movimiento["acreditacion_id"] == resultado["acreditacion_id"]:
+                return dict(movimiento)
         self.movimientos.append(resultado)
         return dict(resultado)
 
