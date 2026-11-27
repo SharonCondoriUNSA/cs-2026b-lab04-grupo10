@@ -35,7 +35,7 @@ class Parada:
 
 def preparar_ruta(solicitudes):
     """Devuelve una lista nueva sin modificar las solicitudes recibidas."""
-    return list(solicitudes)
+    return [parada for parada in solicitudes if parada.estado != "CANCELADA"]
 
 
 class TarifasDistritales:
