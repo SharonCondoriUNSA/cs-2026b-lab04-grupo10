@@ -1,0 +1,31 @@
+sequenceDiagram
+    autonumber
+    actor U as Solicitante
+    participant A as Ejecutor ReAct
+    participant C as Contrato y política
+    participant H as Herramientas
+    U->>A: Objetivo del issue
+    A->>C: leer_archivo
+    C->>H: Ejecutar
+    H-->>A: ISSUE-02.md
+    A->>C: leer_archivo
+    C->>H: Ejecutar
+    H-->>A: test_issue_02.py
+    A->>C: ejecutar_pruebas
+    C->>H: Ejecutar
+    H-->>A: 1 failed in 0.14s
+    A->>C: leer_archivo
+    C->>H: Ejecutar
+    H-->>A: operaciones.py
+    A->>C: editar_archivo
+    C->>H: Ejecutar
+    H-->>A: OK: src/lab10/operaciones.py modificado
+    A->>C: ejecutar_pruebas
+    C->>H: Ejecutar
+    H-->>A: 1 passed in 0.03s
+    A->>C: ver_cambios
+    C->>H: Ejecutar
+    H-->>A: Diff de 11 líneas
+    A->>C: Respuesta final
+    C-->>A: Válida
+    A-->>U: Resultado para revisión

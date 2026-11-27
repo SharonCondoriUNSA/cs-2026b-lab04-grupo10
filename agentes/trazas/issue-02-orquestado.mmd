@@ -1,0 +1,29 @@
+sequenceDiagram
+    autonumber
+    participant P as Planificador
+    participant E as Ejecutor
+    participant R as Revisor
+    participant T as Herramientas y política
+    P-->>E: Plan de resolución
+    E->>T: leer_archivo
+    T-->>E: Resultado observado
+    E->>T: leer_archivo
+    T-->>E: Resultado observado
+    E->>T: ejecutar_pruebas
+    T-->>E: Resultado observado
+    E->>T: leer_archivo
+    T-->>E: Resultado observado
+    E->>T: editar_archivo
+    T-->>E: Resultado observado
+    E->>T: ejecutar_pruebas
+    T-->>E: Resultado observado
+    E->>T: ver_cambios
+    T-->>E: Resultado observado
+    E-->>R: Cambio y resultados
+    R->>T: leer_archivo
+    T-->>R: Resultado observado
+    R->>T: ver_cambios
+    T-->>R: Resultado observado
+    R->>T: ejecutar_pruebas
+    T-->>R: Resultado observado
+    R-->>P: APROBADO; sin hallazgo adicional
