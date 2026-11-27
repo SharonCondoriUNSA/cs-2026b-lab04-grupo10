@@ -56,5 +56,14 @@ asistente de los resultados realmente obtenidos en las copias del repositorio.
 - **Herramienta:** GPT
 - **Prompt (resumen fiel):** “Prepara E7 con la tabla de métricas de los tres issues, el diagrama de una trayectoria y cinco o más interacciones.”
 - **Propuesta:** Contar pasos, rondas, herramientas, rechazos de contrato, bloqueos y contexto final directamente de los JSONL; incluir el diagrama coordinado de E5.
-- **Verificación:** Se contrastaron las cuentas con eventos de E2, E4 y ambas variantes de E5. Las pruebas detectaron los defectos iniciales de los tres issues antes de que cada ejecución los corrigiera.
-- **Decisión:** Incluir los datos de las cuatro ejecuciones (issue 2 aparece dos veces) y aclarar que esos fallos iniciales eran los defectos sembrados del sistema, no fallos posteriores de las correcciones.
+- **Verificación:** Se contrastaron las cuentas con eventos de E2, E4 y ambas variantes de E5. Las pruebas detectaron los defectos sembrados de los issues antes de que cada ejecución los corrigiera; esto no se contabilizó como un error del agente.
+- **Decisión:** Incluir los datos de las cuatro ejecuciones (issue 2 aparece dos veces) y registrar aparte una prueba controlada del rechazo de una decisión inválida del agente, sin mezclarla con esas métricas.
+
+## Interacción 7 — Rechazo de una decisión inválida del agente
+
+- **Fecha:** 26/11/2026
+- **Herramienta:** GPT y `ModeloGrabado` para una prueba controlada local.
+- **Prompt:** “Prepara una comprobación reproducible en la que una decisión JSON del agente solicite una herramienta inexistente y verifica que el contrato la rechace antes de ejecutarla.”
+- **Propuesta:** Reproducir la decisión `{"pensamiento":"Consultar los archivos","accion":"abrir_terminal","args":{}}`, seguida de una respuesta final válida, usando `ModeloGrabado`.
+- **Verificación:** Al ejecutar `python agentes/reproducir_validacion_contrato_e7.py`, el contrato registró `CONTRATO_INVALIDO` con el motivo `herramienta desconocida: 'abrir_terminal'`; después el agente terminó con una respuesta final válida. La traza y el Mermaid se guardaron en `agentes/trazas/validacion-contrato-e7.jsonl` y `.mmd`. No se ejecutó ninguna herramienta ni se llamó a un proveedor externo. Es un caso controlado, no un fallo espontáneo de una sesión con un LLM en vivo.
+- **Decisión:** Aceptar el rechazo como evidencia de que el contrato contiene el error de salida del agente y mantenerlo separado de las cuatro ejecuciones de issues resumidas en `observacion.md`.
