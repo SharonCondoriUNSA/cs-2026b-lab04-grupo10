@@ -1,0 +1,48 @@
+@startuml
+title EcoRecicla AQP · Máquina de estados del ejecutor ReAct
+hide empty description
+skinparam dpi 165
+skinparam shadowing false
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam state {
+  BackgroundColor #EFF5FA
+  BorderColor #385875
+  ArrowColor #435465
+}
+
+state INICIO
+state turno <<choice>>
+state DECIDIENDO
+state VALIDANDO_CONTRATO
+state EVALUANDO_POLITICA
+state EJECUTANDO
+state OBSERVANDO
+state CONTRATO_INVALIDO #FFF2D6
+state BLOQUEADO #FFF2D6
+state FINALIZADO #DFF2E3
+state LIMITE_ALCANZADO #F7E5E2
+
+[*] --> INICIO
+INICIO --> turno : registrar objetivo
+turno --> DECIDIENDO : [queda un paso]
+turno --> LIMITE_ALCANZADO : [presupuesto agotado]
+DECIDIENDO --> VALIDANDO_CONTRATO : decisión del modelo
+VALIDANDO_CONTRATO --> CONTRATO_INVALIDO : [decisión inválida]
+VALIDANDO_CONTRATO --> FINALIZADO : [respuesta final válida]
+VALIDANDO_CONTRATO --> EVALUANDO_POLITICA : [acción válida]
+EVALUANDO_POLITICA --> BLOQUEADO : [denegada]
+EVALUANDO_POLITICA --> EJECUTANDO : [permitida]
+EJECUTANDO --> OBSERVANDO : resultado o error de la herramienta
+OBSERVANDO --> turno
+BLOQUEADO --> turno
+CONTRATO_INVALIDO --> turno
+FINALIZADO --> [*]
+LIMITE_ALCANZADO --> [*]
+
+legend bottom
+  Cada decisión consume un paso (máximo 12 en E2).
+  Tras una acción, un rechazo o un bloqueo, el ejecutor añade la observación
+  al historial antes de comprobar si queda otro paso.
+endlegend
+@enduml
