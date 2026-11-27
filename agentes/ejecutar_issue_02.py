@@ -1,6 +1,6 @@
 """Reproduce E5: agente único frente al flujo planificador-ejecutor-revisor."""
+import argparse
 import json
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -14,8 +14,8 @@ from agente.herramientas import Herramientas
 from agente.modelos import ModeloGrabado
 from agente.nucleo import Agente
 from agente.politica import Politica
-from agente.traza import a_mermaid
-from orquestador import ejecutar_orquestado
+from agente.traza import a_mermaid, etiqueta, prueba_pasada, resumir
+from orquestador import ejecutar_orquestado, veredicto_revisor
 
 BASE = "d9156e1b816ec23d9e6c8208f3614039675632cd"
 ARCHIVOS = (
@@ -23,8 +23,6 @@ ARCHIVOS = (
     "src/puntos_beneficios/servicio.py", "src/puntos_beneficios/reglas.py",
     "issues/ISSUE-02.md", "tests/test_issue_02.py",
 )
-TRAZAS = AGENTES / "trazas"
-EVIDENCIA = AGENTES / "evidencias" / "issue-02"
 
 
 def preparar_copia(raiz: Path) -> Path:
@@ -52,19 +50,14 @@ def metricas(eventos: list[dict]) -> dict:
     }
 
 
-def prueba_pasada(eventos: list[dict]) -> bool:
-    return any(e.get("accion") == "ejecutar_pruebas" and
-               e.get("observacion", "").startswith("pytest exit=0") for e in eventos)
-
-
 def fallo_reproducido(eventos: list[dict]) -> bool:
     return any(e.get("accion") == "ejecutar_pruebas" and
                e.get("observacion", "").startswith("pytest exit=1") and
                "FAILED tests/test_issue_02.py" in e.get("observacion", "") for e in eventos)
 
 
-def ejecutar_unico() -> dict:
-    destino = TRAZAS / "issue-02-unico.jsonl"
+def ejecutar_unico(trazas: Path) -> dict:
+    destino = trazas / "issue-02-unico.jsonl"
     with tempfile.TemporaryDirectory(prefix="lab10-e5-unico-") as tmp:
         agente = Agente(
             "agente_unico", ModeloGrabado(AGENTES / "trayectorias" / "issue-02-unico.json"),
@@ -78,25 +71,28 @@ def ejecutar_unico() -> dict:
     return {"eventos": eventos, "metricas": metricas(eventos), "resultado": eventos[-1].get("texto", "")}
 
 
-def ejecutar_dos_roles() -> dict:
-    carpeta = TRAZAS / "issue-02-orquestado"
-    carpeta.mkdir(exist_ok=True)
+def ejecutar_dos_roles(trazas: Path) -> dict:
+    carpeta = trazas / "issue-02-orquestado"
+    carpeta.mkdir()
     modelos = {
         "planificador": ModeloGrabado(AGENTES / "trayectorias" / "issue-02-planificador.json"),
         "ejecutor": [ModeloGrabado(AGENTES / "trayectorias" / "issue-02-ejecutor.json")],
         "revisor": [ModeloGrabado(AGENTES / "trayectorias" / "issue-02-revisor.json")],
     }
+    for rol in ("ejecutor", "revisor"):
+        segunda = AGENTES / "trayectorias" / f"issue-02-{rol}-r2.json"
+        if segunda.is_file():
+            modelos[rol].append(ModeloGrabado(segunda))
     with tempfile.TemporaryDirectory(prefix="lab10-e5-orquestado-") as tmp:
         resultado = ejecutar_orquestado(preparar_copia(Path(tmp)), modelos, carpeta)
     lista_eventos = []
     por_rol = {}
-    archivos = sorted(carpeta.glob("*.jsonl"), key=lambda p: ("planificador", "ejecutor-r1", "revisor-r1").index(p.stem))
-    for archivo in archivos:
-        eventos = eventos_de(archivo)
+    for agente in resultado["agentes"]:
+        eventos = agente.eventos
         lista_eventos.extend(eventos)
-        nombre = archivo.stem
+        nombre = agente.traza_archivo.stem
         por_rol[nombre] = metricas(eventos)
-    combinado = TRAZAS / "issue-02-orquestado.jsonl"
+    combinado = trazas / "issue-02-orquestado.jsonl"
     combinado.write_text("".join(json.dumps(e, ensure_ascii=False) + "\n" for e in lista_eventos), encoding="utf-8")
     decisiones_acciones = [e for e in lista_eventos if e["tipo"] == "accion"]
     suma_contextos = sum(m["contexto_final_caracteres"] for m in por_rol.values())
@@ -112,34 +108,48 @@ def ejecutar_dos_roles() -> dict:
     return resultado
 
 
-def escribir_diagramas(unico: list[dict], coordinado: list[dict]) -> None:
-    (TRAZAS / "issue-02-unico.mmd").write_text(a_mermaid(unico), encoding="utf-8")
+def escribir_diagramas(trazas: Path, unico: list[dict], coordinado: list[dict]) -> None:
+    (trazas / "issue-02-unico.mmd").write_text(a_mermaid(unico), encoding="utf-8")
     lineas = ["sequenceDiagram", "    autonumber", "    participant P as Planificador",
               "    participant E as Ejecutor", "    participant R as Revisor", "    participant T as Herramientas y política"]
-    lineas.append("    P-->>E: Plan de resolución")
-    aviso_revisor = False
+    turno = []
     for e in coordinado:
-        rol = e.get("agente", "").split("_r")[0]
-        actor = {"planificador": "P", "ejecutor": "E", "revisor": "R"}.get(rol, "E")
-        if e["tipo"] == "accion":
-            if actor == "R" and not aviso_revisor:
+        rol = e["agente"].split("_r")[0]
+        actor = {"planificador": "P", "ejecutor": "E", "revisor": "R"}[rol]
+        if e["tipo"] == "objetivo":
+            turno = []
+            if actor == "R":
                 lineas.append("    E-->>R: Cambio y resultados")
-                aviso_revisor = True
-            lineas.append(f"    {actor}->>T: {e['accion']}")
-            lineas.append(f"    T-->>{actor}: {'Bloqueada por política' if e['bloqueada'] else 'Resultado observado'}")
-    lineas.append("    R-->>P: APROBADO; sin hallazgo adicional")
-    (TRAZAS / "issue-02-orquestado.mmd").write_text("\n".join(lineas) + "\n", encoding="utf-8")
+            elif actor == "E":
+                numero = e["agente"].split("_r")[1]
+                lineas.append(f"    P-->>E: Plan y objetivo de la ronda {numero}")
+        turno.append(e)
+        if e["tipo"] == "accion":
+            lineas.append(f"    {actor}->>T: {etiqueta(e['accion'])}")
+            observacion = e["observacion"] if e["bloqueada"] else resumir(e)
+            lineas.append(f"    T-->>{actor}: {etiqueta(observacion)}")
+        elif actor == "R" and e["tipo"] in ("final", "limite"):
+            estado = veredicto_revisor(turno).partition(".")[0]
+            lineas.append(f"    R-->>P: {etiqueta(estado)}")
+    (trazas / "issue-02-orquestado.mmd").write_text("\n".join(lineas) + "\n", encoding="utf-8")
 
 
-def escribir_informe(unico: dict, coordinado: dict) -> None:
-    EVIDENCIA.mkdir(parents=True, exist_ok=True)
+def escribir_informe(evidencia: Path, unico: dict, coordinado: dict) -> None:
+    evidencia.mkdir(parents=True)
     m1, m2 = unico["metricas"], coordinado["metricas"]
-    p = EVIDENCIA / "comparacion.md"
+    p = evidencia / "comparacion.md"
+    estado_unico = "pasó" if prueba_pasada(unico["eventos"]) else "sin prueba final aprobada"
+    estado_coordinado = "pasó" if prueba_pasada(coordinado["eventos"]) else "sin prueba final aprobada"
+    resuelto = (prueba_pasada(unico["eventos"]) and prueba_pasada(coordinado["eventos"])
+                and coordinado["aprobado"] and fallo_reproducido(unico["eventos"])
+                and fallo_reproducido(coordinado["eventos"]))
+    conclusion = ("Ambas variantes resolvieron el mismo contrato desde copias limpias." if resuelto
+                  else "La evidencia de esta ejecución es insuficiente para dar el issue por resuelto en ambas variantes.")
     contenido = f'''# E5: comparación de coordinación para ISSUE-02
 
 ## Protocolo y procedencia
 
-Se resolvió el mismo estado inicial de `ISSUE-02` en dos copias independientes de `{BASE[:7]}`. La variante única usa un agente con hasta 12 decisiones. La coordinada usa planificador sin herramientas, ejecutor y revisor de solo lectura; el ciclo actor-crítico tiene un máximo de dos rondas. Las trayectorias JSON fueron redactadas por GPT en esta sesión para documentar decisiones reproducibles y se reprodujeron localmente con `ModeloGrabado`; no se hizo una llamada en vivo a un proveedor externo. Las herramientas sí ejecutaron las pruebas y editaron únicamente las copias de trabajo.
+Las dos variantes partieron de copias independientes de `{BASE[:7]}`. La variante única usa un agente con hasta 12 decisiones. La coordinada usa planificador sin herramientas, ejecutor y revisor de solo lectura. El máximo es de dos rondas. Las decisiones proceden de las trayectorias de E5 preparadas con apoyo de GPT y reproducidas con `ModeloGrabado`. Las herramientas operan en copias de trabajo.
 
 ## Resultados
 
@@ -150,42 +160,49 @@ Se resolvió el mismo estado inicial de `ISSUE-02` en dos copias independientes 
 | Acciones ejecutadas / bloqueadas | {m1['acciones_ejecutadas']} / {m1['acciones_bloqueadas']} | {m2['acciones_ejecutadas']} / {m2['acciones_bloqueadas']} |
 | Contexto final (caracteres) | {m1['contexto_final_caracteres']} | {m2['contexto_final_caracteres']} acumulados entre roles |
 | Fallo inicial reproducido | {'sí' if fallo_reproducido(unico['eventos']) else 'no'} | {'sí' if fallo_reproducido(coordinado['eventos']) else 'no'} |
-| Prueba tras la corrección | {'pasó' if prueba_pasada(unico['eventos']) else 'falló'} | {'pasó' if prueba_pasada(coordinado['eventos']) else 'falló'} |
-| Hallazgo adicional del revisor | No aplica | No; corroboró el contrato y no encontró una omisión del agente único |
+| Última verificación de la copia | {estado_unico} | {estado_coordinado} |
+| Veredicto y hallazgos del revisor | No aplica | {coordinado['veredicto']} |
 
 El contexto coordinado se suma por rol porque cada agente conserva un historial independiente; por tanto, no equivale al contexto de una única conversación. El total de decisiones incluye las respuestas finales de cada rol.
 
 ## Evidencia
 
-- Trayectorias: `agentes/trayectorias/issue-02-*.json`.
-- Traza de la variante única: `agentes/trazas/issue-02-unico.jsonl` y diagrama Mermaid asociado.
-- Trazas por rol y traza combinada: `agentes/trazas/issue-02-orquestado/` y `agentes/trazas/issue-02-orquestado.jsonl`.
-- Diagramas Mermaid: `agentes/trazas/issue-02-unico.mmd` y `agentes/trazas/issue-02-orquestado.mmd`.
+Las decisiones grabadas se encuentran en `agentes/trayectorias/issue-02-*.json` del repositorio.
+Las observaciones de esta ejecución se pueden consultar en la [traza del agente único](../../trazas/issue-02-unico.jsonl)
+y la [traza coordinada](../../trazas/issue-02-orquestado.jsonl).
+Para reproducirlas en una carpeta nueva, ejecutar desde la raíz
+`python agentes/ejecutar_issue_02.py --salida ../replay-e5`.
 
 ## Conclusión (7 líneas)
 
-1. Ambas variantes resolvieron el mismo contrato desde copias limpias.
-2. La prueba específica pasó y el cambio conserva orden y entrada original.
-3. La coordinación añade decisiones y contexto porque separa los roles.
-4. El revisor confirmó el resultado, pero no descubrió un defecto que el agente único hubiera omitido.
-5. El límite de dos rondas evita que el ciclo de revisión crezca sin control.
-6. Para este issue acotado, el costo adicional no se justifica por el resultado observado.
-7. La coordinación sería más útil si el cambio tuviera mayor riesgo o varias decisiones independientes.
+1. {conclusion}
+2. La prueba de rutas verifica exclusión de canceladas, orden y conservación de la entrada.
+3. El agente único empleó {m1['decisiones']} decisiones y la coordinación empleó {m2['decisiones']}.
+4. Se completaron {coordinado['rondas']} rondas de revisión de un máximo de dos.
+5. El agente único registró {m1['acciones_bloqueadas']} acciones bloqueadas y la variante coordinada registró {m2['acciones_bloqueadas']}.
+6. El contexto agregado del equipo fue de {m2['contexto_final_caracteres']} caracteres, frente a {m1['contexto_final_caracteres']} del agente único.
+7. {'Para satisfacer esta prueba de rutas bastó el agente único. En este caso, incorporar dos roles adicionales no fue necesario para alcanzar el resultado funcional.' if resuelto else 'Queda pendiente verificar la resolución antes de valorar el costo de coordinar los roles.'}
 '''
     p.write_text(contenido, encoding="utf-8")
-    (EVIDENCIA / "metricas.json").write_text(json.dumps({"agente_unico": m1, "orquestado": m2,
+    (evidencia / "metricas.json").write_text(json.dumps({"agente_unico": m1, "orquestado": m2,
         "rondas": coordinado["rondas"], "aprobado": coordinado["aprobado"]}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def main() -> int:
-    TRAZAS.mkdir(exist_ok=True)
-    EVIDENCIA.mkdir(parents=True, exist_ok=True)
-    if (TRAZAS / "issue-02-orquestado").exists():
-        shutil.rmtree(TRAZAS / "issue-02-orquestado")
-    unico = ejecutar_unico()
-    coordinado = ejecutar_dos_roles()
-    escribir_diagramas(unico["eventos"], coordinado["eventos"])
-    escribir_informe(unico, coordinado)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--salida", type=Path, help="directorio nuevo para las trazas y el informe")
+    salida = parser.parse_args().salida
+    if salida is None:
+        salida = Path(tempfile.mkdtemp(prefix="lab10-e5-"))
+    else:
+        salida.mkdir(parents=True, exist_ok=False)
+    print(f"Evidencias de la ejecución: {salida.resolve()}")
+    trazas = salida / "trazas"
+    trazas.mkdir()
+    unico = ejecutar_unico(trazas)
+    coordinado = ejecutar_dos_roles(trazas)
+    escribir_diagramas(trazas, unico["eventos"], coordinado["eventos"])
+    escribir_informe(salida / "evidencias" / "issue-02", unico, coordinado)
     print(json.dumps({"unico": unico["metricas"], "orquestado": coordinado["metricas"],
                       "rondas": coordinado["rondas"], "revisor_aprobo": coordinado["aprobado"]},
                      ensure_ascii=False, indent=2))

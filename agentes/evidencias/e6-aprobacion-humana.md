@@ -28,7 +28,8 @@ Comando ejecutado desde la raíz del repositorio:
 .venv-e5-temp/Scripts/python.exe -m pytest agentes/pruebas_agente/test_aprobacion.py agentes/pruebas_agente/test_agente.py -q
 ```
 
-Resultado: **26 passed**. Las pruebas cubren aceptación, rechazo, reintento ante
+Tras incorporar los dos casos de reproducción, el comando obtuvo **28 passed**.
+Las pruebas cubren aceptación, rechazo, reintento ante
 respuesta inválida, fin de entrada, petición en cada edición, bloqueo sin
 modificar el archivo y registro de la aprobación concedida.
 
@@ -38,3 +39,9 @@ Al ejecutar un flujo que proponga una edición, revisar el archivo y ambos texto
 mostrados. Responder `s` para permitir esa sustitución o `n` para rechazarla. Una
 entrada distinta vuelve a solicitarse. La aprobación autoriza únicamente la
 edición concreta mostrada; una propuesta posterior vuelve a requerir aprobación.
+
+El comando de reproducción de los issues 1 y 3 comprueba la última prueba
+ejecutada sobre la copia final antes de anunciar la resolución. Si se rechaza
+la sustitución y la prueba continúa en rojo, informa que el issue queda
+pendiente y devuelve un código de salida distinto de cero. La traza conserva
+la respuesta original del modelo y el resultado observado de la prueba.

@@ -35,6 +35,12 @@ Diagrama de la traza del actor-crítico de E5:
 Fuentes: [traza combinada JSONL](trazas/issue-02-orquestado.jsonl),
 [Mermaid](trazas/issue-02-orquestado.mmd) y [trazas separadas por rol](trazas/issue-02-orquestado/).
 
+Para regenerar la figura desde la raíz con Mermaid CLI:
+
+```console
+mmdc -i agentes/trazas/issue-02-orquestado.mmd -o agentes/trazas/issue-02-orquestado.png -b white -s 2
+```
+
 ## Comprobación controlada del contrato
 
 Como evidencia adicional para E7, se reprodujo una decisión de agente que intenta
