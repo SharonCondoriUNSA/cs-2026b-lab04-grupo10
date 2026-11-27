@@ -8,6 +8,7 @@ from agente.herramientas import Herramientas, HerramientasConMemoria
 from agente.modelos import ModeloGrabado, ModeloInteractivo
 from agente.nucleo import Agente
 from agente.politica import MODULO_EDITABLE, Politica
+from agente.traza import prueba_pasada
 
 
 BASES = {
@@ -54,8 +55,15 @@ def ejecutar(salida, grabacion=None, numero="01"):
         + json.dumps(herramientas.catalogo(), ensure_ascii=False, indent=2)
     )
     agente = Agente("ejecutor", modelo, herramientas, politica, objetivo, trazas / f"issue-{numero}.jsonl")
-    print(agente.ejecutar())
-    return 0 if agente.eventos[-1]["estado"] == "FINALIZADO" else 1
+    respuesta = agente.ejecutar()
+    if agente.eventos[-1]["estado"] != "FINALIZADO":
+        print(respuesta)
+        return 1
+    if not prueba_pasada(agente.eventos):
+        print(f"ISSUE-{numero} pendiente. Falta una prueba aprobada sobre la copia final.")
+        return 1
+    print(respuesta)
+    return 0
 
 
 def main():

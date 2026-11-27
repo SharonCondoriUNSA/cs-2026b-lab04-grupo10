@@ -3,6 +3,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).parents[1]))
 
 from agente.aprobacion import aprobar_edicion_en_consola
@@ -10,6 +12,7 @@ from agente.herramientas import Herramientas
 from agente.modelos import ModeloGrabado
 from agente.nucleo import Agente
 from agente.politica import MODULO_EDITABLE, Politica
+import ejecutar_issue
 
 
 EDICION = {
@@ -112,3 +115,26 @@ def test_edicion_aprobada_se_ejecuta_y_queda_en_traza(tmp_path):
     assert ruta.read_text(encoding="utf-8") == "estado = 'después'\n"
     assert eventos[1]["estado"] == "OBSERVANDO"
     assert eventos[1]["aprobacion"] == "Aprobación humana concedida en consola"
+
+
+@pytest.mark.parametrize(("decision", "codigo"), [("n", 1), ("s", 0)])
+def test_replay_contrasta_respuesta_grabada_con_prueba_final(tmp_path, monkeypatch, capsys, decision, codigo):
+    monkeypatch.setattr(ejecutar_issue.subprocess, "check_output", lambda *a, **kw: b"estado = 0\n")
+    monkeypatch.setattr("builtins.input", lambda _: decision)
+
+    def comprobar(herramientas):
+        archivo = herramientas.raiz / MODULO_EDITABLE
+        return "pytest exit=0" if archivo.read_text(encoding="utf-8") == "estado = 1\n" else "pytest exit=1"
+
+    monkeypatch.setattr(Herramientas, "ejecutar_pruebas", comprobar)
+    grabacion = tmp_path / "decisiones.json"
+    grabacion.write_text(json.dumps([
+        {"pensamiento": "Proponer", "accion": "editar_archivo",
+         "args": {"ruta": MODULO_EDITABLE, "antes": "estado = 0", "despues": "estado = 1"}},
+        {"pensamiento": "Verificar", "accion": "ejecutar_pruebas", "args": {}},
+        {"pensamiento": "Cerrar", "final": "Issue corregido"},
+    ]), encoding="utf-8")
+    assert ejecutar_issue.ejecutar(tmp_path / "sesion", grabacion) == codigo
+    mensaje = capsys.readouterr().out
+    assert ("Issue corregido" in mensaje) == (decision == "s")
+    assert ("pendiente" in mensaje) == (decision == "n")

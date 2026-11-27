@@ -2,7 +2,7 @@
 
 ## Protocolo y procedencia
 
-Se resolvió el mismo estado inicial de `ISSUE-02` en dos copias independientes de `d9156e1`. La variante única usa un agente con hasta 12 decisiones. La coordinada usa planificador sin herramientas, ejecutor y revisor de solo lectura; el ciclo actor-crítico tiene un máximo de dos rondas. Las trayectorias JSON fueron redactadas por GPT en esta sesión para documentar decisiones reproducibles y se reprodujeron localmente con `ModeloGrabado`; no se hizo una llamada en vivo a un proveedor externo. Las herramientas sí ejecutaron las pruebas y editaron únicamente las copias de trabajo.
+Las dos variantes partieron de copias independientes de `d9156e1`. La variante única usa un agente con hasta 12 decisiones. La coordinada usa planificador sin herramientas, ejecutor y revisor de solo lectura. El máximo es de dos rondas. Las decisiones proceden de las trayectorias de E5 preparadas con apoyo de GPT y reproducidas con `ModeloGrabado`. Las herramientas operan en copias de trabajo.
 
 ## Resultados
 
@@ -13,24 +13,25 @@ Se resolvió el mismo estado inicial de `ISSUE-02` en dos copias independientes 
 | Acciones ejecutadas / bloqueadas | 7 / 0 | 10 / 0 |
 | Contexto final (caracteres) | 6511 | 10796 acumulados entre roles |
 | Fallo inicial reproducido | sí | sí |
-| Prueba tras la corrección | pasó | pasó |
-| Hallazgo adicional del revisor | No aplica | No; corroboró el contrato y no encontró una omisión del agente único |
+| Última verificación de la copia | pasó | pasó |
+| Veredicto y hallazgos del revisor | No aplica | APROBADO. Evidencia: el diff solo modifica preparar_ruta, excluye CANCELADA mediante una lista nueva y la prueba específica pasa, incluyendo orden, no mutación, lista vacía y solo canceladas. No encontré una condición omitida por el agente único; la revisión corroboró su resultado. |
 
 El contexto coordinado se suma por rol porque cada agente conserva un historial independiente; por tanto, no equivale al contexto de una única conversación. El total de decisiones incluye las respuestas finales de cada rol.
 
 ## Evidencia
 
-- Trayectorias: `agentes/trayectorias/issue-02-*.json`.
-- Traza de la variante única: `agentes/trazas/issue-02-unico.jsonl` y diagrama Mermaid asociado.
-- Trazas por rol y traza combinada: `agentes/trazas/issue-02-orquestado/` y `agentes/trazas/issue-02-orquestado.jsonl`.
-- Diagramas Mermaid: `agentes/trazas/issue-02-unico.mmd` y `agentes/trazas/issue-02-orquestado.mmd`.
+Las decisiones grabadas se encuentran en `agentes/trayectorias/issue-02-*.json` del repositorio.
+Las observaciones de esta ejecución se pueden consultar en la [traza del agente único](../../trazas/issue-02-unico.jsonl)
+y la [traza coordinada](../../trazas/issue-02-orquestado.jsonl).
+Para reproducirlas en una carpeta nueva, ejecutar desde la raíz
+`python agentes/ejecutar_issue_02.py --salida ../replay-e5`.
 
 ## Conclusión (7 líneas)
 
 1. Ambas variantes resolvieron el mismo contrato desde copias limpias.
-2. La prueba específica pasó y el cambio conserva orden y entrada original.
-3. La coordinación añade decisiones y contexto porque separa los roles.
-4. El revisor confirmó el resultado, pero no descubrió un defecto que el agente único hubiera omitido.
-5. El límite de dos rondas evita que el ciclo de revisión crezca sin control.
-6. Para este issue acotado, el costo adicional no se justifica por el resultado observado.
-7. La coordinación sería más útil si el cambio tuviera mayor riesgo o varias decisiones independientes.
+2. La prueba de rutas verifica exclusión de canceladas, orden y conservación de la entrada.
+3. El agente único empleó 8 decisiones y la coordinación empleó 13.
+4. Se completaron 1 rondas de revisión de un máximo de dos.
+5. El agente único registró 0 acciones bloqueadas y la variante coordinada registró 0.
+6. El contexto agregado del equipo fue de 10796 caracteres, frente a 6511 del agente único.
+7. Para satisfacer esta prueba de rutas bastó el agente único. En este caso, incorporar dos roles adicionales no fue necesario para alcanzar el resultado funcional.

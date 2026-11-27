@@ -4,26 +4,26 @@ sequenceDiagram
     participant E as Ejecutor
     participant R as Revisor
     participant T as Herramientas y política
-    P-->>E: Plan de resolución
+    P-->>E: Plan y objetivo de la ronda 1
     E->>T: leer_archivo
-    T-->>E: Resultado observado
+    T-->>E: ISSUE-02.md
     E->>T: leer_archivo
-    T-->>E: Resultado observado
+    T-->>E: test_issue_02.py
     E->>T: ejecutar_pruebas
-    T-->>E: Resultado observado
+    T-->>E: 1 failed in 0.14s
     E->>T: leer_archivo
-    T-->>E: Resultado observado
+    T-->>E: operaciones.py
     E->>T: editar_archivo
-    T-->>E: Resultado observado
+    T-->>E: OK: src/lab10/operaciones.py modificado
     E->>T: ejecutar_pruebas
-    T-->>E: Resultado observado
+    T-->>E: 1 passed in 0.03s
     E->>T: ver_cambios
-    T-->>E: Resultado observado
+    T-->>E: Diff de 11 líneas
     E-->>R: Cambio y resultados
     R->>T: leer_archivo
-    T-->>R: Resultado observado
+    T-->>R: ISSUE-02.md
     R->>T: ver_cambios
-    T-->>R: Resultado observado
+    T-->>R: Diff de 11 líneas
     R->>T: ejecutar_pruebas
-    T-->>R: Resultado observado
-    R-->>P: APROBADO; sin hallazgo adicional
+    T-->>R: 1 passed in 0.02s
+    R-->>P: APROBADO
