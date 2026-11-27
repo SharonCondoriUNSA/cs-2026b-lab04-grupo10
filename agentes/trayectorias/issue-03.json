@@ -1,0 +1,70 @@
+[
+  {
+    "pensamiento": "Consultar el criterio de aceptación.",
+    "accion": "leer_archivo",
+    "args": {
+      "ruta": "issues/ISSUE-03.md"
+    }
+  },
+  {
+    "pensamiento": "Reproducir el cálculo de D02.",
+    "accion": "ejecutar_pruebas",
+    "args": {}
+  },
+  {
+    "pensamiento": "Ubicar los métodos del catálogo distrital.",
+    "accion": "mapa_repo",
+    "args": {
+      "carpeta": "src/lab10"
+    }
+  },
+  {
+    "pensamiento": "Guardar la hipótesis antes de inspeccionar el constructor.",
+    "accion": "anotar",
+    "args": {
+      "texto": "Revisado: issues/ISSUE-03.md y mapa de src/lab10/operaciones.py. D02 da 30 en vez de 20. Hipótesis: los distritos comparten un diccionario de tarifas."
+    }
+  },
+  {
+    "pensamiento": "Examinar las líneas que crean, actualizan y leen las tarifas.",
+    "accion": "buscar",
+    "args": {
+      "patron": "self\\._tarifas\\b"
+    }
+  },
+  {
+    "pensamiento": "Crear una copia independiente de las tarifas para cada distrito.",
+    "accion": "editar_archivo",
+    "args": {
+      "ruta": "src/lab10/operaciones.py",
+      "antes": "self._tarifas = dict.fromkeys(distritos, dict(tarifas))",
+      "despues": "self._tarifas = {distrito: dict(tarifas) for distrito in distritos}"
+    }
+  },
+  {
+    "pensamiento": "Verificar las tarifas de ambos distritos y el diccionario de entrada.",
+    "accion": "ejecutar_pruebas",
+    "args": {}
+  },
+  {
+    "pensamiento": "Verificar el alcance de la corrección.",
+    "accion": "ver_cambios",
+    "args": {}
+  },
+  {
+    "pensamiento": "Recuperar la hipótesis inicial para contrastarla con la prueba.",
+    "accion": "leer_notas",
+    "args": {}
+  },
+  {
+    "pensamiento": "Registrar la causa comprobada y el resultado.",
+    "accion": "anotar",
+    "args": {
+      "texto": "Verificado en src/lab10/operaciones.py: dict.fromkeys compartía el mismo diccionario. Con una copia por distrito, la prueba del issue 3 pasa: D01 da 30 y D02 conserva 20."
+    }
+  },
+  {
+    "pensamiento": "Entregar el cambio a revisión.",
+    "final": "La prueba del issue 3 pasó. Cada distrito conserva su propio diccionario de tarifas. Con 2 kg de plástico, D01 acredita 30 puntos y D02 mantiene 20."
+  }
+]

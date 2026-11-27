@@ -4,7 +4,7 @@ import sys, pathlib, pytest
 sys.path.insert(0, str(pathlib.Path(__file__).parents[1]))
 from agente.contrato import validar_decision
 from agente.politica import Politica
-from agente.herramientas import Herramientas
+from agente.herramientas import Herramientas, HerramientasConMemoria
 from agente.modelos import ModeloGrabado
 from agente.nucleo import Agente
 
@@ -82,3 +82,40 @@ def test_politica_respeta_presupuesto_de_pasos():
 def test_sandbox_impide_salir_del_directorio(tmp_path):
     with pytest.raises(PermissionError):
         Herramientas(tmp_path).leer_archivo("../../etc/passwd")
+
+
+def test_mapa_repo_muestra_firmas_sin_ejecutar_el_modulo(tmp_path):
+    src = tmp_path / "src"
+    src.mkdir()
+    (src / "tarifas.py").write_text(
+        "raise RuntimeError('El mapa solo debe analizar el código')\n"
+        "class Tarifas:\n"
+        "    def actualizar(self, distrito: str, *, tarifa=10): pass\n"
+        "async def consultar(distrito: str) -> int: pass\n",
+        encoding="utf-8",
+    )
+    (tmp_path / "otro.py").touch()
+    herramientas = HerramientasConMemoria(tmp_path)
+    assert herramientas.mapa_repo("src").splitlines() == [
+        "src/tarifas.py", "  class Tarifas",
+        "    def actualizar(self, distrito: str, *, tarifa=10)",
+        "  async def consultar(distrito: str) -> int",
+    ]
+    with pytest.raises(PermissionError):
+        herramientas.mapa_repo("..")
+
+
+def test_notas_persisten_por_ejecucion(tmp_path):
+    primera, segunda = tmp_path / "primera", tmp_path / "segunda"
+    primera.mkdir()
+    segunda.mkdir()
+    herramientas = HerramientasConMemoria(primera)
+    herramientas.anotar("Hipótesis: catálogo compartido")
+    herramientas.anotar("Revisado: operaciones.py")
+    esperado = "- Hipótesis: catálogo compartido\n- Revisado: operaciones.py\n"
+    assert (primera / "notas.md").read_text(encoding="utf-8") == esperado
+    assert HerramientasConMemoria(primera).leer_notas() == esperado
+    assert HerramientasConMemoria(segunda).leer_notas() == "(sin notas)"
+    with pytest.raises(ValueError):
+        herramientas.anotar("   ")
+    assert herramientas.leer_notas() == esperado

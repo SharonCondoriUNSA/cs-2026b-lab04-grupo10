@@ -40,7 +40,7 @@ def preparar_ruta(solicitudes):
 
 class TarifasDistritales:
     def __init__(self, distritos, tarifas):
-        self._tarifas = dict.fromkeys(distritos, dict(tarifas))
+        self._tarifas = {distrito: dict(tarifas) for distrito in distritos}
 
     def actualizar(self, distrito, material, tarifa):
         self._tarifas[distrito][material] = tarifa

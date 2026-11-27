@@ -1,5 +1,6 @@
 """Herramientas del agente. Cada una es una función pequeña, con descripción y parámetros explícitos.
 Todas operan DENTRO del directorio de trabajo (sandbox)."""
+import ast
 import difflib
 import os
 import pathlib
@@ -82,3 +83,60 @@ class Herramientas:
         if comando != "python -m pytest -q":
             raise PermissionError("Comando fuera de la lista permitida")
         return self.ejecutar_pruebas()
+
+
+class HerramientasConMemoria(Herramientas):
+    """Herramientas de E4. Cada ejecución recibe su propia copia de trabajo."""
+
+    def catalogo(self):
+        return {
+            **super().catalogo(),
+            "mapa_repo": (
+                "mapa_repo(carpeta='.'): lista los archivos .py de esa carpeta de la copia "
+                "con las clases y las firmas de funciones y métodos. Usa AST sin importar los módulos."
+            ),
+            "anotar": (
+                "anotar(texto): añade una hipótesis o un archivo revisado a notas.md de esta "
+                "ejecución. Recibe texto no vacío y devuelve una confirmación."
+            ),
+            "leer_notas": "leer_notas(): devuelve las notas de esta ejecución en orden o '(sin notas)'.",
+        }
+
+    def mapa_repo(self, carpeta="."):
+        base = self._ruta(carpeta)
+        if not base.is_dir():
+            raise NotADirectoryError(carpeta)
+        lineas = []
+        for archivo in sorted(base.rglob("*.py")):
+            ruta = self._ruta(archivo)
+            lineas.append(ruta.relative_to(self.raiz).as_posix())
+            try:
+                modulo = ast.parse(ruta.read_bytes())
+            except SyntaxError as error:
+                lineas.append(f"  Error de sintaxis en la línea {error.lineno}")
+                continue
+            lineas.extend(self._firmas(modulo.body, "  "))
+        return "\n".join(lineas) or "(sin archivos Python)"
+
+    @staticmethod
+    def _firmas(nodos, sangria):
+        for nodo in nodos:
+            if isinstance(nodo, ast.ClassDef):
+                yield f"{sangria}class {nodo.name}"
+                yield from HerramientasConMemoria._firmas(nodo.body, sangria + "  ")
+            elif isinstance(nodo, (ast.FunctionDef, ast.AsyncFunctionDef)):
+                prefijo = "async def" if isinstance(nodo, ast.AsyncFunctionDef) else "def"
+                retorno = f" -> {ast.unparse(nodo.returns)}" if nodo.returns else ""
+                yield f"{sangria}{prefijo} {nodo.name}({ast.unparse(nodo.args)}){retorno}"
+
+    def anotar(self, texto):
+        if not isinstance(texto, str) or not texto.strip():
+            raise ValueError("La nota debe contener texto")
+        contenido = "\n  ".join(texto.strip().splitlines())
+        with self._ruta("notas.md").open("a", encoding="utf-8") as notas:
+            notas.write(f"- {contenido}\n")
+        return "OK: nota guardada en notas.md"
+
+    def leer_notas(self):
+        archivo = self._ruta("notas.md")
+        return archivo.read_text(encoding="utf-8") if archivo.exists() else "(sin notas)"

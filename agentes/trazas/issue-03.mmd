@@ -1,0 +1,40 @@
+sequenceDiagram
+    autonumber
+    actor U as Solicitante
+    participant A as Ejecutor ReAct
+    participant C as Contrato y política
+    participant H as Herramientas
+    U->>A: Objetivo del issue
+    A->>C: leer_archivo
+    C->>H: Ejecutar
+    H-->>A: ISSUE-03.md
+    A->>C: ejecutar_pruebas
+    C->>H: Ejecutar
+    H-->>A: 1 failed in 0.29s
+    A->>C: mapa_repo
+    C->>H: Ejecutar
+    H-->>A: Mapa de 2 archivos Python
+    A->>C: anotar
+    C->>H: Ejecutar
+    H-->>A: OK: nota guardada en notas.md
+    A->>C: buscar
+    C->>H: Ejecutar
+    H-->>A: src\lab10\operaciones.py:49: servicio = ServicioPuntos(self._tarifas[distrito])
+    A->>C: editar_archivo
+    C->>H: Ejecutar
+    H-->>A: OK: src/lab10/operaciones.py modificado
+    A->>C: ejecutar_pruebas
+    C->>H: Ejecutar
+    H-->>A: 1 passed in 0.07s
+    A->>C: ver_cambios
+    C->>H: Ejecutar
+    H-->>A: Diff de 11 líneas
+    A->>C: leer_notas
+    C->>H: Ejecutar
+    H-->>A: Notas recuperadas: 1
+    A->>C: anotar
+    C->>H: Ejecutar
+    H-->>A: OK: nota guardada en notas.md
+    A->>C: Respuesta final
+    C-->>A: Válida
+    A-->>U: Resultado para revisión
