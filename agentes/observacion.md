@@ -35,6 +35,17 @@ Diagrama de la traza del actor-crítico de E5:
 Fuentes: [traza combinada JSONL](trazas/issue-02-orquestado.jsonl),
 [Mermaid](trazas/issue-02-orquestado.mmd) y [trazas separadas por rol](trazas/issue-02-orquestado/).
 
+## Comprobación controlada del contrato
+
+Como evidencia adicional para E7, se reprodujo una decisión de agente que intenta
+usar la herramienta inexistente `abrir_terminal`. El contrato la rechazó con el
+estado `CONTRATO_INVALIDO` antes de ejecutar herramientas. Esta prueba controlada
+no es una quinta ejecución de los issues ni se incluye en la tabla de métricas.
+Se puede repetir con [`reproducir_validacion_contrato_e7.py`](reproducir_validacion_contrato_e7.py);
+la decisión grabada está en [trayectorias](trayectorias/validacion-contrato-e7.json)
+y la evidencia resultante en [JSONL](trazas/validacion-contrato-e7.jsonl) y
+[Mermaid](trazas/validacion-contrato-e7.mmd).
+
 ## Observaciones
 
 - Las tres pruebas específicas fallaron antes de corregir sus respectivos issues y pasaron después: issue 1, **40 frente a 20 puntos** al repetir una acreditación; issue 2, **SOL-02 CANCELADA** incluida en la ruta; issue 3, actualizar D01 también alteraba los puntos calculados para D02.
