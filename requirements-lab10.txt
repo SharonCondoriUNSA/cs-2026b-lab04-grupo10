@@ -1,0 +1,3 @@
+# Verificadores del laboratorio. No requiere clave de API ni SDK de un LLM.
+pytest==9.2.0
+radon==6.0.1
