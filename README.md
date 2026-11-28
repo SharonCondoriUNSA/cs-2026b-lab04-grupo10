@@ -339,3 +339,34 @@ La revisión de cada PR de Lab09 incluyó la lista del Paso 9 de la guía:
 | Etiqueta `v0.9-prompts` | Completado | Publicar la etiqueta sobre el commit final de `main`, después de confirmar sus workflows. |
 
 Repositorio: [SharonCondoriUNSA/cs-2026b-lab04-grupo10](https://github.com/SharonCondoriUNSA/cs-2026b-lab04-grupo10). La etiqueta identifica una versión del repositorio.
+
+## Sistemas agénticos (Lab 10)
+
+El prototipo de EcoRecicla AQP combina un agente ReAct, herramientas limitadas por política y trazas de ejecución. E5 compara un agente único con una coordinación actor-crítico; E6 incorpora aprobación humana antes de cada edición. El alcance y las restricciones de la arquitectura se registran en [ADR-010](docs/architecture/adr/010-sistema-agentico.md), y la evolución de autonomía se explica en [delegación progresiva](agentes/delegacion.md).
+
+### Máquina de estados y trayectorias
+
+El agente decide una acción, valida su contrato y la política, ejecuta la herramienta permitida o registra el bloqueo, y observa el resultado. El ciclo termina con una respuesta final o al alcanzar el presupuesto de pasos.
+
+![Máquina de estados del agente](agentes/diseno/estados.png)
+
+La siguiente trayectoria corresponde a la ejecución coordinada del issue 2 en E5. Las cifras de las ejecuciones de los tres issues y sus límites están documentadas en [E7: observación de las ejecuciones](agentes/observacion.md).
+
+![Trayectoria coordinada del issue 2](agentes/trazas/issue-02-orquestado.png)
+
+### Métricas observadas en E7
+
+Los pasos cuentan decisiones y respuestas finales, no el objetivo inicial. El contexto de la variante actor-crítico suma los historiales finales independientes de sus tres roles. Son mediciones de las ejecuciones registradas, no una garantía para futuras solicitudes.
+
+| Issue / entrega | Pasos | Rondas | Herramientas usadas | Rechazos de contrato | Acciones bloqueadas | Contexto final (caracteres) |
+|---|---:|---:|---|---:|---:|---:|
+| Issue 1 / E2, ReAct | 8 | No aplica | `leer_archivo`, `editar_archivo`, `ejecutar_pruebas`, `ver_cambios` | 0 | 0 | 6 965 |
+| Issue 2 / E5, agente único | 8 | No aplica | `leer_archivo`, `editar_archivo`, `ejecutar_pruebas`, `ver_cambios` | 0 | 0 | 6 511 |
+| Issue 2 / E5, actor-crítico | 13 | 1 | `leer_archivo`, `editar_archivo`, `ejecutar_pruebas`, `ver_cambios` | 0 | 0 | 10 796 (suma por rol) |
+| Issue 3 / E4, con memoria | 11 | No aplica | `leer_archivo`, `buscar`, `mapa_repo`, `anotar`, `leer_notas`, `editar_archivo`, `ejecutar_pruebas`, `ver_cambios` | 0 | 0 | 6 517 |
+
+La variante coordinada usó más pasos y contexto que el agente único para el issue 2, sin que el revisor detectara una omisión adicional. E6 añadió aprobación humana por edición; sus pruebas controladas no se cuentan como aprobaciones de estas trayectorias históricas. Consulta la [observación completa](agentes/observacion.md), la [bitácora de IA](agentes/bitacora-ia.md) y la fuente de los [diagramas de estado](agentes/diseno/estados.puml) y [trayectoria](agentes/trazas/issue-02-orquestado.mmd).
+
+### Cierre y versión
+
+El ADR y esta documentación quedan sujetos a revisión del equipo en el Pull Request de E8. La etiqueta `v1.0-agentes` debe crearse sobre el commit final de `main` después de integrar los entregables revisados.
