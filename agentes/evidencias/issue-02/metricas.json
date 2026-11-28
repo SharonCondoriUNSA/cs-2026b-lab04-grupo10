@@ -1,0 +1,41 @@
+{
+  "agente_unico": {
+    "decisiones": 8,
+    "acciones": 7,
+    "acciones_ejecutadas": 7,
+    "acciones_bloqueadas": 0,
+    "contexto_final_caracteres": 6511
+  },
+  "orquestado": {
+    "decisiones": 13,
+    "acciones": 10,
+    "acciones_ejecutadas": 10,
+    "acciones_bloqueadas": 0,
+    "contexto_final_caracteres": 10796,
+    "contexto_por_rol": {
+      "planificador": {
+        "decisiones": 1,
+        "acciones": 0,
+        "acciones_ejecutadas": 0,
+        "acciones_bloqueadas": 0,
+        "contexto_final_caracteres": 623
+      },
+      "ejecutor-r1": {
+        "decisiones": 8,
+        "acciones": 7,
+        "acciones_ejecutadas": 7,
+        "acciones_bloqueadas": 0,
+        "contexto_final_caracteres": 7308
+      },
+      "revisor-r1": {
+        "decisiones": 4,
+        "acciones": 3,
+        "acciones_ejecutadas": 3,
+        "acciones_bloqueadas": 0,
+        "contexto_final_caracteres": 2865
+      }
+    }
+  },
+  "rondas": 1,
+  "aprobado": true
+}

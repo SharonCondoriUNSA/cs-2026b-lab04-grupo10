@@ -1,0 +1,3 @@
+[
+  {"pensamiento":"Separaré planificación, ejecución y revisión; usaré la prueba como contrato verificable y limitaré la edición al módulo del issue.","final":"Plan: reproducir tests/test_issue_02.py, leer el contrato y la función, cambiarla para excluir únicamente CANCELADA creando una lista nueva, ejecutar las pruebas y revisar el diff. Luego un revisor sin permisos de edición comprobará contrato, pruebas y alcance. Cada variante parte de una copia fresca; máximo dos rondas."}
+]

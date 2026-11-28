@@ -4,6 +4,21 @@ import json
 from pathlib import Path
 
 
+def prueba_pasada(eventos):
+    """Comprueba la última prueba ejecutada sobre la versión final de la copia."""
+    for e in reversed(eventos):
+        if e["tipo"] != "accion" or e["bloqueada"]:
+            continue
+        accion, observacion = e["accion"], e["observacion"]
+        if accion == "editar_archivo" and observacion.startswith("OK:"):
+            return False
+        if accion == "ejecutar_pruebas" or (
+            accion == "ejecutar_comando" and e["args"].get("comando") == "python -m pytest -q"
+        ):
+            return observacion.partition("\n")[0] == "pytest exit=0"
+    return False
+
+
 def etiqueta(texto):
     return (texto.replace("#", " ").replace(";", ",").replace("<", "‹")
             .replace(">", "›").replace("\n", " ")[:100])
