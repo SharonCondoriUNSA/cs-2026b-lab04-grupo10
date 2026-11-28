@@ -1,0 +1,11 @@
+[
+  {
+    "pensamiento": "Consultar los archivos",
+    "accion": "abrir_terminal",
+    "args": {}
+  },
+  {
+    "pensamiento": "La decisión inválida fue rechazada; terminar la prueba",
+    "final": "La prueba controlada confirmó que el contrato rechazó la herramienta desconocida."
+  }
+]
