@@ -44,7 +44,8 @@ class Agente:
                     except Exception as e:                                # el error también es una observación
                         obs = f"ERROR: {type(e).__name__}: {e}"
                     self._registrar(tipo="accion", estado="OBSERVANDO", paso=paso, pensamiento=d["pensamiento"],
-                                    accion=accion, args=args, observacion=obs, bloqueada=False)
+                                    accion=accion, args=args, observacion=obs, bloqueada=False,
+                                    aprobacion=veredicto.motivo if accion == "editar_archivo" else None)
                 else:
                     obs = f"BLOQUEADO POR LA POLÍTICA: {veredicto.motivo}"
                     self._registrar(tipo="accion", estado="BLOQUEADO", paso=paso,

@@ -1,5 +1,8 @@
 """Guardrails: qué puede hacer el agente, cuántas veces y con qué aprobación."""
 from dataclasses import dataclass, field
+from typing import Callable
+
+from agente.aprobacion import aprobar_edicion_en_consola
 
 
 MODULO_EDITABLE = "src/lab10/operaciones.py"
@@ -16,7 +19,7 @@ class Politica:
     herramientas_permitidas: set = field(default_factory=lambda: {
         "listar_archivos", "leer_archivo", "buscar", "ejecutar_pruebas", "editar_archivo", "ver_cambios", "ejecutar_comando"})
     max_pasos: int = 12
-    aprobar_edicion = None                          # función opcional: humano en el circuito (human-in-the-loop)
+    aprobar_edicion: Callable[[dict], bool] = field(default=aprobar_edicion_en_consola)
 
     def evaluar(self, accion: str, args: dict, paso: int) -> Decision:
         if paso > self.max_pasos:
@@ -31,6 +34,7 @@ class Politica:
             ruta = args.get("ruta", "")
             if ruta != MODULO_EDITABLE:
                 return Decision(False, f"Ruta protegida: {ruta}")
-            if self.aprobar_edicion and not self.aprobar_edicion(args):
-                return Decision(False, "El revisor humano rechazó la edición")
+            if not self.aprobar_edicion(args):
+                return Decision(False, "El usuario denegó o no concedió la aprobación humana")
+            return Decision(True, "Aprobación humana concedida en consola")
         return Decision(True)
