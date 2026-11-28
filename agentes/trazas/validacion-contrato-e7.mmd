@@ -1,0 +1,12 @@
+sequenceDiagram
+    autonumber
+    actor U as Solicitante
+    participant A as Ejecutor ReAct
+    participant C as Contrato y política
+    participant H as Herramientas
+    U->>A: Objetivo del issue
+    A->>C: (ninguna)
+    C--xA: ERROR DE CONTRATO: herramienta desconocida: 'abrir_terminal'. Responda solo con el JSON del protocol
+    A->>C: Respuesta final
+    C-->>A: Válida
+    A-->>U: Resultado para revisión
